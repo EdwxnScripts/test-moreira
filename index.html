@@ -1539,22 +1539,28 @@ async function fetchRobloxUserId(username) {
   }
 
   try {
-    const res = await fetch(`/api/roblox/search?username=${encodeURIComponent(clean)}`);
+    const res = await fetch(
+      `https://users.roproxy.com/v1/users/search?keyword=${encodeURIComponent(clean)}&limit=10`
+    );
     if (res.status === 429) {
       return { rateLimited: true };
     }
     if (!res.ok) return null;
 
     const data = await res.json();
-    const id = data.id || data.userId || data.Id || (data.data && (data.data.id || data.data.userId));
-    const name = data.name || data.username || data.Name || (data.data && (data.data.name || data.data.username)) || clean;
+    const list = Array.isArray(data.data) ? data.data : [];
+    const exact =
+      list.find((u) => (u.name || "").toLowerCase() === cacheKey) ||
+      list[0];
 
-    if (id) {
-      const result = { id: String(id), name: String(name) };
+    const result = exact && exact.id
+      ? { id: String(exact.id), name: exact.name || clean }
+      : null;
+
+    if (result) {
       userIdCache.set(cacheKey, result);
-      return result;
     }
-    return null;
+    return result;
   } catch {
     return null;
   }
@@ -1653,8 +1659,7 @@ document.getElementById("targetUser").addEventListener("input", () => {
     autoLookupTargetUser(true);
     return;
   }
-  setLookupStatus("Buscando...", "loading");
-  lookupTimer = setTimeout(() => autoLookupTargetUser(true), 700);
+  setLookupStatus("Pulsa Enter o sal del campo para buscar el ID", "");
 });
 
 document.getElementById("targetUser").addEventListener("keydown", (e) => {
