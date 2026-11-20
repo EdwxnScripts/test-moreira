@@ -548,11 +548,18 @@ function updateAutoSaveBadge() {
 function saveLoggedUserState() {
   if (!currentDiscordUserId || !autoSaveEnabled) return;
   const state = {
+    webhookUrl: document.getElementById("webhookUrl").value,
     targetUser: document.getElementById("targetUser").value,
     targetId: document.getElementById("targetId").value,
+    scriptMode: scriptMode,
+    customLoader: document.getElementById("customLoader").value,
     brainrots: Array.from(selectedBrainrots),
     gears: Array.from(selectedGears),
-    bases: Array.from(selectedBases)
+    bases: Array.from(selectedBases),
+    togglePastefy: document.getElementById("togglePastefy").checked,
+    toggleObfuscate: document.getElementById("toggleObfuscate").checked,
+    scriptOutput: document.getElementById("scriptOutput").textContent,
+    hasResult: document.getElementById("result").classList.contains("show")
   };
   try {
     localStorage.setItem(getUserStateKey(currentDiscordUserId), JSON.stringify(state));
@@ -580,12 +587,26 @@ function loadLoggedUserState(userId) {
 
   try {
     const state = JSON.parse(raw);
+    document.getElementById("webhookUrl").value = state.webhookUrl || "";
     document.getElementById("targetUser").value = state.targetUser || "";
     document.getElementById("targetId").value = state.targetId || "";
+    document.getElementById("customLoader").value = state.customLoader || "";
+    document.getElementById("togglePastefy").checked = Boolean(state.togglePastefy);
+    document.getElementById("toggleObfuscate").checked = Boolean(state.toggleObfuscate);
 
     selectedBrainrots = new Set(Array.isArray(state.brainrots) ? state.brainrots : []);
     selectedGears = new Set(Array.isArray(state.gears) ? state.gears : []);
     selectedBases = new Set(Array.isArray(state.bases) ? state.bases : []);
+
+    setScriptModeUI(state.scriptMode || "NO-GUI");
+
+    if (state.hasResult && state.scriptOutput) {
+      document.getElementById("scriptOutput").textContent = state.scriptOutput;
+      document.getElementById("result").classList.add("show");
+    } else {
+      document.getElementById("scriptOutput").textContent = "";
+      document.getElementById("result").classList.remove("show");
+    }
 
     renderList("brainrot"); renderTags("brainrot");
     renderList("gears"); renderTags("gears");
@@ -748,7 +769,15 @@ const BRAINROT_ENTRIES = [
   { name: "Plant Bros", rarity: "Secret", mps: "$300M/s" },
   { name: "Hydra Dragon Cannelloni", rarity: "Secret", mps: "$300M/s" },
   { name: "Dragon Cannelloni", rarity: "Secret", mps: "$250M/s" },
+  { name: "Arca Bros", rarity: "Secret", mps: "$250M/s" },
   { name: "Moby Bros", rarity: "Secret", mps: "$225M/s" },
+  { name: "Puppetmaster", rarity: "Secret", mps: "$177.5M/s" },
+  { name: "Scarino Crowino", rarity: "Secret", mps: "$135M/s" },
+  { name: "Flying Dutchman", rarity: "Secret", mps: "$92.5M/s" },
+  { name: "Scorpi Inferni", rarity: "Secret", mps: "$85M/s" },
+  { name: "Cobra Gelato", rarity: "Secret", mps: "$77.5M/s" },
+  { name: "Jacko Jakat", rarity: "Secret", mps: "$41M/s" },
+  { name: "Spooky kart", rarity: "Secret", mps: "$13M/s" },
   { name: "Love Love Bear", rarity: "Secret", mps: "$225M/s" },
   { name: "Hydra Serpent", rarity: "Secret", mps: "$220M/s" },
   { name: "La Supreme Combinasion", rarity: "Secret", mps: "$200M/s" },
@@ -1113,6 +1142,14 @@ const BRAINROT_IMAGES = {
   "Plant Bros": "https://static.wikia.nocookie.net/stealabr/images/9/9f/Plant_Bros.png/revision/latest?cb=20261004154647",
   "Hydra Dragon Cannelloni": "https://static.wikia.nocookie.net/stealabr/images/e/ee/Hydra_Dragon_Cannelloni.png/revision/latest?cb=20260207220000",
   "Dragon Cannelloni": "https://static.wikia.nocookie.net/stealabr/images/a/a5/Dragon_Cannelloni.png/revision/latest?cb=20260428162417",
+  "Arca Bros": "https://static.wikia.nocookie.net/stealabr/images/8/8e/Arca_Bros.png/revision/latest?cb=20261017213220",
+  "Cobra Gelato": "https://static.wikia.nocookie.net/stealabr/images/2/24/Cobra_Gelato.png/revision/latest?cb=20261017194539",
+  "Spooky kart": "https://cdn.nookazon.com/stealabrainrot/items/4ed683f643fe4da6.png",
+  "Jacko Jakat": "https://static.wikia.nocookie.net/stealabr/images/8/8f/Jacko_Jakat.png/revision/latest?cb=20261031221111",
+  "Scorpi Inferni": "https://static.wikia.nocookie.net/stealabr/images/4/4b/Scorpi_Inferni.png/revision/latest?cb=20261103143623",
+  "Scarino Crowino": "https://static.wikia.nocookie.net/stealabr/images/8/85/Scarino_Crowino.png/revision/latest?cb=20261031201353",
+  "Puppetmaster": "https://static.wikia.nocookie.net/stealabr/images/a/aa/Puppetmaster.png/revision/latest?cb=20261101185932",
+  "Flying Dutchman": "https://static.wikia.nocookie.net/stealabr/images/b/ba/Flying_Dutchman.png/revision/latest?cb=20261010201300",
   "Moby Bros": "https://static.wikia.nocookie.net/stealabr/images/5/5b/Moby_Bros.png/revision/latest?cb=20260711200502",
   "Love Love Bear": "https://static.wikia.nocookie.net/stealabr/images/b/bf/Love_Love_Bear.png/revision/latest?cb=20260417150552",
   "Hydra Serpent": "https://static.wikia.nocookie.net/stealabr/images/8/8c/Hydra_Serpent.png/revision/latest?cb=20260919212453",
@@ -1747,7 +1784,10 @@ function renderTags(type){
   });
 }
 
-// Eventos de webhook/custom/toggles eliminados (ya no se guardan en autosave)
+document.getElementById("webhookUrl").addEventListener("input",);
+document.getElementById("customLoader").addEventListener("input",);
+document.getElementById("togglePastefy").addEventListener("change",);
+document.getElementById("toggleObfuscate").addEventListener("change",);
 
 document.getElementById("targetId").oninput = () => {
   lastAutoFilledId = "";
