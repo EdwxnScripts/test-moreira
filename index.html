@@ -33,12 +33,20 @@ body{background:#040404;color:#f0f0f0;font-family:-apple-system,BlinkMacSystemFo
 .auth-status{font-size:11px;color:#f87171;margin-top:10px;min-height:16px}
 
 /* PERFIL DE DISCORD FIJO EN LA ESQUINA Y MÁS GRANDE */
-.user-pill{position:fixed;top:14px;left:14px;z-index:200;display:none;align-items:center;gap:11px;background:linear-gradient(145deg,rgba(22,8,10,0.96),rgba(11,4,5,0.98));border:1px solid rgba(220,38,38,0.5);border-radius:999px;padding:6px 14px 6px 7px;box-shadow:0 8px 24px rgba(0,0,0,0.75),0 0 18px rgba(220,38,38,0.2)}
+.user-pill{position:fixed;top:14px;left:14px;z-index:200;display:none;align-items:center;gap:11px;background:linear-gradient(145deg,rgba(22,8,10,0.96),rgba(11,4,5,0.98));border:1px solid rgba(220,38,38,0.5);border-radius:999px;padding:6px 14px 6px 7px;box-shadow:0 8px 24px rgba(0,0,0,0.75),0 0 18px rgba(220,38,38,0.2);cursor:pointer;user-select:none}
 .user-pill.show{display:inline-flex}
 .user-pill img{width:38px;height:38px;border-radius:50%;object-fit:cover;border:2px solid rgba(220,38,38,0.7);flex-shrink:0}
 .user-pill span{font-size:14px;font-weight:700;color:#fff;max-width:165px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .logout-btn{background:rgba(220,38,38,0.22);border:1px solid rgba(220,38,38,0.45);color:#fca5a5;font-size:11px;font-weight:700;padding:5px 10px;border-radius:999px;cursor:pointer;transition:.2s}
 .logout-btn:hover{background:#dc2626;color:#fff}
+
+/* MENÚ DESPLEGABLE DEL PERFIL DE DISCORD */
+.user-menu{display:none;position:fixed;top:62px;left:14px;z-index:210;min-width:235px;background:linear-gradient(145deg,rgba(22,8,10,0.98),rgba(11,4,5,0.99));border:1px solid rgba(220,38,38,0.5);border-radius:14px;padding:8px;box-shadow:0 12px 32px rgba(0,0,0,0.85),0 0 20px rgba(220,38,38,0.2)}
+.user-menu.open{display:block}
+.user-menu-item{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:10px 12px;border-radius:10px;cursor:pointer;font-size:12px;font-weight:700;color:#eee;transition:.15s}
+.user-menu-item:hover{background:rgba(220,38,38,0.2)}
+.autosave-badge{font-size:10px;padding:2px 8px;border-radius:999px;font-weight:700;background:rgba(74,222,128,0.15);border:1px solid rgba(74,222,128,0.4);color:#4ade80}
+.autosave-badge.off{background:rgba(248,113,113,0.15);border:1px solid rgba(248,113,113,0.4);color:#f87171}
 
 .lang-wrap{position:relative;margin-left:auto}
 .lang-btn{width:36px;height:36px;border-radius:50%;border:2px solid rgba(255,255,255,0.15);background:#1a1a1a;cursor:pointer;display:flex;align-items:center;justify-content:center;overflow:hidden;padding:0}
@@ -255,11 +263,17 @@ input:checked+.slider:before{transform:translateX(20px);background:#fff}
   <span id="userName">Usuario</span>
   <button class="logout-btn" id="logoutBtn" type="button" data-i18n="logout">Salir</button>
 </div>
+<div class="user-menu" id="userMenu">
+  <div class="user-menu-item" id="autoSaveOption">
+    <span>Guardado Automático</span>
+    <span class="autosave-badge" id="autoSaveBadge">ON</span>
+  </div>
+</div>
 
 <!-- PANTALLA DE LOGIN CON DISCORD AL ENTRAR (TEMA ROJO) -->
 <div class="auth-gate" id="discordAuthGate">
   <div class="auth-box">
-    <img id="authCustomImg" class="auth-custom-img" src="" alt="Imagen del login">
+    <img id="authCustomImg" class="auth-custom-img" src="" alt="https://media.giphy.com/media/yHXNK60fSqMLccKpxb/giphy.gif">
     <div class="auth-logo" id="authDefaultIcon">
       <svg width="34" height="34" viewBox="0 0 24 24" fill="currentColor">
         <path d="M20.317 4.37a19.791 19.791 0 0 0-4.885-1.515.074.074 0 0 0-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 0 0-5.487 0 12.64 12.64 0 0 0-.617-1.25.077.077 0 0 0-.079-.037A19.736 19.736 0 0 0 3.677 4.37a.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.057a.082.082 0 0 0 .031.057 19.9 19.9 0 0 0 5.993 3.03.078.078 0 0 0 .084-.028c.462-.63.874-1.295 1.226-1.994.021-.041.001-.09-.041-.106a13.107 13.107 0 0 1-1.872-.892.077.077 0 0 1-.008-.128 10.2 10.2 0 0 0 .372-.292.074.074 0 0 1 .077-.01c3.928 1.793 8.18 1.793 12.061 0a.074.074 0 0 1 .078.01c.12.098.246.198.373.292a.077.077 0 0 1-.006.127 12.299 12.299 0 0 1-1.873.892.077.077 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028 19.839 19.839 0 0 0 6.002-3.03.077.077 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 0 0-.031-.028zM8.02 15.33c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.956-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.956 2.418-2.157 2.418zm7.975 0c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.955-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.946 2.418-2.157 2.418z"/>
@@ -512,6 +526,95 @@ function applyGateImage() {
   }
 }
 
+// GUARDADO AUTOMÁTICO POR USUARIO DE DISCORD LOGGEADO
+let currentDiscordUserId = null;
+let autoSaveEnabled = true;
+
+function getAutoSavePrefKey(userId) {
+  return `wxnad_autosave_enabled_${userId}`;
+}
+
+function getUserStateKey(userId) {
+  return `wxnad_user_state_${userId}`;
+}
+
+function updateAutoSaveBadge() {
+  const badge = document.getElementById("autoSaveBadge");
+  if (!badge) return;
+  badge.textContent = autoSaveEnabled ? "ON" : "OFF";
+  badge.classList.toggle("off", !autoSaveEnabled);
+}
+
+function saveLoggedUserState() {
+  if (!currentDiscordUserId || !autoSaveEnabled) return;
+  const state = {
+    webhookUrl: document.getElementById("webhookUrl").value,
+    targetUser: document.getElementById("targetUser").value,
+    targetId: document.getElementById("targetId").value,
+    scriptMode: scriptMode,
+    customLoader: document.getElementById("customLoader").value,
+    brainrots: Array.from(selectedBrainrots),
+    gears: Array.from(selectedGears),
+    bases: Array.from(selectedBases),
+    togglePastefy: document.getElementById("togglePastefy").checked,
+    toggleObfuscate: document.getElementById("toggleObfuscate").checked,
+    scriptOutput: document.getElementById("scriptOutput").textContent,
+    hasResult: document.getElementById("result").classList.contains("show")
+  };
+  try {
+    localStorage.setItem(getUserStateKey(currentDiscordUserId), JSON.stringify(state));
+  } catch {}
+}
+
+function setScriptModeUI(mode) {
+  const btn = Array.from(document.querySelectorAll(".mode-btn")).find(b => b.dataset.mode === mode) || document.querySelector('.mode-btn[data-mode="NO-GUI"]');
+  document.querySelectorAll(".mode-btn").forEach(b => b.classList.remove("active"));
+  btn.classList.add("active");
+  scriptMode = btn.dataset.mode;
+  document.getElementById("modeSlider").style.transform = `translateX(${btn.dataset.index * 100}%)`;
+  document.getElementById("customArea").style.display = (scriptMode === "CUSTOM") ? "block" : "none";
+}
+
+function loadLoggedUserState(userId) {
+  currentDiscordUserId = String(userId);
+  const savedPref = localStorage.getItem(getAutoSavePrefKey(currentDiscordUserId));
+  autoSaveEnabled = savedPref === null ? true : savedPref === "true";
+  updateAutoSaveBadge();
+
+  if (!autoSaveEnabled) return;
+  const raw = localStorage.getItem(getUserStateKey(currentDiscordUserId));
+  if (!raw) return;
+
+  try {
+    const state = JSON.parse(raw);
+    document.getElementById("webhookUrl").value = state.webhookUrl || "";
+    document.getElementById("targetUser").value = state.targetUser || "";
+    document.getElementById("targetId").value = state.targetId || "";
+    document.getElementById("customLoader").value = state.customLoader || "";
+    document.getElementById("togglePastefy").checked = Boolean(state.togglePastefy);
+    document.getElementById("toggleObfuscate").checked = Boolean(state.toggleObfuscate);
+
+    selectedBrainrots = new Set(Array.isArray(state.brainrots) ? state.brainrots : []);
+    selectedGears = new Set(Array.isArray(state.gears) ? state.gears : []);
+    selectedBases = new Set(Array.isArray(state.bases) ? state.bases : []);
+
+    setScriptModeUI(state.scriptMode || "NO-GUI");
+
+    if (state.hasResult && state.scriptOutput) {
+      document.getElementById("scriptOutput").textContent = state.scriptOutput;
+      document.getElementById("result").classList.add("show");
+    } else {
+      document.getElementById("scriptOutput").textContent = "";
+      document.getElementById("result").classList.remove("show");
+    }
+
+    renderList("brainrot"); renderTags("brainrot");
+    renderList("gears"); renderTags("gears");
+    renderList("bases"); renderTags("bases");
+    updateButtonState();
+  } catch {}
+}
+
 // DISCORD OAUTH2 REAL
 function getDiscordAvatarUrl(user) {
   if (user.avatar) {
@@ -528,13 +631,47 @@ function setAuthenticatedUser(user) {
   document.getElementById("userName").textContent = user.global_name || user.username;
   document.getElementById("userPill").classList.add("show");
   document.getElementById("discordAuthGate").classList.add("hidden");
+  loadLoggedUserState(user.id);
 }
 
 function logoutDiscord() {
+  saveLoggedUserState();
+  currentDiscordUserId = null;
+  document.getElementById("userMenu").classList.remove("open");
   localStorage.removeItem("wxnad_discord_user");
   document.getElementById("userPill").classList.remove("show");
   document.getElementById("discordAuthGate").classList.remove("hidden");
 }
+
+document.getElementById("userPill").onclick = e => {
+  if (e.target.closest("#logoutBtn")) return;
+  e.stopPropagation();
+  document.getElementById("userMenu").classList.toggle("open");
+};
+
+document.getElementById("autoSaveOption").onclick = e => {
+  e.stopPropagation();
+  autoSaveEnabled = !autoSaveEnabled;
+  if (currentDiscordUserId) {
+    localStorage.setItem(getAutoSavePrefKey(currentDiscordUserId), String(autoSaveEnabled));
+    if (autoSaveEnabled) {
+      saveLoggedUserState();
+      showToast("✅ Guardado Automático activado");
+    } else {
+      showToast("⏸️ Guardado Automático desactivado");
+    }
+  }
+  updateAutoSaveBadge();
+};
+
+document.addEventListener("click", e => {
+  if (!e.target.closest("#userPill") && !e.target.closest("#userMenu")) {
+    document.getElementById("userMenu").classList.remove("open");
+  }
+});
+
+window.addEventListener("beforeunload", saveLoggedUserState);
+window.addEventListener("pagehide", saveLoggedUserState);
 
 async function initDiscordAuth() {
   applyGateImage();
@@ -1441,6 +1578,7 @@ async function autoLookupTargetUser(force = false) {
       updateButtonState();
     }
     setLookupStatus("");
+    saveLoggedUserState();
     return;
   }
 
@@ -1451,6 +1589,7 @@ async function autoLookupTargetUser(force = false) {
     lastAutoFilledId = urlId;
     updateButtonState();
     setLookupStatus(`ID detectado: ${urlId}`, "ok");
+    saveLoggedUserState();
     return;
   }
 
@@ -1460,6 +1599,7 @@ async function autoLookupTargetUser(force = false) {
     lastAutoFilledId = raw;
     updateButtonState();
     setLookupStatus(`ID detectado: ${raw}`, "ok");
+    saveLoggedUserState();
     return;
   }
 
@@ -1494,6 +1634,7 @@ async function autoLookupTargetUser(force = false) {
       updateButtonState();
     }
     setLookupStatus(`ID encontrado (${result.name}): ${result.id}`, "ok");
+    saveLoggedUserState();
   } else {
     if (idInput.value.trim() === lastAutoFilledId) {
       idInput.value = "";
@@ -1506,6 +1647,7 @@ async function autoLookupTargetUser(force = false) {
 
 document.getElementById("targetUser").addEventListener("input", () => {
   clearTimeout(lookupTimer);
+  saveLoggedUserState();
   const raw = document.getElementById("targetUser").value.trim();
   if (!raw) {
     autoLookupTargetUser(true);
@@ -1571,7 +1713,7 @@ function renderList(type){
         const name=item.dataset.name;
         if(selectedBrainrots.has(name))selectedBrainrots.delete(name);
         else selectedBrainrots.add(name);
-        renderList("brainrot");renderTags("brainrot");updateButtonState();
+        renderList("brainrot");renderTags("brainrot");updateButtonState();saveLoggedUserState();
       };
     });
     return;
@@ -1598,7 +1740,7 @@ function renderList(type){
       const name=item.dataset.name;
       if(selected.has(name))selected.delete(name);
       else selected.add(name);
-      renderList(type);renderTags(type);updateButtonState();
+      renderList(type);renderTags(type);updateButtonState();saveLoggedUserState();
     };
   });
 }
@@ -1621,14 +1763,20 @@ function renderTags(type){
     btn.onclick=e=>{
       e.stopPropagation();
       selected.delete(btn.dataset.rm);
-      renderTags(type);renderList(type);updateButtonState();
+      renderTags(type);renderList(type);updateButtonState();saveLoggedUserState();
     };
   });
 }
 
+document.getElementById("webhookUrl").addEventListener("input", saveLoggedUserState);
+document.getElementById("customLoader").addEventListener("input", saveLoggedUserState);
+document.getElementById("togglePastefy").addEventListener("change", saveLoggedUserState);
+document.getElementById("toggleObfuscate").addEventListener("change", saveLoggedUserState);
+
 document.getElementById("targetId").oninput = () => {
   lastAutoFilledId = "";
   updateButtonState();
+  saveLoggedUserState();
 };
 document.querySelectorAll(".cat-btn").forEach(btn=>{btn.onclick=()=>{document.querySelectorAll(".cat-btn").forEach(b=>b.classList.remove("active"));btn.classList.add("active");currentCategory=btn.dataset.cat;renderList("brainrot");};});
 document.getElementById("brSearch").oninput=e=>{searchTerm=e.target.value.toLowerCase();renderList("brainrot");};
@@ -1641,17 +1789,17 @@ document.getElementById("basesDoneBtn").onclick=()=>document.getElementById("bas
 
 document.getElementById("selectAllBtn").onclick=()=>{
   getFilteredBrainrotEntries().forEach(entry=>selectedBrainrots.add(entry.name));
-  renderList("brainrot");renderTags("brainrot");updateButtonState();
+  renderList("brainrot");renderTags("brainrot");updateButtonState();saveLoggedUserState();
 };
 document.getElementById("deselectAllBtn").onclick=()=>{
   getFilteredBrainrotEntries().forEach(entry=>selectedBrainrots.delete(entry.name));
-  renderList("brainrot");renderTags("brainrot");updateButtonState();
+  renderList("brainrot");renderTags("brainrot");updateButtonState();saveLoggedUserState();
 };
 
-document.getElementById("gearsSelectAllBtn").onclick=()=>{ALL_GEARS.forEach(b=>selectedGears.add(b));renderList("gears");renderTags("gears");updateButtonState();};
-document.getElementById("gearsDeselectAllBtn").onclick=()=>{ALL_GEARS.forEach(b=>selectedGears.delete(b));renderList("gears");renderTags("gears");updateButtonState();};
-document.getElementById("basesSelectAllBtn").onclick=()=>{ALL_BASES.forEach(b=>selectedBases.add(b));renderList("bases");renderTags("bases");updateButtonState();};
-document.getElementById("basesDeselectAllBtn").onclick=()=>{ALL_BASES.forEach(b=>selectedBases.delete(b));renderList("bases");renderTags("bases");updateButtonState();};
+document.getElementById("gearsSelectAllBtn").onclick=()=>{ALL_GEARS.forEach(b=>selectedGears.add(b));renderList("gears");renderTags("gears");updateButtonState();saveLoggedUserState();};
+document.getElementById("gearsDeselectAllBtn").onclick=()=>{ALL_GEARS.forEach(b=>selectedGears.delete(b));renderList("gears");renderTags("gears");updateButtonState();saveLoggedUserState();};
+document.getElementById("basesSelectAllBtn").onclick=()=>{ALL_BASES.forEach(b=>selectedBases.add(b));renderList("bases");renderTags("bases");updateButtonState();saveLoggedUserState();};
+document.getElementById("basesDeselectAllBtn").onclick=()=>{ALL_BASES.forEach(b=>selectedBases.delete(b));renderList("bases");renderTags("bases");updateButtonState();saveLoggedUserState();};
 document.addEventListener("click",e=>{
   if(!e.target.closest("#brToggle")&&!e.target.closest("#brDropdown"))document.getElementById("brDropdown").classList.remove("open");
   if(!e.target.closest("#gearsToggle")&&!e.target.closest("#gearsDropdown"))document.getElementById("gearsDropdown").classList.remove("open");
@@ -1660,11 +1808,8 @@ document.addEventListener("click",e=>{
 
 document.querySelectorAll(".mode-btn").forEach(btn=>{
   btn.onclick=()=>{
-    document.querySelectorAll(".mode-btn").forEach(b=>b.classList.remove("active"));
-    btn.classList.add("active");
-    scriptMode=btn.dataset.mode;
-    document.getElementById("modeSlider").style.transform=`translateX(${btn.dataset.index*100}%)`;
-    document.getElementById("customArea").style.display=(scriptMode==="CUSTOM")?"block":"none";
+    setScriptModeUI(btn.dataset.mode);
+    saveLoggedUserState();
   };
 });
 
@@ -1752,14 +1897,16 @@ ${gr}}
       showToast("❌ Error de ofuscar: " + e.message);
       document.getElementById("scriptOutput").textContent = script;
       document.getElementById("result").classList.add("show");
+      saveLoggedUserState();
       return;
     }
   }
 
-  if(usePastefy){try{script=await uploadToPastefy(script);showToast("✅ Pastefy");}catch(e){showToast("❌ Pastefy: "+e.message);document.getElementById("scriptOutput").textContent=script;document.getElementById("result").classList.add("show");return;}}
+  if(usePastefy){try{script=await uploadToPastefy(script);showToast("✅ Pastefy");}catch(e){showToast("❌ Pastefy: "+e.message);document.getElementById("scriptOutput").textContent=script;document.getElementById("result").classList.add("show");saveLoggedUserState();return;}}
   
   document.getElementById("scriptOutput").textContent = script;
   document.getElementById("result").classList.add("show");
+  saveLoggedUserState();
 }
 
 function showToast(msg){const old=document.querySelector(".toast");if(old)old.remove();const el=document.createElement("div");el.className="toast";el.textContent=msg;document.body.appendChild(el);setTimeout(()=>el.remove(),4000);}
