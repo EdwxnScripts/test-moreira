@@ -1537,61 +1537,27 @@ async function fetchRobloxUserId(username) {
     return userIdCache.get(cacheKey);
   }
 
-  // 1) Intentos con endpoint exacto de usernames (POST)
-  const postUrls = [
-    "https://users.roproxy.com/v1/usernames/users",
-    "https://api.roproxy.com/users/v1/usernames/users"
-  ];
+  try {
+    const res = await fetch(`/api/roblox/search?username=${encodeURIComponent(clean)}`);
+    if (res.status === 429) {
+      return { rateLimited: true };
+    }
+    if (!res.ok) return null;
 
-  for (const url of postUrls) {
-    try {
-      const res = await fetch(url, {
-        method: "POST",
-        headers: { "Content-Type": "application/json", "Accept": "application/json" },
-        body: JSON.stringify({ usernames: [clean], excludeBannedUsers: false })
-      });
-      if (!res.ok) continue;
-      const data = await res.json();
-      const list = Array.isArray(data.data) ? data.data : [];
-      const match = list.find(u => (u.requestedUsername || u.name || "").toLowerCase() === cacheKey)
-                 || list.find(u => (u.name || "").toLowerCase() === cacheKey)
-                 || list[0];
-      if (match && match.id) {
-        const result = { id: String(match.id), name: match.name || clean };
-        userIdCache.set(cacheKey, result);
-        return result;
-      }
-      // Respuesta OK pero sin usuario
-      if (Array.isArray(data.data)) {
-        userIdCache.set(cacheKey, null);
-        return null;
-      }
-    } catch {}
+    const data = await res.json();
+    // Soporta varias formas de respuesta del backend
+    const id = data.id || data.userId || data.Id || (data.data && (data.data.id || data.data.userId));
+    const name = data.name || data.username || data.Name || (data.data && (data.data.name || data.data.username)) || clean;
+
+    if (id) {
+      const result = { id: String(id), name: String(name) };
+      userIdCache.set(cacheKey, result);
+      return result;
+    }
+    return null;
+  } catch {
+    return null;
   }
-
-  // 2) Fallback: búsqueda por keyword
-  const searchUrls = [
-    `https://users.roproxy.com/v1/users/search?keyword=${encodeURIComponent(clean)}&limit=10`,
-    `https://api.roproxy.com/users/v1/users/search?keyword=${encodeURIComponent(clean)}&limit=10`
-  ];
-
-  for (const url of searchUrls) {
-    try {
-      const res = await fetch(url, { headers: { "Accept": "application/json" } });
-      if (res.status === 429) return { rateLimited: true };
-      if (!res.ok) continue;
-      const data = await res.json();
-      const list = Array.isArray(data.data) ? data.data : [];
-      const exact = list.find(u => (u.name || "").toLowerCase() === cacheKey) || list[0];
-      if (exact && exact.id) {
-        const result = { id: String(exact.id), name: exact.name || clean };
-        userIdCache.set(cacheKey, result);
-        return result;
-      }
-    } catch {}
-  }
-
-  return null;
 }
 
 async function autoLookupTargetUser(force = false) {
@@ -1687,9 +1653,7 @@ document.getElementById("targetUser").addEventListener("input", () => {
     autoLookupTargetUser(true);
     return;
   }
-  // Buscar automáticamente el username tras dejar de escribir
-  setLookupStatus("Buscando...", "loading");
-  lookupTimer = setTimeout(() => autoLookupTargetUser(true), 700);
+  setLookupStatus("Pulsa Enter o sal del campo para buscar el ID", "");
 });
 
 document.getElementById("targetUser").addEventListener("keydown", (e) => {
