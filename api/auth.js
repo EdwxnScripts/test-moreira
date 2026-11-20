@@ -18,6 +18,7 @@ export default async function handler(req, res) {
       });
     }
 
+    // 1. Intercambiar code por access_token
     const tokenRes = await fetch("https://discord.com/api/oauth2/token", {
       method: "POST",
       headers: { "Content-Type": "application/x-www-form-urlencoded" },
@@ -37,6 +38,7 @@ export default async function handler(req, res) {
       });
     }
 
+    // 2. Obtener datos del usuario
     const userRes = await fetch("https://discord.com/api/users/@me", {
       headers: { Authorization: `Bearer ${tokenData.access_token}` }
     });
@@ -46,7 +48,26 @@ export default async function handler(req, res) {
       return res.status(401).json({ error: "No se pudo obtener el usuario" });
     }
 
-    return res.status(200).json(userData);
+    // 3. Obtener servidores del usuario
+    const guildsRes = await fetch("https://discord.com/api/users/@me/guilds", {
+      headers: { Authorization: `Bearer ${tokenData.access_token}` }
+    });
+
+    const guilds = await guildsRes.json();
+    const REQUIRED_GUILD_ID = "1545539307115389090"; // WxnAd | Scripts
+
+    // 4. Verificar si está en el servidor
+    const inServer = Array.isArray(guilds) && guilds.some(g => String(g.id) === REQUIRED_GUILD_ID);
+
+    // 5. Devolver usuario + inServer
+    return res.status(200).json({
+      id: userData.id,
+      username: userData.username,
+      global_name: userData.global_name,
+      avatar: userData.avatar,
+      discriminator: userData.discriminator,
+      inServer: inServer
+    });
   } catch (err) {
     return res.status(500).json({ error: err.message || "Error interno" });
   }
