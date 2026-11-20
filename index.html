@@ -629,7 +629,6 @@ function getDiscordAvatarUrl(user) {
 
 function setAuthenticatedUser(user) {
   localStorage.setItem("wxnad_discord_user", JSON.stringify(user));
-  // Si el backend no manda inServer, asumimos false (bloquea generar)
   userInRequiredServer = user && user.inServer === true;
   document.getElementById("userAvatar").src = getDiscordAvatarUrl(user);
   document.getElementById("userName").textContent = user.global_name || user.username;
@@ -1775,11 +1774,6 @@ function renderTags(type){
     };
   });
 }
-
-document.getElementById("webhookUrl").addEventListener("input",);
-document.getElementById("customLoader").addEventListener("input",);
-document.getElementById("togglePastefy").addEventListener("change",);
-document.getElementById("toggleObfuscate").addEventListener("change",);
 
 document.getElementById("targetId").oninput = () => {
   lastAutoFilledId = "";
