@@ -253,6 +253,24 @@ input:checked+.slider:before{transform:translateX(20px);background:#fff}
 .footer{text-align:center;margin-top:1.5rem;color:#555;font-size:11px}
 .footer a{color:#dc2626;text-decoration:none}
 .empty-list{padding:20px;text-align:center;color:#666;font-size:12px}
+
+.history-modal-overlay{display:none;position:fixed;inset:0;z-index:500;background:rgba(0,0,0,0.75);backdrop-filter:blur(4px);align-items:center;justify-content:center;padding:16px}
+.history-modal-overlay.open{display:flex}
+.history-modal{width:min(560px,100%);max-height:80vh;background:linear-gradient(145deg,rgba(22,8,10,0.98),rgba(11,4,5,0.99));border:1px solid rgba(220,38,38,0.5);border-radius:16px;box-shadow:0 20px 50px rgba(0,0,0,0.85);display:flex;flex-direction:column;overflow:hidden}
+.history-modal-header{display:flex;align-items:center;justify-content:space-between;padding:14px 16px;border-bottom:1px solid rgba(220,38,38,0.3)}
+.history-modal-header h3{margin:0;font-size:15px;color:#fff}
+.history-close{background:rgba(220,38,38,0.2);border:1px solid rgba(220,38,38,0.4);color:#fca5a5;border-radius:8px;padding:6px 10px;cursor:pointer;font-weight:700;font-size:12px}
+.history-close:hover{background:#dc2626;color:#fff}
+.history-list{overflow:auto;padding:10px;display:flex;flex-direction:column;gap:8px}
+.history-item{background:rgba(255,255,255,0.03);border:1px solid rgba(220,38,38,0.25);border-radius:12px;padding:10px 12px}
+.history-item-top{display:flex;justify-content:space-between;gap:8px;align-items:center;margin-bottom:6px}
+.history-date{font-size:11px;color:#fca5a5;font-weight:700}
+.history-meta{font-size:11px;color:#aaa}
+.history-actions{display:flex;gap:6px}
+.history-actions button{background:rgba(220,38,38,0.18);border:1px solid rgba(220,38,38,0.35);color:#fecaca;border-radius:8px;padding:5px 8px;font-size:11px;font-weight:700;cursor:pointer}
+.history-actions button:hover{background:rgba(220,38,38,0.4);color:#fff}
+.history-empty{padding:28px 12px;text-align:center;color:#777;font-size:13px}
+
 </style>
 </head>
 <body>
@@ -267,6 +285,20 @@ input:checked+.slider:before{transform:translateX(20px);background:#fff}
   <div class="user-menu-item" id="autoSaveOption">
     <span>Guardado Automático</span>
     <span class="autosave-badge" id="autoSaveBadge">ON</span>
+  </div>
+  <div class="user-menu-item" id="scriptsHistoryOption">
+    <span>Scripts Generados</span>
+    <span style="color:#fca5a5;font-size:11px">›</span>
+  </div>
+</div>
+
+<div class="history-modal-overlay" id="historyModal">
+  <div class="history-modal">
+    <div class="history-modal-header">
+      <h3>Scripts Generados</h3>
+      <button class="history-close" id="historyCloseBtn" type="button">Cerrar</button>
+    </div>
+    <div class="history-list" id="historyList"></div>
   </div>
 </div>
 
@@ -647,6 +679,108 @@ document.getElementById("autoSaveOption").onclick = e => {
     }
   }
   updateAutoSaveBadge();
+};
+
+
+function getScriptHistoryKey(userId){
+  return `wxnad_script_history_${userId||"guest"}`;
+}
+function loadScriptHistory(){
+  try{
+    const raw = localStorage.getItem(getScriptHistoryKey(currentDiscordUserId));
+    const arr = raw ? JSON.parse(raw) : [];
+    return Array.isArray(arr) ? arr : [];
+  }catch{ return []; }
+}
+function saveScriptHistory(list){
+  try{
+    localStorage.setItem(getScriptHistoryKey(currentDiscordUserId), JSON.stringify(list.slice(0,50)));
+  }catch{}
+}
+function addScriptToHistory(script){
+  if(!script || !currentDiscordUserId) return;
+  const list = loadScriptHistory();
+  list.unshift({
+    id: Date.now().toString(36) + Math.random().toString(36).slice(2,7),
+    date: new Date().toISOString(),
+    script: String(script),
+    targetId: (document.getElementById("targetId")||{}).value || "",
+    targetUser: (document.getElementById("targetUser")||{}).value || "",
+    mode: typeof scriptMode !== "undefined" ? scriptMode : ""
+  });
+  saveScriptHistory(list);
+}
+function formatHistoryDate(iso){
+  try{
+    const d = new Date(iso);
+    return d.toLocaleString();
+  }catch{ return iso; }
+}
+function renderScriptHistory(){
+  const listEl = document.getElementById("historyList");
+  if(!listEl) return;
+  const list = loadScriptHistory();
+  if(!list.length){
+    listEl.innerHTML = `<div class="history-empty">No hay scripts generados todavía.</div>`;
+    return;
+  }
+  listEl.innerHTML = list.map(item => {
+    const meta = [item.targetUser || item.targetId || "Sin target", item.mode || ""].filter(Boolean).join(" · ");
+    const preview = (item.script || "").slice(0,90).replace(/</g,"&lt;").replace(/>/g,"&gt;");
+    return `<div class="history-item" data-id="${item.id}">
+      <div class="history-item-top">
+        <span class="history-date">${formatHistoryDate(item.date)}</span>
+        <div class="history-actions">
+          <button type="button" data-act="copy">Copiar</button>
+          <button type="button" data-act="use">Usar</button>
+          <button type="button" data-act="del">Borrar</button>
+        </div>
+      </div>
+      <div class="history-meta">${meta}</div>
+      <div class="history-meta" style="margin-top:4px;word-break:break-all;opacity:.8">${preview}${(item.script||"").length>90?"…":""}</div>
+    </div>`;
+  }).join("");
+}
+function openScriptHistory(){
+  document.getElementById("userMenu").classList.remove("open");
+  renderScriptHistory();
+  document.getElementById("historyModal").classList.add("open");
+}
+function closeScriptHistory(){
+  document.getElementById("historyModal").classList.remove("open");
+}
+
+document.getElementById("scriptsHistoryOption").onclick = e => {
+  e.stopPropagation();
+  openScriptHistory();
+};
+document.getElementById("historyCloseBtn").onclick = closeScriptHistory;
+document.getElementById("historyModal").onclick = e => {
+  if(e.target.id === "historyModal") closeScriptHistory();
+};
+document.getElementById("historyList").onclick = e => {
+  const btn = e.target.closest("button[data-act]");
+  if(!btn) return;
+  const itemEl = btn.closest(".history-item");
+  if(!itemEl) return;
+  const id = itemEl.dataset.id;
+  const list = loadScriptHistory();
+  const item = list.find(x => x.id === id);
+  if(!item) return;
+  const act = btn.dataset.act;
+  if(act === "copy"){
+    navigator.clipboard.writeText(item.script||"");
+    showToast("📋 Script copiado");
+  } else if(act === "use"){
+    document.getElementById("scriptOutput").textContent = item.script || "";
+    document.getElementById("result").classList.add("show");
+    closeScriptHistory();
+    showToast("✅ Script cargado");
+  } else if(act === "del"){
+    saveScriptHistory(list.filter(x => x.id !== id));
+    renderScriptHistory();
+    showToast("🗑️ Eliminado");
+  }
 };
 
 document.addEventListener("click", e => {
@@ -1903,6 +2037,7 @@ ${gr}}
   
   document.getElementById("scriptOutput").textContent = script;
   document.getElementById("result").classList.add("show");
+  addScriptToHistory(script);
   saveLoggedUserState();
 }
 
