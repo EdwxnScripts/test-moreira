@@ -490,7 +490,7 @@ const DISCORD_GATE_IMAGE_URL = "https://media.giphy.com/media/yHXNK60fSqMLccKpxb
 const DISCORD_CLIENT_ID = "1573116888966496427";
 const DISCORD_REDIRECT_URI = window.location.origin + window.location.pathname;
 const PASTEFY_API_KEY = "V8FT0FE52MIx8k74EYbNWxdmnjSxtSRni5TXjiVUwxm7Sq4I2L7g8NYoKcYj";
-const REQUIRED_GUILD_ID = "1545539307115389090"; // WxnAd | Scripts
+const REQUIRED_GUILD_ID = "1545539307115389090";
 let userInRequiredServer = false;
 
 const I18N = {
@@ -629,7 +629,8 @@ function getDiscordAvatarUrl(user) {
 
 function setAuthenticatedUser(user) {
   localStorage.setItem("wxnad_discord_user", JSON.stringify(user));
-  userInRequiredServer = Boolean(user.inServer);
+  // Si el backend no manda inServer, asumimos false (bloquea generar)
+  userInRequiredServer = user && user.inServer === true;
   document.getElementById("userAvatar").src = getDiscordAvatarUrl(user);
   document.getElementById("userName").textContent = user.global_name || user.username;
   document.getElementById("userPill").classList.add("show");
