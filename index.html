@@ -1738,11 +1738,6 @@ function renderTags(type){
   });
 }
 
-document.getElementById("webhookUrl").addEventListener("input", saveLoggedUserState);
-document.getElementById("customLoader").addEventListener("input", saveLoggedUserState);
-document.getElementById("togglePastefy").addEventListener("change", saveLoggedUserState);
-document.getElementById("toggleObfuscate").addEventListener("change", saveLoggedUserState);
-
 document.getElementById("targetId").oninput = () => {
   lastAutoFilledId = "";
   updateButtonState();
