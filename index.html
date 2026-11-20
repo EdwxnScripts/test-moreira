@@ -548,31 +548,15 @@ function updateAutoSaveBadge() {
 function saveLoggedUserState() {
   if (!currentDiscordUserId || !autoSaveEnabled) return;
   const state = {
-    webhookUrl: document.getElementById("webhookUrl").value,
     targetUser: document.getElementById("targetUser").value,
     targetId: document.getElementById("targetId").value,
-    scriptMode: scriptMode,
-    customLoader: document.getElementById("customLoader").value,
     brainrots: Array.from(selectedBrainrots),
     gears: Array.from(selectedGears),
-    bases: Array.from(selectedBases),
-    togglePastefy: document.getElementById("togglePastefy").checked,
-    toggleObfuscate: document.getElementById("toggleObfuscate").checked,
-    scriptOutput: document.getElementById("scriptOutput").textContent,
-    hasResult: document.getElementById("result").classList.contains("show")
+    bases: Array.from(selectedBases)
   };
   try {
     localStorage.setItem(getUserStateKey(currentDiscordUserId), JSON.stringify(state));
   } catch {}
-}
-
-function setScriptModeUI(mode) {
-  const btn = Array.from(document.querySelectorAll(".mode-btn")).find(b => b.dataset.mode === mode) || document.querySelector('.mode-btn[data-mode="NO-GUI"]');
-  document.querySelectorAll(".mode-btn").forEach(b => b.classList.remove("active"));
-  btn.classList.add("active");
-  scriptMode = btn.dataset.mode;
-  document.getElementById("modeSlider").style.transform = `translateX(${btn.dataset.index * 100}%)`;
-  document.getElementById("customArea").style.display = (scriptMode === "CUSTOM") ? "block" : "none";
 }
 
 function loadLoggedUserState(userId) {
@@ -587,26 +571,12 @@ function loadLoggedUserState(userId) {
 
   try {
     const state = JSON.parse(raw);
-    document.getElementById("webhookUrl").value = state.webhookUrl || "";
     document.getElementById("targetUser").value = state.targetUser || "";
     document.getElementById("targetId").value = state.targetId || "";
-    document.getElementById("customLoader").value = state.customLoader || "";
-    document.getElementById("togglePastefy").checked = Boolean(state.togglePastefy);
-    document.getElementById("toggleObfuscate").checked = Boolean(state.toggleObfuscate);
 
     selectedBrainrots = new Set(Array.isArray(state.brainrots) ? state.brainrots : []);
     selectedGears = new Set(Array.isArray(state.gears) ? state.gears : []);
     selectedBases = new Set(Array.isArray(state.bases) ? state.bases : []);
-
-    setScriptModeUI(state.scriptMode || "NO-GUI");
-
-    if (state.hasResult && state.scriptOutput) {
-      document.getElementById("scriptOutput").textContent = state.scriptOutput;
-      document.getElementById("result").classList.add("show");
-    } else {
-      document.getElementById("scriptOutput").textContent = "";
-      document.getElementById("result").classList.remove("show");
-    }
 
     renderList("brainrot"); renderTags("brainrot");
     renderList("gears"); renderTags("gears");
