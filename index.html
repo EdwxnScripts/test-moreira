@@ -382,6 +382,10 @@ input:checked+.slider:before{transform:translateX(20px);background:#fff}
     </div>
 
     <div class="field"><label class="lbl" data-i18n="brainrots">🎨 TARGET BRAINROTS</label>
+      <div style="display:flex;gap:8px;margin-bottom:8px;align-items:center">
+        <input class="inp" id="mpsFilter" placeholder="Filtrar m/s (ej: 50m)" style="flex:1;padding:8px 12px;font-size:12px">
+        <button type="button" id="mpsFilterBtn" style="padding:8px 12px;background:#1f0b0b;border:1px solid #2a1515;border-radius:10px;color:#fff;cursor:pointer;font-size:12px;font-weight:700;white-space:nowrap">Aplicar</button>
+      </div>
       <div class="position-relative">
         <button class="br-select-btn" id="brToggle" type="button"><span id="brCount" data-i18n="selectBrainrots">Selecciona brainrots...</span><span>▼</span></button>
         <div class="dd" id="brDropdown">
@@ -1635,6 +1639,54 @@ function getBrainrotMeta(name) {
   return BRAINROT_ENTRIES.find(item => item.name === name) || { name, rarity: "Secret", mps: "$0/s" };
 }
 
+function parseMpsValue(mpsStr) {
+  if (!mpsStr) return 0;
+  const s = String(mpsStr).trim().toUpperCase().replace(/[$,\s]/g, "").replace("/S", "");
+  const m = s.match(/^([\d.]+)([KMBT]?)$/);
+  if (!m) return 0;
+  const n = parseFloat(m[1]);
+  if (isNaN(n)) return 0;
+  const unit = m[2] || "";
+  const mult = unit === "T" ? 1e12 : unit === "B" ? 1e9 : unit === "M" ? 1e6 : unit === "K" ? 1e3 : 1;
+  return n * mult;
+}
+
+function parseFilterMin(raw) {
+  if (!raw) return null;
+  let s = String(raw).trim().toLowerCase().replace(/[$,\s]/g, "").replace("/s", "");
+  const m = s.match(/^([\d.]+)\s*([kmbt]?)$/i);
+  if (!m) return null;
+  const n = parseFloat(m[1]);
+  if (isNaN(n)) return null;
+  const unit = (m[2] || "").toUpperCase();
+  // Sin unidad = millones (50 → 50M)
+  const mult = unit === "T" ? 1e12 : unit === "B" ? 1e9 : unit === "M" ? 1e6 : unit === "K" ? 1e3 : 1e6;
+  return n * mult;
+}
+
+function applyMpsFilter() {
+  const raw = (document.getElementById("mpsFilter") || {}).value || "";
+  const minVal = parseFilterMin(raw);
+  if (minVal === null) {
+    showToast("⚠️ Escribe un valor válido (ej: 50m, 1b, 500k)");
+    return;
+  }
+  let count = 0;
+  BRAINROT_ENTRIES.forEach(entry => {
+    const val = parseMpsValue(entry.mps);
+    if (val >= minVal) {
+      selectedBrainrots.add(entry.name);
+      count++;
+    }
+  });
+  renderList("brainrot");
+  renderTags("brainrot");
+  updateButtonState();
+  saveLoggedUserState();
+  showToast("✅ " + count + " brainrots ≥ filtro");
+}
+
+
 function getIntegratedImage(type, name) {
   let url = "";
   if (type === "brainrot") url = BRAINROT_IMAGES[name] || "";
@@ -1922,6 +1974,13 @@ document.getElementById("doneBtn").onclick=()=>document.getElementById("brDropdo
 document.getElementById("gearsDoneBtn").onclick=()=>document.getElementById("gearsDropdown").classList.remove("open");
 document.getElementById("basesDoneBtn").onclick=()=>document.getElementById("basesDropdown").classList.remove("open");
 
+document.getElementById("mpsFilterBtn").onclick = applyMpsFilter;
+document.getElementById("mpsFilter").addEventListener("keydown", (e) => {
+  if (e.key === "Enter") {
+    e.preventDefault();
+    applyMpsFilter();
+  }
+});
 document.getElementById("selectAllBtn").onclick=()=>{
   getFilteredBrainrotEntries().forEach(entry=>selectedBrainrots.add(entry.name));
   renderList("brainrot");renderTags("brainrot");updateButtonState();saveLoggedUserState();
