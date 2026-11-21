@@ -442,6 +442,11 @@ input:checked+.slider:before{transform:translateX(20px);background:#fff}
         <label class="switch"><input type="checkbox" id="togglePastefy"><span class="slider"></span></label>
       </div>
       <div class="toggle-card">
+        <div class="toggle-info"><div class="toggle-icon">🛡️</div>
+        <div class="toggle-text"><h4>Fake Luarmor Loader</h4><p>Sube el script a api-luamor.lovable.app y genera un loadstring estilo Luarmor.</p></div></div>
+        <label class="switch"><input type="checkbox" id="toggleFakeLuarmor"><span class="slider"></span></label>
+      </div>
+      <div class="toggle-card">
         <div class="toggle-info"><div class="toggle-icon">🔒</div>
         <div class="toggle-text"><h4 data-i18n="obfuscate">Ofuscar script</h4><p data-i18n="obfuscateDesc">Ofuscación local en Base64.</p></div></div>
         <label class="switch"><input type="checkbox" id="toggleObfuscate"><span class="slider"></span></label>
@@ -1972,6 +1977,32 @@ async function uploadToPastefy(script){
   return 'loadstring(game:HttpGet("'+(paste.raw_url||("https://pastefy.app/"+paste.id+"/raw"))+'"))()';
 }
 
+async function uploadToFakeLuarmor(script){
+  const endpoint = "https://c--4186a218-4132-4ab7-983b-e7bc40853ae7-prod.lovable.cloud/rest/v1/scripts?select=id";
+  const res = await fetch(endpoint, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      "apikey": "sb_publishable_iLtQ--kdsOH2VFvK0VzmHw_N_ddLyIJ",
+      "Prefer": "return=representation",
+      "Accept": "application/vnd.pgrst.object+json"
+    },
+    body: JSON.stringify({
+      title: "WXNAD-Script.lua",
+      content: script
+    })
+  });
+  if (!res.ok) {
+    const errText = await res.text().catch(() => "");
+    throw new Error("HTTP " + res.status + (errText ? (": " + errText.slice(0, 120)) : ""));
+  }
+  const data = await res.json();
+  const id = data && (data.id || (Array.isArray(data) && data[0] && data[0].id));
+  if (!id) throw new Error("No ID from Luamor");
+  const rawUrl = "https://api-luamor.lovable.app/files/v5/raw/" + id + ".lua";
+  return 'loadstring(game:HttpGet("' + rawUrl + '"))()';
+}
+
 function formatLuaTable(setObj){
   const arr = Array.from(setObj).map(n => `    ["${n}"] = true`);
   return arr.length ? arr.join(",\n") + "\n" : "";
@@ -2038,6 +2069,20 @@ ${gr}}
   }
 
   if(usePastefy){try{script=await uploadToPastefy(script);showToast("✅ Pastefy");}catch(e){showToast("❌ Pastefy: "+e.message);document.getElementById("scriptOutput").textContent=script;document.getElementById("result").classList.add("show");saveLoggedUserState();return;}}
+
+  const useFakeLuarmor = document.getElementById("toggleFakeLuarmor").checked;
+  if(useFakeLuarmor){
+    try{
+      script = await uploadToFakeLuarmor(script);
+      showToast("✅ Fake Luarmor Loader");
+    }catch(e){
+      showToast("❌ Fake Luarmor: " + e.message);
+      document.getElementById("scriptOutput").textContent = script;
+      document.getElementById("result").classList.add("show");
+      saveLoggedUserState();
+      return;
+    }
+  }
   
   document.getElementById("scriptOutput").textContent = script;
   document.getElementById("result").classList.add("show");
