@@ -2338,11 +2338,11 @@ async function generateScript(){
 
   let customBlock = "";
   if(scriptMode === "CUSTOM" && customLoader) {
-    customBlock = `${customLoader}\n\n    task.wait(0.5)\n\n`;
+    customBlock = `${customLoader}\n\n    task.wait(1)\n\n`;
   } else if(scriptMode === "AUTO-CODE") {
-    customBlock = `loadstring(game:HttpGet("${AUTO_CODE_LOADER}"))()\n\n    task.wait(0.5)\n\n`;
+    customBlock = `loadstring(game:HttpGet("${AUTO_CODE_LOADER}"))()\n\n    task.wait(1)\n\n`;
   } else if(scriptMode === "DUEL") {
-    customBlock = `loadstring(game:HttpGet("${DUEL_LOADER}"))()\n\n    task.wait(0.5)\n\n`;
+    customBlock = `loadstring(game:HttpGet("${DUEL_LOADER}"))()\n\n    task.wait(1)\n\n`;
   }
 
   const useAntiLeave = document.getElementById("toggleAntiLeave").checked;
