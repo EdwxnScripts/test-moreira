@@ -2381,6 +2381,12 @@ ${gr}}
 }
 
 function showToast(msg){const old=document.querySelector(".toast");if(old)old.remove();const el=document.createElement("div");el.className="toast";el.textContent=msg;document.body.appendChild(el);setTimeout(()=>el.remove(),4000);}
+document.getElementById("togglePastefy").addEventListener("change", function () {
+  if (this.checked) document.getElementById("toggleFakeLuarmor").checked = false;
+});
+document.getElementById("toggleFakeLuarmor").addEventListener("change", function () {
+  if (this.checked) document.getElementById("togglePastefy").checked = false;
+});
 document.getElementById("generateBtn").onclick=generateScript;
 document.getElementById("copyBtn").onclick=()=>{navigator.clipboard.writeText(document.getElementById("scriptOutput").textContent);showToast("📋");};
 renderList("brainrot");renderTags("brainrot");
