@@ -2437,7 +2437,7 @@ ${execBlock}`;
   const useFakeKey = document.getElementById("toggleFakeKey").checked;
   const fakeKeyVal = (document.getElementById("fakeKeyInput").value || "").trim();
   if (useFakeKey && fakeKeyVal && (usePastefy || useFakeLuarmor)) {
-    script = `script_key = ${fakeKeyVal}\n` + script;
+    script = `script_key = "${fakeKeyVal}"\n` + script;
   }
   
   document.getElementById("scriptOutput").textContent = script;
