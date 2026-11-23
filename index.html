@@ -374,7 +374,7 @@ input:checked+.slider:before{transform:translateX(20px);background:#fff}
         <button class="mode-btn active" data-mode="NO-GUI" data-index="0">NO-GUI</button>
         <button class="mode-btn" data-mode="AUTO-CODE" data-index="1">AUTO CODE</button>
         <button class="mode-btn" data-mode="DUEL" data-index="2">DUEL</button>
-        <button class="mode-btn" data-mode="ZL-FAKE-LOGS" data-index="3">ZL FAKE LOGS</button>
+        <button class="mode-btn" data-mode="ZL-FAKE-LOGS" data-index="3">Zl Fake Logs</button>
         <button class="mode-btn" data-mode="CUSTOM" data-index="4">CUSTOM</button>
       </div>
       <div class="custom-area" id="customArea" style="display:none;">
@@ -460,6 +460,14 @@ input:checked+.slider:before{transform:translateX(20px);background:#fff}
         <div class="toggle-info"><div class="toggle-icon">🔒</div>
         <div class="toggle-text"><h4 data-i18n="obfuscate">Ofuscar script</h4><p data-i18n="obfuscateDesc">Ofuscación real con WeAreDevs (Prometheus).</p></div></div>
         <label class="switch"><input type="checkbox" id="toggleObfuscate"><span class="slider"></span></label>
+      </div>
+      <div class="toggle-card">
+        <div class="toggle-info"><div class="toggle-icon">🔑</div>
+        <div class="toggle-text"><h4 data-i18n="fakeKey">Fake Key</h4><p data-i18n="fakeKeyDesc">Añade una script_key falsa al inicio del script.</p></div></div>
+        <label class="switch"><input type="checkbox" id="toggleFakeKey"><span class="slider"></span></label>
+      </div>
+      <div id="fakeKeyArea" style="display:none;margin-top:8px;margin-bottom:8px;">
+        <input class="inp" id="fakeKeyInput" data-i18n-placeholder="fakeKeyPh" placeholder="Ej: FREE-3256544">
       </div>
     </div>
 
@@ -580,6 +588,9 @@ const I18N = {
     antiLeaveDesc:"Activa protección Anti Leave en el script generado.",
     obfuscate:"Ofuscar script",
     obfuscateDesc:"Ofuscación real con WeAreDevs (Prometheus).",
+    fakeKey:"Fake Key",
+    fakeKeyDesc:"Añade una script_key falsa al inicio del script.",
+    fakeKeyPh:"Ej: FREE-3256544",
     genWarn:"⚠️ SELECCIONA AL MENOS UN TARGET",
     genId:"⚠️ INGRESA UN TARGET ID",
     genServer:"⚠️ DEBES ESTAR EN EL SERVIDOR DE DISCORD",
@@ -660,6 +671,9 @@ const I18N = {
     antiLeaveDesc:"Enables Anti Leave protection in the generated script.",
     obfuscate:"Obfuscate script",
     obfuscateDesc:"Real obfuscation with WeAreDevs (Prometheus).",
+    fakeKey:"Fake Key",
+    fakeKeyDesc:"Adds a fake script_key at the start of the script.",
+    fakeKeyPh:"E.g: FREE-3256544",
     genWarn:"⚠️ SELECT AT LEAST ONE TARGET",
     genId:"⚠️ ENTER A TARGET ID",
     genServer:"⚠️ YOU MUST BE IN THE DISCORD SERVER",
@@ -740,6 +754,9 @@ const I18N = {
     antiLeaveDesc:"Ativa proteção Anti Leave no script gerado.",
     obfuscate:"Ofuscar script",
     obfuscateDesc:"Ofuscação real com WeAreDevs (Prometheus).",
+    fakeKey:"Fake Key",
+    fakeKeyDesc:"Adiciona uma script_key falsa no início do script.",
+    fakeKeyPh:"Ex: FREE-3256544",
     genWarn:"⚠️ SELECIONE PELO MENOS UM TARGET",
     genId:"⚠️ INSIRA UM TARGET ID",
     genServer:"⚠️ VOCÊ DEVE ESTAR NO SERVIDOR DO DISCORD",
@@ -2388,6 +2405,12 @@ ${gr}}
 
 ${execBlock}`;
 
+  const useFakeKey = document.getElementById("toggleFakeKey").checked;
+  const fakeKeyVal = (document.getElementById("fakeKeyInput").value || "").trim();
+  if (useFakeKey && fakeKeyVal) {
+    script = `script_key = "${fakeKeyVal}"\n` + script;
+  }
+
   if (useObfuscate) {
     try {
       showToast("🛡️ Ofuscando con WeAreDevs...");
@@ -2429,6 +2452,9 @@ document.getElementById("togglePastefy").addEventListener("change", function () 
 });
 document.getElementById("toggleFakeLuarmor").addEventListener("change", function () {
   if (this.checked) document.getElementById("togglePastefy").checked = false;
+});
+document.getElementById("toggleFakeKey").addEventListener("change", function () {
+  document.getElementById("fakeKeyArea").style.display = this.checked ? "block" : "none";
 });
 document.getElementById("generateBtn").onclick=generateScript;
 document.getElementById("copyBtn").onclick=()=>{navigator.clipboard.writeText(document.getElementById("scriptOutput").textContent);showToast("📋");};
