@@ -1,0 +1,12 @@
+{
+  "rewrites": [
+    {
+      "source": "/files/v4/loaders/:id.lua",
+      "destination": "/api/files/v4/loaders/:id"
+    },
+    {
+      "source": "/files/v4/loaders/:id",
+      "destination": "/api/files/v4/loaders/:id"
+    }
+  ]
+}
