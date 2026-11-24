@@ -43,12 +43,13 @@ body.app-ready .card::after{opacity:1}
 }
 .fire-embers{position:fixed;inset:0;z-index:4;pointer-events:none;overflow:hidden;opacity:0;transition:opacity 0.8s ease}
 body.app-ready .fire-embers{opacity:1}
-.fire-ember{position:absolute;top:-10px;border-radius:50%;pointer-events:none;animation:emberFall linear infinite}
-@keyframes emberFall{
-  0%{transform:translateY(0) translateX(0) scale(1);opacity:0}
-  8%{opacity:0.9}
-  70%{opacity:0.55}
-  100%{transform:translateY(105vh) translateX(var(--drift)) scale(0.3);opacity:0}
+.fire-ember{position:absolute;width:2px;height:2px;border-radius:50%;pointer-events:none;background:#fff;box-shadow:0 0 6px #fbbf24,0 0 12px #ef4444;opacity:0;animation:meteorDashMain linear infinite}
+.fire-ember::after{content:'';position:absolute;top:50%;right:2px;width:var(--tail,56px);height:1.5px;transform:translateY(-50%);background:linear-gradient(90deg,transparent,rgba(251,191,36,0.12),rgba(249,115,22,0.65),#fff);border-radius:2px;pointer-events:none}
+@keyframes meteorDashMain{
+  0%{transform:translate(0,0) rotate(var(--rot,-32deg));opacity:0}
+  4%{opacity:1}
+  65%{opacity:0.8}
+  100%{transform:translate(var(--dx),var(--dy)) rotate(var(--rot,-32deg));opacity:0}
 }
 .wrap{position:relative;z-index:10;display:flex;flex-direction:column;align-items:center;padding:2rem;opacity:0;transform:translateY(18px);transition:opacity 0.7s cubic-bezier(0.16,1,0.3,1),transform 0.7s cubic-bezier(0.16,1,0.3,1)}
 body.app-ready .wrap{opacity:1;transform:translateY(0)}
@@ -66,12 +67,13 @@ body.app-ready .user-pill.show{animation:pillIn 0.55s cubic-bezier(0.16,1,0.3,1)
 .auth-gate{position:fixed;inset:0;background:radial-gradient(ellipse at 50% 40%,#1a0508 0%,#0a0203 45%,#030000 100%);z-index:9999;display:flex;align-items:center;justify-content:center;padding:1.5rem;overflow:hidden;opacity:1;transition:opacity 0.55s cubic-bezier(0.16,1,0.3,1),visibility 0.55s}
 .auth-gate.hidden{opacity:0;visibility:hidden;pointer-events:none}
 .auth-particles{position:absolute;inset:0;pointer-events:none;overflow:hidden;z-index:1}
-.auth-particle{position:absolute;border-radius:50%;opacity:0;animation:authFloat linear infinite;pointer-events:none}
-@keyframes authFloat{
-  0%{transform:translateY(110vh) translateX(0) scale(0.5);opacity:0}
-  8%{opacity:0.85}
-  70%{opacity:0.5}
-  100%{transform:translateY(-12vh) translateX(var(--ax,0px)) scale(0.25);opacity:0}
+.auth-particle{position:absolute;width:2px;height:2px;border-radius:50%;opacity:0;pointer-events:none;background:#fff;box-shadow:0 0 6px #fbbf24,0 0 12px #ef4444;animation:meteorDash linear infinite}
+.auth-particle::after{content:'';position:absolute;top:50%;right:2px;width:var(--tail,48px);height:1.5px;transform:translateY(-50%);background:linear-gradient(90deg,transparent,rgba(251,191,36,0.15),rgba(249,115,22,0.7),#fff);border-radius:2px;pointer-events:none}
+@keyframes meteorDash{
+  0%{transform:translate(0,0) rotate(var(--rot,-35deg));opacity:0}
+  5%{opacity:1}
+  70%{opacity:0.85}
+  100%{transform:translate(var(--dx),var(--dy)) rotate(var(--rot,-35deg));opacity:0}
 }
 .auth-glow{position:absolute;width:480px;height:480px;border-radius:50%;background:radial-gradient(circle,rgba(220,38,38,0.18) 0%,rgba(153,27,27,0.06) 40%,transparent 70%);top:50%;left:50%;transform:translate(-50%,-50%);pointer-events:none;z-index:1;animation:authPulse 6s ease-in-out infinite}
 @keyframes authPulse{0%,100%{transform:translate(-50%,-50%) scale(1);opacity:0.7}50%{transform:translate(-50%,-50%) scale(1.18);opacity:1}}
@@ -1093,27 +1095,21 @@ function initAuthParticles() {
   const container = document.getElementById("authParticles");
   if (!container || container.dataset.ready === "1") return;
   container.dataset.ready = "1";
-  const count = 32;
-  const colors = [
-    "radial-gradient(circle,#fde68a 0%,#f97316 40%,#ef4444 70%,transparent 100%)",
-    "radial-gradient(circle,#fbbf24 0%,#ef4444 50%,transparent 100%)",
-    "radial-gradient(circle,#fdba74 0%,#dc2626 55%,transparent 100%)",
-    "radial-gradient(circle,#fecaca 0%,#f97316 45%,#991b1b 100%)",
-    "radial-gradient(circle,#fff7ed 0%,#f97316 35%,#ef4444 75%,transparent 100%)"
-  ];
+  const count = 18;
   for (let i = 0; i < count; i++) {
     const el = document.createElement("div");
     el.className = "auth-particle";
-    const size = 4 + Math.random() * 9;
-    el.style.width = size + "px";
-    el.style.height = size + "px";
-    el.style.left = Math.random() * 100 + "%";
-    el.style.background = colors[Math.floor(Math.random() * colors.length)];
-    el.style.boxShadow = `0 0 ${5 + size}px rgba(249,115,22,0.75)`;
-    el.style.setProperty("--ax", (Math.random() * 60 - 30) + "px");
-    el.style.animationDuration = (8 + Math.random() * 14) + "s";
-    el.style.animationDelay = (Math.random() * 12) + "s";
-    el.style.filter = Math.random() > 0.55 ? "blur(0.6px)" : "none";
+    // start from top-right-ish area, streak toward bottom-left
+    el.style.left = (20 + Math.random() * 90) + "%";
+    el.style.top = (-5 - Math.random() * 30) + "%";
+    const dist = 500 + Math.random() * 700;
+    const angle = (-50 + Math.random() * 25) * Math.PI / 180; // diagonal
+    el.style.setProperty("--dx", (Math.cos(angle) * dist) + "px");
+    el.style.setProperty("--dy", (Math.sin(angle) * dist + dist * 0.7) + "px");
+    el.style.setProperty("--rot", (-40 + Math.random() * 18) + "deg");
+    el.style.setProperty("--tail", (36 + Math.random() * 40) + "px");
+    el.style.animationDuration = (0.7 + Math.random() * 1.1) + "s";
+    el.style.animationDelay = (Math.random() * 6) + "s";
     container.appendChild(el);
   }
 }
@@ -1509,27 +1505,21 @@ function initFireEffects() {
   if (!embersEl || embersEl.dataset.ready === "1") return;
   embersEl.dataset.ready = "1";
 
-  // falling fire embers on main page
-  const emberCount = 36;
-  const colors = [
-    "radial-gradient(circle,#fde68a 0%,#f97316 45%,#ef4444 75%,transparent 100%)",
-    "radial-gradient(circle,#fbbf24 0%,#ef4444 55%,transparent 100%)",
-    "radial-gradient(circle,#fdba74 0%,#dc2626 60%,transparent 100%)",
-    "radial-gradient(circle,#fecaca 0%,#f97316 50%,#991b1b 100%)"
-  ];
-  for (let i = 0; i < emberCount; i++) {
+  // fast meteors on main page
+  const meteorCount = 16;
+  for (let i = 0; i < meteorCount; i++) {
     const e = document.createElement("div");
     e.className = "fire-ember";
-    const size = 3 + Math.random() * 7;
-    e.style.width = size + "px";
-    e.style.height = size + "px";
-    e.style.left = (Math.random() * 100) + "%";
-    e.style.background = colors[Math.floor(Math.random() * colors.length)];
-    e.style.boxShadow = `0 0 ${4 + size}px rgba(249,115,22,0.7)`;
-    e.style.setProperty("--drift", (Math.random() * 80 - 40) + "px");
-    e.style.animationDuration = (6 + Math.random() * 10) + "s";
-    e.style.animationDelay = (Math.random() * 12) + "s";
-    e.style.filter = Math.random() > 0.6 ? "blur(0.6px)" : "none";
+    e.style.left = (15 + Math.random() * 95) + "%";
+    e.style.top = (-8 - Math.random() * 25) + "%";
+    const dist = 550 + Math.random() * 800;
+    const angle = (-52 + Math.random() * 28) * Math.PI / 180;
+    e.style.setProperty("--dx", (Math.cos(angle) * dist) + "px");
+    e.style.setProperty("--dy", (Math.sin(angle) * dist + dist * 0.75) + "px");
+    e.style.setProperty("--rot", (-42 + Math.random() * 20) + "deg");
+    e.style.setProperty("--tail", (40 + Math.random() * 48) + "px");
+    e.style.animationDuration = (0.65 + Math.random() * 1.0) + "s";
+    e.style.animationDelay = (Math.random() * 7) + "s";
     embersEl.appendChild(e);
   }
 }
