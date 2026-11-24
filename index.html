@@ -43,14 +43,14 @@ body.app-ready .card::after{opacity:1}
 }
 .fire-embers{position:fixed;inset:0;z-index:4;pointer-events:none;overflow:hidden;opacity:0;transition:opacity 0.8s ease}
 body.app-ready .fire-embers{opacity:1}
-.fire-ember{position:absolute;width:3px;height:3px;border-radius:50%;pointer-events:none;background:#fff;box-shadow:0 0 8px 2px #fbbf24,0 0 16px 3px rgba(239,68,68,0.9),0 0 28px rgba(249,115,22,0.5);opacity:0;animation:meteorDashMain linear infinite;will-change:transform,opacity}
-.fire-ember::before{content:'';position:absolute;top:50%;right:1px;height:2px;width:var(--tail,100px);transform:translateY(-50%);background:linear-gradient(90deg,transparent 0%,rgba(239,68,68,0.05) 20%,rgba(249,115,22,0.45) 55%,rgba(251,191,36,0.9) 82%,#fff 100%);border-radius:2px;box-shadow:0 0 8px rgba(249,115,22,0.35);pointer-events:none}
-.fire-ember::after{content:'';position:absolute;top:50%;right:1px;height:5px;width:var(--tail2,60px);transform:translateY(-50%);background:linear-gradient(90deg,transparent,rgba(251,191,36,0.15) 60%,rgba(255,255,255,0.35));border-radius:3px;filter:blur(2px);pointer-events:none}
+.fire-ember{position:absolute;width:4px;height:4px;border-radius:50%;pointer-events:none;background:#fff;box-shadow:0 0 8px 2px #fbbf24,0 0 16px 3px rgba(239,68,68,0.9),0 0 28px rgba(249,115,22,0.5);opacity:0;animation:meteorDashMain linear infinite;will-change:transform,opacity}
+.fire-ember::before{content:'';position:absolute;top:50%;left:50%;height:2px;width:var(--tail,100px);transform:translate(-100%,-50%);background:linear-gradient(90deg,transparent 0%,rgba(239,68,68,0.08) 25%,rgba(249,115,22,0.55) 60%,rgba(251,191,36,0.95) 88%,#fff 100%);border-radius:2px;box-shadow:0 0 8px rgba(249,115,22,0.4);pointer-events:none}
+.fire-ember::after{content:'';position:absolute;top:50%;left:50%;height:5px;width:var(--tail2,60px);transform:translate(-100%,-50%);background:linear-gradient(90deg,transparent,rgba(251,191,36,0.2) 55%,rgba(255,255,255,0.4));border-radius:3px;filter:blur(2.5px);pointer-events:none}
 @keyframes meteorDashMain{
-  0%{transform:translate3d(0,0,0) rotate(var(--rot,-40deg));opacity:0}
+  0%{transform:translate3d(0,0,0) rotate(var(--rot,35deg));opacity:0}
   3%{opacity:1}
-  80%{opacity:0.9}
-  100%{transform:translate3d(var(--dx),var(--dy),0) rotate(var(--rot,-40deg));opacity:0}
+  80%{opacity:0.95}
+  100%{transform:translate3d(var(--dx),var(--dy),0) rotate(var(--rot,35deg));opacity:0}
 }
 .wrap{position:relative;z-index:10;display:flex;flex-direction:column;align-items:center;padding:2rem;opacity:0;transform:translateY(18px);transition:opacity 0.7s cubic-bezier(0.16,1,0.3,1),transform 0.7s cubic-bezier(0.16,1,0.3,1)}
 body.app-ready .wrap{opacity:1;transform:translateY(0)}
@@ -68,14 +68,14 @@ body.app-ready .user-pill.show{animation:pillIn 0.55s cubic-bezier(0.16,1,0.3,1)
 .auth-gate{position:fixed;inset:0;background:radial-gradient(ellipse at 50% 40%,#1a0508 0%,#0a0203 45%,#030000 100%);z-index:9999;display:flex;align-items:center;justify-content:center;padding:1.5rem;overflow:hidden;opacity:1;transition:opacity 0.55s cubic-bezier(0.16,1,0.3,1),visibility 0.55s}
 .auth-gate.hidden{opacity:0;visibility:hidden;pointer-events:none}
 .auth-particles{position:absolute;inset:0;pointer-events:none;overflow:hidden;z-index:1}
-.auth-particle{position:absolute;width:3px;height:3px;border-radius:50%;opacity:0;pointer-events:none;background:#fff;box-shadow:0 0 8px 2px #fbbf24,0 0 16px 3px rgba(239,68,68,0.9),0 0 28px rgba(249,115,22,0.5);animation:meteorDash linear infinite;will-change:transform,opacity}
-.auth-particle::before{content:'';position:absolute;top:50%;right:1px;height:2px;width:var(--tail,90px);transform:translateY(-50%);background:linear-gradient(90deg,transparent 0%,rgba(239,68,68,0.05) 20%,rgba(249,115,22,0.45) 55%,rgba(251,191,36,0.9) 82%,#fff 100%);border-radius:2px;box-shadow:0 0 8px rgba(249,115,22,0.35);pointer-events:none}
-.auth-particle::after{content:'';position:absolute;top:50%;right:1px;height:5px;width:var(--tail2,55px);transform:translateY(-50%);background:linear-gradient(90deg,transparent,rgba(251,191,36,0.15) 60%,rgba(255,255,255,0.35));border-radius:3px;filter:blur(2px);pointer-events:none}
+.auth-particle{position:absolute;width:4px;height:4px;border-radius:50%;opacity:0;pointer-events:none;background:#fff;box-shadow:0 0 8px 2px #fbbf24,0 0 16px 3px rgba(239,68,68,0.9),0 0 28px rgba(249,115,22,0.5);animation:meteorDash linear infinite;will-change:transform,opacity}
+.auth-particle::before{content:'';position:absolute;top:50%;left:50%;height:2px;width:var(--tail,90px);transform:translate(-100%,-50%);background:linear-gradient(90deg,transparent 0%,rgba(239,68,68,0.08) 25%,rgba(249,115,22,0.55) 60%,rgba(251,191,36,0.95) 88%,#fff 100%);border-radius:2px;box-shadow:0 0 8px rgba(249,115,22,0.4);pointer-events:none}
+.auth-particle::after{content:'';position:absolute;top:50%;left:50%;height:5px;width:var(--tail2,55px);transform:translate(-100%,-50%);background:linear-gradient(90deg,transparent,rgba(251,191,36,0.2) 55%,rgba(255,255,255,0.4));border-radius:3px;filter:blur(2.5px);pointer-events:none}
 @keyframes meteorDash{
-  0%{transform:translate3d(0,0,0) rotate(var(--rot,-40deg));opacity:0}
+  0%{transform:translate3d(0,0,0) rotate(var(--rot,35deg));opacity:0}
   3%{opacity:1}
-  80%{opacity:0.9}
-  100%{transform:translate3d(var(--dx),var(--dy),0) rotate(var(--rot,-40deg));opacity:0}
+  80%{opacity:0.95}
+  100%{transform:translate3d(var(--dx),var(--dy),0) rotate(var(--rot,35deg));opacity:0}
 }
 .auth-glow{position:absolute;width:480px;height:480px;border-radius:50%;background:radial-gradient(circle,rgba(220,38,38,0.18) 0%,rgba(153,27,27,0.06) 40%,transparent 70%);top:50%;left:50%;transform:translate(-50%,-50%);pointer-events:none;z-index:1;animation:authPulse 6s ease-in-out infinite}
 @keyframes authPulse{0%,100%{transform:translate(-50%,-50%) scale(1);opacity:0.7}50%{transform:translate(-50%,-50%) scale(1.18);opacity:1}}
@@ -1111,10 +1111,13 @@ function initAuthParticles() {
       el.style.top = (Math.random() * 55) + "%";
     }
     const dist = 800 + Math.random() * 1000;
-    const deg = -48 + Math.random() * 22;
+    // angle from positive X: ~120° to ~150° = down-left
+    const deg = 125 + Math.random() * 30;
     const rad = deg * Math.PI / 180;
-    el.style.setProperty("--dx", (Math.cos(rad) * dist) + "px");
-    el.style.setProperty("--dy", (Math.abs(Math.sin(rad)) * dist + 180) + "px");
+    const dx = Math.cos(rad) * dist;
+    const dy = Math.sin(rad) * dist;
+    el.style.setProperty("--dx", dx + "px");
+    el.style.setProperty("--dy", dy + "px");
     el.style.setProperty("--rot", deg + "deg");
     el.style.setProperty("--tail", (70 + Math.random() * 85) + "px");
     el.style.setProperty("--tail2", (40 + Math.random() * 50) + "px");
@@ -1530,10 +1533,10 @@ function initFireEffects() {
       e.style.top = (Math.random() * 55) + "%";
     }
     const dist = 850 + Math.random() * 1100;
-    const deg = -48 + Math.random() * 22;
+    const deg = 125 + Math.random() * 30;
     const rad = deg * Math.PI / 180;
     e.style.setProperty("--dx", (Math.cos(rad) * dist) + "px");
-    e.style.setProperty("--dy", (Math.abs(Math.sin(rad)) * dist + 200) + "px");
+    e.style.setProperty("--dy", (Math.sin(rad) * dist) + "px");
     e.style.setProperty("--rot", deg + "deg");
     e.style.setProperty("--tail", (80 + Math.random() * 95) + "px");
     e.style.setProperty("--tail2", (45 + Math.random() * 55) + "px");
