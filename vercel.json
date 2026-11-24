@@ -1,0 +1,12 @@
+{
+  "rewrites": [
+    {
+      "source": "/files/v4/loaders/:id.lua",
+      "destination": "/api/luarmor?id=:id"
+    },
+    {
+      "source": "/files/v4/loaders/:id",
+      "destination": "/api/luarmor?id=:id"
+    }
+  ]
+}
