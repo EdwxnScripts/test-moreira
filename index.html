@@ -1199,7 +1199,21 @@ function logoutDiscord() {
   localStorage.removeItem("wxnad_discord_user");
   document.getElementById("userPill").classList.remove("show");
   document.body.classList.remove("app-ready");
-  document.getElementById("discordAuthGate").classList.remove("hidden");
+
+  const gate = document.getElementById("discordAuthGate");
+  gate.classList.remove("loading");
+  gate.classList.remove("hidden");
+
+  const loginBtn = document.getElementById("discordLoginBtn");
+  if (loginBtn) {
+    loginBtn.disabled = false;
+  }
+  const statusEl = document.getElementById("authStatus");
+  if (statusEl) {
+    statusEl.textContent = "";
+    statusEl.style.color = "";
+  }
+
   updateButtonState();
 }
 
