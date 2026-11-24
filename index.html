@@ -297,6 +297,40 @@ input:checked+.slider:before{transform:translateX(20px);background:#fff}
 .history-actions button:hover{background:rgba(220,38,38,0.4);color:#fff}
 .history-empty{padding:28px 12px;text-align:center;color:#777;font-size:13px}
 
+/* PROFILE MODAL */
+.profile-modal-overlay{display:none;position:fixed;inset:0;z-index:520;background:rgba(0,0,0,0.78);backdrop-filter:blur(5px);align-items:center;justify-content:center;padding:16px}
+.profile-modal-overlay.open{display:flex}
+.profile-modal{width:min(420px,100%);max-height:85vh;background:linear-gradient(145deg,rgba(22,8,10,0.98),rgba(11,4,5,0.99));border:1px solid rgba(220,38,38,0.5);border-radius:18px;box-shadow:0 24px 60px rgba(0,0,0,0.9),0 0 40px rgba(220,38,38,0.12);display:flex;flex-direction:column;overflow:hidden;animation:authBoxIn 0.45s cubic-bezier(0.16,1,0.3,1) both}
+.profile-modal-header{display:flex;align-items:center;justify-content:space-between;padding:14px 16px;border-bottom:1px solid rgba(220,38,38,0.28)}
+.profile-modal-header h3{margin:0;font-size:15px;color:#fff;font-weight:700}
+.profile-close{background:rgba(220,38,38,0.2);border:1px solid rgba(220,38,38,0.4);color:#fca5a5;border-radius:8px;padding:6px 10px;cursor:pointer;font-weight:700;font-size:12px}
+.profile-close:hover{background:#dc2626;color:#fff}
+.profile-body{overflow:auto;padding:18px 16px 16px;display:flex;flex-direction:column;gap:16px}
+.profile-hero{display:flex;align-items:center;gap:14px}
+.profile-avatar-wrap{position:relative;flex-shrink:0}
+.profile-avatar{width:72px;height:72px;border-radius:50%;object-fit:cover;border:3px solid rgba(220,38,38,0.55);box-shadow:0 0 20px rgba(220,38,38,0.25)}
+.profile-status-dot{position:absolute;bottom:2px;right:2px;width:14px;height:14px;border-radius:50%;background:#22c55e;border:2px solid #1a080a}
+.profile-hero-info{min-width:0;flex:1}
+.profile-display-name{font-size:18px;font-weight:800;color:#fff;margin-bottom:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.profile-username{font-size:13px;color:#fca5a5;font-weight:600}
+.profile-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.profile-field{background:rgba(255,255,255,0.03);border:1px solid rgba(220,38,38,0.22);border-radius:12px;padding:10px 12px}
+.profile-field-label{font-size:10px;text-transform:uppercase;letter-spacing:0.08em;color:#888;margin-bottom:4px;font-weight:700}
+.profile-field-value{font-size:12.5px;color:#eee;font-weight:600;word-break:break-all}
+.profile-field.full{grid-column:1 / -1}
+.profile-badge-row{display:flex;flex-wrap:wrap;gap:6px;margin-top:2px}
+.profile-mini-badge{font-size:10px;padding:3px 8px;border-radius:999px;font-weight:700}
+.pmb-server{background:rgba(34,197,94,0.15);border:1px solid rgba(34,197,94,0.4);color:#4ade80}
+.pmb-noserver{background:rgba(248,113,113,0.15);border:1px solid rgba(248,113,113,0.4);color:#f87171}
+.profile-scripts-section{border:1px solid rgba(220,38,38,0.28);border-radius:14px;overflow:hidden}
+.profile-scripts-toggle{width:100%;display:flex;align-items:center;justify-content:space-between;gap:10px;padding:12px 14px;background:rgba(220,38,38,0.08);border:none;color:#eee;font-size:13px;font-weight:700;cursor:pointer;text-align:left}
+.profile-scripts-toggle:hover{background:rgba(220,38,38,0.14)}
+.profile-scripts-toggle .chevron{transition:transform .25s;color:#fca5a5;font-size:14px}
+.profile-scripts-toggle.open .chevron{transform:rotate(90deg)}
+.profile-scripts-panel{display:none;max-height:240px;overflow:auto;padding:10px;border-top:1px solid rgba(220,38,38,0.22)}
+.profile-scripts-panel.open{display:flex;flex-direction:column;gap:8px}
+.profile-scripts-panel .history-item{margin:0}
+
 </style>
 </head>
 <body>
@@ -312,6 +346,10 @@ input:checked+.slider:before{transform:translateX(20px);background:#fff}
     <span data-i18n="autoSave">Guardado Automático</span>
     <span class="autosave-badge" id="autoSaveBadge">ON</span>
   </div>
+  <div class="user-menu-item" id="myProfileOption">
+    <span data-i18n="myProfile">Mi Perfil</span>
+    <span style="color:#fca5a5;font-size:11px">›</span>
+  </div>
   <div class="user-menu-item" id="scriptsHistoryOption">
     <span data-i18n="scriptsHistory">Scripts Generados</span>
     <span style="color:#fca5a5;font-size:11px">›</span>
@@ -325,6 +363,53 @@ input:checked+.slider:before{transform:translateX(20px);background:#fff}
       <button class="history-close" id="historyCloseBtn" type="button" data-i18n="close">Cerrar</button>
     </div>
     <div class="history-list" id="historyList"></div>
+  </div>
+</div>
+
+<div class="profile-modal-overlay" id="profileModal">
+  <div class="profile-modal">
+    <div class="profile-modal-header">
+      <h3 data-i18n="myProfile">Mi Perfil</h3>
+      <button class="profile-close" id="profileCloseBtn" type="button" data-i18n="close">Cerrar</button>
+    </div>
+    <div class="profile-body">
+      <div class="profile-hero">
+        <div class="profile-avatar-wrap">
+          <img class="profile-avatar" id="profileAvatar" src="" alt="Avatar">
+          <span class="profile-status-dot" id="profileStatusDot"></span>
+        </div>
+        <div class="profile-hero-info">
+          <div class="profile-display-name" id="profileDisplayName">—</div>
+          <div class="profile-username" id="profileUsername">@—</div>
+          <div class="profile-badge-row" id="profileBadgeRow"></div>
+        </div>
+      </div>
+      <div class="profile-grid">
+        <div class="profile-field">
+          <div class="profile-field-label" data-i18n="profileUserId">User ID</div>
+          <div class="profile-field-value" id="profileUserId">—</div>
+        </div>
+        <div class="profile-field">
+          <div class="profile-field-label" data-i18n="profileUsernameLabel">Username</div>
+          <div class="profile-field-value" id="profileUsernameField">—</div>
+        </div>
+        <div class="profile-field full">
+          <div class="profile-field-label" data-i18n="profileGlobalName">Nombre global</div>
+          <div class="profile-field-value" id="profileGlobalName">—</div>
+        </div>
+        <div class="profile-field full">
+          <div class="profile-field-label" data-i18n="profileServer">Servidor requerido</div>
+          <div class="profile-field-value" id="profileServerStatus">—</div>
+        </div>
+      </div>
+      <div class="profile-scripts-section">
+        <button type="button" class="profile-scripts-toggle" id="profileScriptsToggle">
+          <span data-i18n="scriptsHistory">Scripts Generados</span>
+          <span class="chevron">›</span>
+        </button>
+        <div class="profile-scripts-panel" id="profileScriptsPanel"></div>
+      </div>
+    </div>
   </div>
 </div>
 
@@ -645,6 +730,13 @@ const I18N = {
     copy:"Copiar",
     selected:"seleccionados",
     autoSave:"Guardado Automático",
+    myProfile:"Mi Perfil",
+    profileUserId:"User ID",
+    profileUsernameLabel:"Username",
+    profileGlobalName:"Nombre global",
+    profileServer:"Servidor requerido",
+    profileInServer:"Miembro del servidor",
+    profileNotInServer:"No estás en el servidor",
     scriptsHistory:"Scripts Generados",
     historyEmpty:"No hay scripts generados todavía.",
     use:"Usar",
@@ -728,6 +820,13 @@ const I18N = {
     copy:"Copy",
     selected:"selected",
     autoSave:"Auto Save",
+    myProfile:"My Profile",
+    profileUserId:"User ID",
+    profileUsernameLabel:"Username",
+    profileGlobalName:"Global name",
+    profileServer:"Required server",
+    profileInServer:"Server member",
+    profileNotInServer:"Not in the server",
     scriptsHistory:"Generated Scripts",
     historyEmpty:"No generated scripts yet.",
     use:"Use",
@@ -811,6 +910,13 @@ const I18N = {
     copy:"Copiar",
     selected:"selecionados",
     autoSave:"Salvamento Automático",
+    myProfile:"Meu Perfil",
+    profileUserId:"User ID",
+    profileUsernameLabel:"Username",
+    profileGlobalName:"Nome global",
+    profileServer:"Servidor obrigatório",
+    profileInServer:"Membro do servidor",
+    profileNotInServer:"Não está no servidor",
     scriptsHistory:"Scripts Gerados",
     historyEmpty:"Ainda não há scripts gerados.",
     use:"Usar",
@@ -1097,6 +1203,117 @@ function openScriptHistory(){
 function closeScriptHistory(){
   document.getElementById("historyModal").classList.remove("open");
 }
+
+function getStoredDiscordUser() {
+  try {
+    const raw = localStorage.getItem("wxnad_discord_user");
+    return raw ? JSON.parse(raw) : null;
+  } catch { return null; }
+}
+
+function renderProfileScripts() {
+  const panel = document.getElementById("profileScriptsPanel");
+  if (!panel) return;
+  const list = loadScriptHistory();
+  if (!list.length) {
+    panel.innerHTML = `<div class="history-empty">${t("historyEmpty")}</div>`;
+    return;
+  }
+  panel.innerHTML = list.map(item => {
+    const meta = [item.targetUser || item.targetId || t("noTarget"), item.mode || ""].filter(Boolean).join(" · ");
+    const preview = (item.script || "").slice(0, 80).replace(/</g, "&lt;").replace(/>/g, "&gt;");
+    return `<div class="history-item" data-id="${item.id}">
+      <div class="history-item-top">
+        <span class="history-date">${formatHistoryDate(item.date)}</span>
+        <div class="history-actions">
+          <button type="button" data-act="copy">${t("copy")}</button>
+          <button type="button" data-act="use">${t("use")}</button>
+          <button type="button" data-act="del">${t("del")}</button>
+        </div>
+      </div>
+      <div class="history-meta">${meta}</div>
+      <div class="history-meta" style="margin-top:4px;word-break:break-all;opacity:.8">${preview}${(item.script||"").length>80?"…":""}</div>
+    </div>`;
+  }).join("");
+}
+
+function openMyProfile() {
+  document.getElementById("userMenu").classList.remove("open");
+  const user = getStoredDiscordUser();
+  if (!user || !user.id) return;
+
+  document.getElementById("profileAvatar").src = getDiscordAvatarUrl(user);
+  document.getElementById("profileDisplayName").textContent = user.global_name || user.username || t("userFallback");
+  document.getElementById("profileUsername").textContent = "@" + (user.username || "—");
+  document.getElementById("profileUserId").textContent = user.id || "—";
+  document.getElementById("profileUsernameField").textContent = user.username || "—";
+  document.getElementById("profileGlobalName").textContent = user.global_name || user.username || "—";
+
+  const inServer = user.inServer === true;
+  document.getElementById("profileServerStatus").textContent = inServer ? t("profileInServer") : t("profileNotInServer");
+  document.getElementById("profileStatusDot").style.background = inServer ? "#22c55e" : "#f87171";
+
+  const badgeRow = document.getElementById("profileBadgeRow");
+  badgeRow.innerHTML = inServer
+    ? `<span class="profile-mini-badge pmb-server">${t("profileInServer")}</span>`
+    : `<span class="profile-mini-badge pmb-noserver">${t("profileNotInServer")}</span>`;
+
+  // reset scripts dropdown closed
+  document.getElementById("profileScriptsToggle").classList.remove("open");
+  document.getElementById("profileScriptsPanel").classList.remove("open");
+  renderProfileScripts();
+
+  document.getElementById("profileModal").classList.add("open");
+}
+
+function closeMyProfile() {
+  document.getElementById("profileModal").classList.remove("open");
+}
+
+document.getElementById("myProfileOption").onclick = e => {
+  e.stopPropagation();
+  openMyProfile();
+};
+
+document.getElementById("profileCloseBtn").onclick = closeMyProfile;
+document.getElementById("profileModal").onclick = e => {
+  if (e.target.id === "profileModal") closeMyProfile();
+};
+
+document.getElementById("profileScriptsToggle").onclick = e => {
+  e.stopPropagation();
+  const btn = document.getElementById("profileScriptsToggle");
+  const panel = document.getElementById("profileScriptsPanel");
+  const open = !panel.classList.contains("open");
+  btn.classList.toggle("open", open);
+  panel.classList.toggle("open", open);
+  if (open) renderProfileScripts();
+};
+
+document.getElementById("profileScriptsPanel").onclick = e => {
+  const btn = e.target.closest("button[data-act]");
+  if (!btn) return;
+  const itemEl = btn.closest(".history-item");
+  if (!itemEl) return;
+  const id = itemEl.dataset.id;
+  const list = loadScriptHistory();
+  const item = list.find(x => x.id === id);
+  if (!item) return;
+  const act = btn.dataset.act;
+  if (act === "copy") {
+    navigator.clipboard.writeText(item.script || "");
+    showToast(t("toastCopied"));
+  } else if (act === "use") {
+    document.getElementById("scriptOutput").textContent = item.script || "";
+    document.getElementById("result").classList.add("show");
+    closeMyProfile();
+    showToast(t("toastLoaded"));
+  } else if (act === "del") {
+    saveScriptHistory(list.filter(x => x.id !== id));
+    renderProfileScripts();
+    showToast(t("toastDeleted"));
+  }
+};
 
 document.getElementById("scriptsHistoryOption").onclick = e => {
   e.stopPropagation();
