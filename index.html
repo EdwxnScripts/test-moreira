@@ -13,18 +13,33 @@
 *{margin:0;padding:0;box-sizing:border-box}
 body{background:#040404;color:#f0f0f0;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;min-height:100vh;overflow-x:hidden}
 .bg{position:fixed;inset:0;background:radial-gradient(circle at 50% 30%,#140505 0%,#080202 50%,#020000 100%);z-index:0}
-/* fuego sutil solo en el borde superior de la card principal */
-.card-fire-top{position:absolute;top:0;left:14%;right:14%;height:16px;pointer-events:none;z-index:6;opacity:0;transition:opacity 0.8s ease;overflow:visible}
-body.app-ready .card-fire-top{opacity:1}
-.card-fire-line{position:absolute;top:0;left:0;right:0;height:2px;border-radius:2px;background:linear-gradient(90deg,transparent 0%,#ef4444 18%,#f97316 50%,#ef4444 82%,transparent 100%);box-shadow:0 0 8px rgba(249,115,22,0.5),0 0 14px rgba(239,68,68,0.25);animation:cardFireLine 3.5s ease-in-out infinite}
-@keyframes cardFireLine{0%,100%{opacity:0.5}50%{opacity:0.95}}
-.card-fire-flames{position:absolute;top:0;left:0;right:0;height:14px;display:flex;justify-content:space-between;align-items:flex-start;pointer-events:none}
-.card-fire-flame{width:7px;height:11px;border-radius:50% 50% 30% 30%;background:radial-gradient(ellipse at 50% 85%,#fbbf24 0%,#f97316 40%,#ef4444 70%,transparent 100%);opacity:0.4;filter:blur(0.5px);transform-origin:center top;animation:cardFlameFlicker ease-in-out infinite}
-.card-fire-flame:nth-child(odd){height:13px;opacity:0.5}
-.card-fire-flame:nth-child(3n){height:9px}
-@keyframes cardFlameFlicker{
-  0%,100%{transform:scaleY(1) scaleX(1);opacity:0.3}
-  50%{transform:scaleY(1.2) scaleX(0.9);opacity:0.65}
+/* luz animada recorriendo el borde de la tarjeta principal */
+.card{position:relative;overflow:visible}
+.card::after{
+  content:'';
+  position:absolute;
+  inset:-1px;
+  border-radius:24px;
+  padding:1px;
+  background:conic-gradient(from var(--card-angle,0deg),transparent 0%,transparent 60%,rgba(255,120,80,0.15) 70%,#f97316 78%,#ef4444 84%,#fbbf24 90%,rgba(255,120,80,0.2) 94%,transparent 100%);
+  -webkit-mask:linear-gradient(#fff 0 0) content-box,linear-gradient(#fff 0 0);
+  mask:linear-gradient(#fff 0 0) content-box,linear-gradient(#fff 0 0);
+  -webkit-mask-composite:xor;
+  mask-composite:exclude;
+  pointer-events:none;
+  z-index:5;
+  animation:cardBorderSpin 4s linear infinite;
+  opacity:0;
+  transition:opacity 0.6s ease;
+}
+body.app-ready .card::after{opacity:1}
+@property --card-angle{
+  syntax:'<angle>';
+  initial-value:0deg;
+  inherits:false;
+}
+@keyframes cardBorderSpin{
+  to{--card-angle:360deg}
 }
 .fire-embers{position:fixed;inset:0;z-index:4;pointer-events:none;overflow:hidden;opacity:0;transition:opacity 0.8s ease}
 body.app-ready .fire-embers{opacity:1}
@@ -51,12 +66,12 @@ body.app-ready .user-pill.show{animation:pillIn 0.55s cubic-bezier(0.16,1,0.3,1)
 .auth-gate{position:fixed;inset:0;background:radial-gradient(ellipse at 50% 40%,#1a0508 0%,#0a0203 45%,#030000 100%);z-index:9999;display:flex;align-items:center;justify-content:center;padding:1.5rem;overflow:hidden;opacity:1;transition:opacity 0.55s cubic-bezier(0.16,1,0.3,1),visibility 0.55s}
 .auth-gate.hidden{opacity:0;visibility:hidden;pointer-events:none}
 .auth-particles{position:absolute;inset:0;pointer-events:none;overflow:hidden;z-index:1}
-.auth-particle{position:absolute;width:0;height:0;opacity:0;border-style:solid;border-color:transparent;animation:authFloat linear infinite}
+.auth-particle{position:absolute;border-radius:50%;opacity:0;animation:authFloat linear infinite;pointer-events:none}
 @keyframes authFloat{
-  0%{transform:translateY(110vh) rotate(0deg) scale(0.4);opacity:0}
-  8%{opacity:0.55}
-  92%{opacity:0.35}
-  100%{transform:translateY(-12vh) rotate(360deg) scale(1);opacity:0}
+  0%{transform:translateY(110vh) translateX(0) scale(0.5);opacity:0}
+  8%{opacity:0.85}
+  70%{opacity:0.5}
+  100%{transform:translateY(-12vh) translateX(var(--ax,0px)) scale(0.25);opacity:0}
 }
 .auth-glow{position:absolute;width:480px;height:480px;border-radius:50%;background:radial-gradient(circle,rgba(220,38,38,0.18) 0%,rgba(153,27,27,0.06) 40%,transparent 70%);top:50%;left:50%;transform:translate(-50%,-50%);pointer-events:none;z-index:1;animation:authPulse 6s ease-in-out infinite}
 @keyframes authPulse{0%,100%{transform:translate(-50%,-50%) scale(1);opacity:0.7}50%{transform:translate(-50%,-50%) scale(1.18);opacity:1}}
@@ -117,10 +132,15 @@ body.app-ready .user-pill.show{animation:pillIn 0.55s cubic-bezier(0.16,1,0.3,1)
 .autosave-badge{font-size:10px;padding:2px 8px;border-radius:999px;font-weight:700;background:rgba(74,222,128,0.15);border:1px solid rgba(74,222,128,0.4);color:#4ade80}
 .autosave-badge.off{background:rgba(248,113,113,0.15);border:1px solid rgba(248,113,113,0.4);color:#f87171}
 
-.lang-wrap{position:relative;margin-left:auto}
-.lang-btn{width:36px;height:36px;border-radius:50%;border:2px solid rgba(255,255,255,0.15);background:#1a1a1a;cursor:pointer;display:flex;align-items:center;justify-content:center;overflow:hidden;padding:0}
+.top-controls{position:fixed;top:14px;left:14px;z-index:200;display:none;align-items:center;gap:10px}
+body.app-ready .top-controls{display:flex}
+.top-controls .user-pill{position:static;top:auto;left:auto;z-index:auto;display:none}
+.top-controls .user-pill.show{display:inline-flex}
+.lang-wrap{position:relative;flex-shrink:0}
+.lang-btn{width:40px;height:40px;border-radius:50%;border:2px solid rgba(220,38,38,0.45);background:linear-gradient(145deg,rgba(22,8,10,0.96),rgba(11,4,5,0.98));cursor:pointer;display:flex;align-items:center;justify-content:center;overflow:hidden;padding:0;box-shadow:0 8px 24px rgba(0,0,0,0.6),0 0 14px rgba(220,38,38,0.15);transition:transform .15s,border-color .2s,box-shadow .2s}
+.lang-btn:hover{transform:translateY(-1px);border-color:rgba(220,38,38,0.75);box-shadow:0 8px 24px rgba(0,0,0,0.7),0 0 18px rgba(220,38,38,0.3)}
 .lang-btn img{width:100%;height:100%;object-fit:cover}
-.lang-menu{display:none;position:absolute;top:44px;right:0;min-width:200px;background:#1a1a1a;border:1px solid #333;border-radius:14px;padding:6px;box-shadow:0 12px 32px rgba(0,0,0,0.7)}
+.lang-menu{display:none;position:absolute;top:48px;left:0;min-width:200px;background:linear-gradient(145deg,rgba(22,8,10,0.98),rgba(11,4,5,0.99));border:1px solid rgba(220,38,38,0.45);border-radius:14px;padding:6px;box-shadow:0 12px 32px rgba(0,0,0,0.85),0 0 18px rgba(220,38,38,0.15);z-index:220}
 .lang-menu.open{display:block}
 .lang-item{display:flex;align-items:center;gap:12px;padding:10px 12px;border-radius:10px;cursor:pointer}
 .lang-item:hover,.lang-item.active{background:#2a2a2a}
@@ -130,7 +150,7 @@ body.app-ready .user-pill.show{animation:pillIn 0.55s cubic-bezier(0.16,1,0.3,1)
 .lang-item .lang-sub{font-size:11px;color:#888}
 .lang-item .check{color:#4ade80;font-size:14px;width:18px;text-align:center}
 
-.header{text-align:center;margin-bottom:1.5rem;padding-top:30px}
+.header{text-align:center;margin-bottom:1.5rem;padding-top:12px}
 .logo-container{display:inline-flex;align-items:center;justify-content:center;width:64px;height:64px;background:linear-gradient(135deg,rgba(220,38,38,0.2),rgba(153,27,27,0.4));border:2px solid rgba(220,38,38,0.5);border-radius:20px;margin-bottom:12px;box-shadow:0 0 20px rgba(220,38,38,0.3);position:relative;overflow:hidden}
 .logo-container::after{content:'';position:absolute;inset:0;background:radial-gradient(circle at center,rgba(255,255,255,0.2) 0%,transparent 70%);pointer-events:none}
 .logo-icon{font-size:28px}
@@ -435,11 +455,21 @@ input:checked+.slider:before{transform:translateX(20px);background:#fff}
 </head>
 <body>
 
-<!-- PERFIL DE DISCORD FIJO EN LA ESQUINA -->
-<div class="user-pill" id="userPill">
-  <img id="userAvatar" src="" alt="Avatar">
-  <span id="userName">Usuario</span>
-  <button class="logout-btn" id="logoutBtn" type="button" data-i18n="logout">Salir</button>
+<!-- CONTROLES SUPERIORES: PERFIL + IDIOMA -->
+<div class="top-controls" id="topControls">
+  <div class="user-pill" id="userPill">
+    <img id="userAvatar" src="" alt="Avatar">
+    <span id="userName">Usuario</span>
+    <button class="logout-btn" id="logoutBtn" type="button" data-i18n="logout">Salir</button>
+  </div>
+  <div class="lang-wrap" id="langWrapTop">
+    <button class="lang-btn" id="langBtn" type="button"><img id="langBtnFlag" src="https://flagcdn.com/w80/es.png" alt="ES"></button>
+    <div class="lang-menu" id="langMenu">
+      <div class="lang-item" data-lang="pt"><img src="https://flagcdn.com/w80/br.png" alt="BR"><div class="lang-text"><div class="lang-name">Português</div><div class="lang-sub">Brasil</div></div><span class="check"></span></div>
+      <div class="lang-item" data-lang="en"><img src="https://flagcdn.com/w80/us.png" alt="US"><div class="lang-text"><div class="lang-name">English</div><div class="lang-sub">United States</div></div><span class="check"></span></div>
+      <div class="lang-item active" data-lang="es"><img src="https://flagcdn.com/w80/es.png" alt="ES"><div class="lang-text"><div class="lang-name">Español</div><div class="lang-sub">España</div></div><span class="check">✓</span></div>
+    </div>
+  </div>
 </div>
 <div class="user-menu" id="userMenu">
   <div class="user-menu-item" id="autoSaveOption">
@@ -561,21 +591,6 @@ input:checked+.slider:before{transform:translateX(20px);background:#fff}
 <div class="wrap">
 
   <div class="card">
-    <div class="card-fire-top" id="cardFireTop" aria-hidden="true">
-      <div class="card-fire-line"></div>
-      <div class="card-fire-flames" id="cardFireFlames"></div>
-    </div>
-    <div class="top-bar">
-      <div class="lang-wrap">
-        <button class="lang-btn" id="langBtn" type="button"><img id="langBtnFlag" src="https://flagcdn.com/w80/es.png" alt="ES"></button>
-        <div class="lang-menu" id="langMenu">
-          <div class="lang-item" data-lang="pt"><img src="https://flagcdn.com/w80/br.png" alt="BR"><div class="lang-text"><div class="lang-name">Português</div><div class="lang-sub">Brasil</div></div><span class="check"></span></div>
-          <div class="lang-item" data-lang="en"><img src="https://flagcdn.com/w80/us.png" alt="US"><div class="lang-text"><div class="lang-name">English</div><div class="lang-sub">United States</div></div><span class="check"></span></div>
-          <div class="lang-item active" data-lang="es"><img src="https://flagcdn.com/w80/es.png" alt="ES"><div class="lang-text"><div class="lang-name">Español</div><div class="lang-sub">España</div></div><span class="check">✓</span></div>
-        </div>
-      </div>
-    </div>
-
     <div class="header">
       <div class="logo-container">
         <span class="logo-icon">🔺</span>
@@ -1078,30 +1093,27 @@ function initAuthParticles() {
   const container = document.getElementById("authParticles");
   if (!container || container.dataset.ready === "1") return;
   container.dataset.ready = "1";
-  const count = 28;
+  const count = 32;
   const colors = [
-    "rgba(220,38,38,0.55)",
-    "rgba(239,68,68,0.4)",
-    "rgba(255,100,100,0.35)",
-    "rgba(185,28,28,0.45)",
-    "rgba(252,165,165,0.3)"
+    "radial-gradient(circle,#fde68a 0%,#f97316 40%,#ef4444 70%,transparent 100%)",
+    "radial-gradient(circle,#fbbf24 0%,#ef4444 50%,transparent 100%)",
+    "radial-gradient(circle,#fdba74 0%,#dc2626 55%,transparent 100%)",
+    "radial-gradient(circle,#fecaca 0%,#f97316 45%,#991b1b 100%)",
+    "radial-gradient(circle,#fff7ed 0%,#f97316 35%,#ef4444 75%,transparent 100%)"
   ];
   for (let i = 0; i < count; i++) {
     const el = document.createElement("div");
     el.className = "auth-particle";
-    const size = 6 + Math.random() * 16;
-    const isUp = Math.random() > 0.5;
-    if (isUp) {
-      el.style.borderWidth = `0 ${size / 2}px ${size}px ${size / 2}px`;
-      el.style.borderBottomColor = colors[Math.floor(Math.random() * colors.length)];
-    } else {
-      el.style.borderWidth = `${size}px ${size / 2}px 0 ${size / 2}px`;
-      el.style.borderTopColor = colors[Math.floor(Math.random() * colors.length)];
-    }
+    const size = 4 + Math.random() * 9;
+    el.style.width = size + "px";
+    el.style.height = size + "px";
     el.style.left = Math.random() * 100 + "%";
-    el.style.animationDuration = (9 + Math.random() * 16) + "s";
+    el.style.background = colors[Math.floor(Math.random() * colors.length)];
+    el.style.boxShadow = `0 0 ${5 + size}px rgba(249,115,22,0.75)`;
+    el.style.setProperty("--ax", (Math.random() * 60 - 30) + "px");
+    el.style.animationDuration = (8 + Math.random() * 14) + "s";
     el.style.animationDelay = (Math.random() * 12) + "s";
-    el.style.filter = `blur(${Math.random() > 0.7 ? 1 : 0}px)`;
+    el.style.filter = Math.random() > 0.55 ? "blur(0.6px)" : "none";
     container.appendChild(el);
   }
 }
@@ -1494,23 +1506,10 @@ window.addEventListener("pagehide", saveLoggedUserState);
 
 function initFireEffects() {
   const embersEl = document.getElementById("fireEmbers");
-  const cardFlamesEl = document.getElementById("cardFireFlames");
   if (!embersEl || embersEl.dataset.ready === "1") return;
   embersEl.dataset.ready = "1";
 
-  // small flames only on top of main card
-  if (cardFlamesEl) {
-    const n = 10;
-    for (let i = 0; i < n; i++) {
-      const f = document.createElement("div");
-      f.className = "card-fire-flame";
-      f.style.animationDuration = (0.9 + Math.random() * 0.9) + "s";
-      f.style.animationDelay = (Math.random() * 0.8) + "s";
-      cardFlamesEl.appendChild(f);
-    }
-  }
-
-  // falling fire embers
+  // falling fire embers on main page
   const emberCount = 36;
   const colors = [
     "radial-gradient(circle,#fde68a 0%,#f97316 45%,#ef4444 75%,transparent 100%)",
