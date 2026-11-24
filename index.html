@@ -44,13 +44,13 @@ body.app-ready .card::after{opacity:1}
 .fire-embers{position:fixed;inset:0;z-index:4;pointer-events:none;overflow:hidden;opacity:0;transition:opacity 0.8s ease}
 body.app-ready .fire-embers{opacity:1}
 .fire-ember{position:absolute;width:3px;height:3px;border-radius:50%;pointer-events:none;background:#fff;box-shadow:0 0 8px 2px #fbbf24,0 0 16px 3px rgba(239,68,68,0.9),0 0 28px rgba(249,115,22,0.5);opacity:0;animation:meteorDashMain linear infinite;will-change:transform,opacity}
-.fire-ember::before{content:'';position:absolute;top:50%;right:1px;height:2px;width:var(--tail,100px);transform:translateY(-50%);background:linear-gradient(90deg,transparent 0%,rgba(239,68,68,0.05) 20%,rgba(249,115,22,0.45) 55%,rgba(251,191,36,0.9) 82%,#fff 100%);border-radius:2px;box-shadow:0 0 8px rgba(249,115,22,0.35);pointer-events:none}
-.fire-ember::after{content:'';position:absolute;top:50%;right:1px;height:5px;width:var(--tail2,60px);transform:translateY(-50%);background:linear-gradient(90deg,transparent,rgba(251,191,36,0.15) 60%,rgba(255,255,255,0.35));border-radius:3px;filter:blur(2px);pointer-events:none}
+.fire-ember::before{content:'';position:absolute;left:50%;bottom:2px;width:2px;height:var(--tail,100px);transform:translateX(-50%);background:linear-gradient(to top,transparent 0%,rgba(239,68,68,0.05) 20%,rgba(249,115,22,0.45) 55%,rgba(251,191,36,0.9) 82%,#fff 100%);border-radius:2px;box-shadow:0 0 8px rgba(249,115,22,0.35);pointer-events:none}
+.fire-ember::after{content:'';position:absolute;left:50%;bottom:2px;width:5px;height:var(--tail2,60px);transform:translateX(-50%);background:linear-gradient(to top,transparent,rgba(251,191,36,0.15) 60%,rgba(255,255,255,0.35));border-radius:3px;filter:blur(2px);pointer-events:none}
 @keyframes meteorDashMain{
-  0%{transform:translate3d(0,0,0) rotate(var(--rot,-38deg));opacity:0}
+  0%{transform:translate3d(0,0,0);opacity:0}
   3%{opacity:1}
   80%{opacity:0.9}
-  100%{transform:translate3d(var(--dx),var(--dy),0) rotate(var(--rot,-38deg));opacity:0}
+  100%{transform:translate3d(var(--dx),var(--dy),0);opacity:0}
 }
 .wrap{position:relative;z-index:10;display:flex;flex-direction:column;align-items:center;padding:2rem;opacity:0;transform:translateY(18px);transition:opacity 0.7s cubic-bezier(0.16,1,0.3,1),transform 0.7s cubic-bezier(0.16,1,0.3,1)}
 body.app-ready .wrap{opacity:1;transform:translateY(0)}
@@ -69,13 +69,13 @@ body.app-ready .user-pill.show{animation:pillIn 0.55s cubic-bezier(0.16,1,0.3,1)
 .auth-gate.hidden{opacity:0;visibility:hidden;pointer-events:none}
 .auth-particles{position:absolute;inset:0;pointer-events:none;overflow:hidden;z-index:1}
 .auth-particle{position:absolute;width:3px;height:3px;border-radius:50%;opacity:0;pointer-events:none;background:#fff;box-shadow:0 0 8px 2px #fbbf24,0 0 16px 3px rgba(239,68,68,0.9),0 0 28px rgba(249,115,22,0.5);animation:meteorDash linear infinite;will-change:transform,opacity}
-.auth-particle::before{content:'';position:absolute;top:50%;right:1px;height:2px;width:var(--tail,90px);transform:translateY(-50%);background:linear-gradient(90deg,transparent 0%,rgba(239,68,68,0.05) 20%,rgba(249,115,22,0.45) 55%,rgba(251,191,36,0.9) 82%,#fff 100%);border-radius:2px;box-shadow:0 0 8px rgba(249,115,22,0.35);pointer-events:none}
-.auth-particle::after{content:'';position:absolute;top:50%;right:1px;height:5px;width:var(--tail2,55px);transform:translateY(-50%);background:linear-gradient(90deg,transparent,rgba(251,191,36,0.15) 60%,rgba(255,255,255,0.35));border-radius:3px;filter:blur(2px);pointer-events:none}
+.auth-particle::before{content:'';position:absolute;left:50%;bottom:2px;width:2px;height:var(--tail,90px);transform:translateX(-50%);background:linear-gradient(to top,transparent 0%,rgba(239,68,68,0.05) 20%,rgba(249,115,22,0.45) 55%,rgba(251,191,36,0.9) 82%,#fff 100%);border-radius:2px;box-shadow:0 0 8px rgba(249,115,22,0.35);pointer-events:none}
+.auth-particle::after{content:'';position:absolute;left:50%;bottom:2px;width:5px;height:var(--tail2,55px);transform:translateX(-50%);background:linear-gradient(to top,transparent,rgba(251,191,36,0.15) 60%,rgba(255,255,255,0.35));border-radius:3px;filter:blur(2px);pointer-events:none}
 @keyframes meteorDash{
-  0%{transform:translate3d(0,0,0) rotate(var(--rot,-38deg));opacity:0}
+  0%{transform:translate3d(0,0,0);opacity:0}
   3%{opacity:1}
   80%{opacity:0.9}
-  100%{transform:translate3d(var(--dx),var(--dy),0) rotate(var(--rot,-38deg));opacity:0}
+  100%{transform:translate3d(var(--dx),var(--dy),0);opacity:0}
 }
 .auth-glow{position:absolute;width:480px;height:480px;border-radius:50%;background:radial-gradient(circle,rgba(220,38,38,0.18) 0%,rgba(153,27,27,0.06) 40%,transparent 70%);top:50%;left:50%;transform:translate(-50%,-50%);pointer-events:none;z-index:1;animation:authPulse 6s ease-in-out infinite}
 @keyframes authPulse{0%,100%{transform:translate(-50%,-50%) scale(1);opacity:0.7}50%{transform:translate(-50%,-50%) scale(1.18);opacity:1}}
@@ -1101,25 +1101,17 @@ function initAuthParticles() {
   for (let i = 0; i < count; i++) {
     const el = document.createElement("div");
     el.className = "auth-particle";
-    // spawn across full top/right of screen
-    const side = Math.random();
-    if (side < 0.55) {
-      el.style.left = (Math.random() * 110 - 5) + "%";
-      el.style.top = (-8 - Math.random() * 20) + "%";
-    } else {
-      el.style.left = (95 + Math.random() * 15) + "%";
-      el.style.top = (Math.random() * 70 - 5) + "%";
-    }
-    const dist = 700 + Math.random() * 1100;
-    const deg = -55 + Math.random() * 30;
-    const angle = deg * Math.PI / 180;
-    el.style.setProperty("--dx", (Math.cos(angle) * dist) + "px");
-    el.style.setProperty("--dy", (Math.abs(Math.sin(angle)) * dist + 200) + "px");
-    el.style.setProperty("--rot", deg + "deg");
+    // spawn across full top of screen, fall downward
+    el.style.left = (Math.random() * 100) + "%";
+    el.style.top = (-12 - Math.random() * 25) + "%";
+    const fall = 900 + Math.random() * 900;
+    const drift = (Math.random() - 0.5) * 160;
+    el.style.setProperty("--dx", drift + "px");
+    el.style.setProperty("--dy", fall + "px");
     el.style.setProperty("--tail", (70 + Math.random() * 80) + "px");
     el.style.setProperty("--tail2", (40 + Math.random() * 45) + "px");
-    el.style.animationDuration = (0.85 + Math.random() * 1.35) + "s";
-    el.style.animationDelay = (Math.random() * 8) + "s";
+    el.style.animationDuration = (1.1 + Math.random() * 1.6) + "s";
+    el.style.animationDelay = (Math.random() * 7) + "s";
     el.style.animationIterationCount = "infinite";
     container.appendChild(el);
   }
@@ -1516,29 +1508,21 @@ function initFireEffects() {
   if (!embersEl || embersEl.dataset.ready === "1") return;
   embersEl.dataset.ready = "1";
 
-  // fast meteors across full main screen
+  // meteors falling downward across full main screen
   const meteorCount = 26;
   for (let i = 0; i < meteorCount; i++) {
     const e = document.createElement("div");
     e.className = "fire-ember";
-    const side = Math.random();
-    if (side < 0.55) {
-      e.style.left = (Math.random() * 110 - 5) + "%";
-      e.style.top = (-10 - Math.random() * 25) + "%";
-    } else {
-      e.style.left = (95 + Math.random() * 18) + "%";
-      e.style.top = (Math.random() * 75 - 5) + "%";
-    }
-    const dist = 750 + Math.random() * 1200;
-    const deg = -55 + Math.random() * 30;
-    const angle = deg * Math.PI / 180;
-    e.style.setProperty("--dx", (Math.cos(angle) * dist) + "px");
-    e.style.setProperty("--dy", (Math.abs(Math.sin(angle)) * dist + 220) + "px");
-    e.style.setProperty("--rot", deg + "deg");
+    e.style.left = (Math.random() * 100) + "%";
+    e.style.top = (-12 - Math.random() * 30) + "%";
+    const fall = 950 + Math.random() * 1000;
+    const drift = (Math.random() - 0.5) * 180;
+    e.style.setProperty("--dx", drift + "px");
+    e.style.setProperty("--dy", fall + "px");
     e.style.setProperty("--tail", (80 + Math.random() * 90) + "px");
     e.style.setProperty("--tail2", (45 + Math.random() * 50) + "px");
-    e.style.animationDuration = (0.8 + Math.random() * 1.3) + "s";
-    e.style.animationDelay = (Math.random() * 8) + "s";
+    e.style.animationDuration = (1.05 + Math.random() * 1.55) + "s";
+    e.style.animationDelay = (Math.random() * 7) + "s";
     embersEl.appendChild(e);
   }
 }
