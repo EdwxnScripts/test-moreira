@@ -1,5 +1,5 @@
 // POST /api/luarmor  { script } -> stores script on Pastefy, returns unique id + loadstring
-// GET  /api/luarmor?id=xxx     -> proxies raw lua (also used via /api/files/v4/loaders/[id])
+// GET  /api/luarmor?id=xxx     -> raw lua for Roblox; private HTML page only for real browsers
 
 const PASTEFY_API_KEY = process.env.PASTEFY_API_KEY || "V8FT0FE52MIx8k74EYbNWxdmnjSxtSRni5TXjiVUwxm7Sq4I2L7g8NYoKcYj";
 const DISCORD_SERVER_URL = "https://discord.gg/UA9xGPKAqE";
@@ -10,26 +10,55 @@ function makeId() {
   return Array.from(bytes, (b) => b.toString(16).padStart(2, "0")).join("");
 }
 
-export default async function handler(req, res) {
-  res.setHeader("Access-Control-Allow-Origin", "*");
-  res.setHeader("Access-Control-Allow-Methods", "GET, POST, OPTIONS");
-  res.setHeader("Access-Control-Allow-Headers", "Content-Type");
+function extractId(req) {
+  let id = req.query?.id;
+  if (Array.isArray(id)) id = id[0];
+  if (id) return String(id).replace(/\.lua$/i, "").trim();
 
-  if (req.method === "OPTIONS") return res.status(204).end();
+  const candidates = [
+    req.url,
+    req.headers["x-forwarded-uri"],
+    req.headers["x-invoke-path"],
+    req.headers["x-matched-path"],
+  ].filter(Boolean).map(String);
 
-  // GET ?id=xxx — browser sees private page; Roblox gets raw lua
-  if (req.method === "GET") {
-    const id = String(req.query?.id || "").replace(/\.lua$/i, "").trim();
-    if (!id) return res.status(400).send("-- missing id");
+  for (const raw of candidates) {
+    const m =
+      raw.match(/\/files\/v4\/loaders\/([^/?#]+)/i) ||
+      raw.match(/[?&]id=([^&]+)/i) ||
+      raw.match(/\/api\/luarmor\/([^/?#]+)/i);
+    if (m) return decodeURIComponent(m[1]).replace(/\.lua$/i, "").trim();
+  }
+  return "";
+}
 
-    const ua = String(req.headers["user-agent"] || "");
-    const accept = String(req.headers["accept"] || "");
-    const browser = /mozilla|chrome|safari|firefox|edge|opera/i.test(ua) || accept.includes("text/html");
+// Solo página privada para navegación real del browser.
+// Roblox HttpGet / executors siempre reciben raw Lua.
+function isRealBrowser(req) {
+  const ua = String(req.headers["user-agent"] || "");
+  const accept = String(req.headers["accept"] || "");
+  const secFetchDest = String(req.headers["sec-fetch-dest"] || "");
+  const secFetchMode = String(req.headers["sec-fetch-mode"] || "");
 
-    if (browser) {
-      const url = "https://api.luarmor.us/files/v4/loaders/" + id + ".lua";
-      res.setHeader("Content-Type", "text/html; charset=utf-8");
-      return res.status(200).send(`<!DOCTYPE html>
+  // Roblox / syn / executors nunca deben ver HTML
+  if (/roblox|syn\s*x|sentinel|krnl|fluxus|wave|delta|codex|solara|bunni|electron|jjj|macsploit|hydrogen|arceus/i.test(ua)) {
+    return false;
+  }
+
+  // Navegación de documento en browser moderno
+  if (secFetchDest === "document" || secFetchMode === "navigate") {
+    return true;
+  }
+
+  // Fallback: UA de browser + Accept HTML, sin señales de game client
+  const looksBrowser = /mozilla\/|chrome\/|safari\/|firefox\/|edg\//i.test(ua);
+  const wantsHtml = accept.includes("text/html");
+  return looksBrowser && wantsHtml;
+}
+
+function privatePage(id) {
+  const url = "https://api.luarmor.us/files/v4/loaders/" + id + ".lua";
+  return `<!DOCTYPE html>
 <html lang="es">
 <head>
 <meta charset="UTF-8">
@@ -73,21 +102,60 @@ button:hover{background:#4a4d6a}
     </a>
   </div>
 </body>
-</html>`);
+</html>`;
+}
+
+export default async function handler(req, res) {
+  res.setHeader("Access-Control-Allow-Origin", "*");
+  res.setHeader("Access-Control-Allow-Methods", "GET, POST, OPTIONS");
+  res.setHeader("Access-Control-Allow-Headers", "Content-Type");
+
+  if (req.method === "OPTIONS") return res.status(204).end();
+
+  // ---------- GET ----------
+  if (req.method === "GET") {
+    const id = extractId(req);
+    if (!id) {
+      res.setHeader("Content-Type", "text/plain; charset=utf-8");
+      return res.status(400).send("-- missing id");
     }
 
+    // Solo navegador real → página privada
+    if (isRealBrowser(req)) {
+      res.setHeader("Content-Type", "text/html; charset=utf-8");
+      return res.status(200).send(privatePage(id));
+    }
+
+    // Roblox / executor / curl → RAW LUA
     try {
-      const r = await fetch("https://pastefy.app/" + encodeURIComponent(id) + "/raw");
-      if (!r.ok) return res.status(404).send("-- not found");
+      const r = await fetch("https://pastefy.app/" + encodeURIComponent(id) + "/raw", {
+        headers: {
+          "User-Agent": "LuarmorUS-Loader/1.0",
+          Accept: "text/plain,*/*",
+        },
+      });
+      if (!r.ok) {
+        res.setHeader("Content-Type", "text/plain; charset=utf-8");
+        return res.status(404).send("-- not found");
+      }
       const body = await r.text();
+
+      // Seguridad: no devolver HTML por error
+      if (/^\s*</.test(body) && /<html|<!doctype/i.test(body)) {
+        res.setHeader("Content-Type", "text/plain; charset=utf-8");
+        return res.status(502).send("-- invalid upstream content");
+      }
+
       res.setHeader("Content-Type", "text/plain; charset=utf-8");
-      res.setHeader("Cache-Control", "public, max-age=31536000, immutable");
+      res.setHeader("Cache-Control", "no-store");
       return res.status(200).send(body);
-    } catch {
+    } catch (e) {
+      res.setHeader("Content-Type", "text/plain; charset=utf-8");
       return res.status(502).send("-- fetch failed");
     }
   }
 
+  // ---------- POST ----------
   if (req.method !== "POST") {
     return res.status(405).json({ error: "Method not allowed" });
   }
@@ -120,7 +188,7 @@ button:hover{background:#4a4d6a}
 
     const pasteText = await pasteRes.text();
     if (!pasteRes.ok) {
-      return res.status(502).json({ error: "Storage HTTP " + pasteRes.status });
+      return res.status(502).json({ error: "Storage HTTP " + pasteRes.status + ": " + pasteText.slice(0, 120) });
     }
 
     const pasteData = JSON.parse(pasteText);
@@ -140,3 +208,4 @@ button:hover{background:#4a4d6a}
     return res.status(500).json({ error: err.message || "upload failed" });
   }
 }
+
