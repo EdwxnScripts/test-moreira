@@ -297,39 +297,43 @@ input:checked+.slider:before{transform:translateX(20px);background:#fff}
 .history-actions button:hover{background:rgba(220,38,38,0.4);color:#fff}
 .history-empty{padding:28px 12px;text-align:center;color:#777;font-size:13px}
 
-/* PROFILE MODAL */
-.profile-modal-overlay{display:none;position:fixed;inset:0;z-index:520;background:rgba(0,0,0,0.78);backdrop-filter:blur(5px);align-items:center;justify-content:center;padding:16px}
+/* PROFILE MODAL - PROFESIONAL */
+.profile-modal-overlay{display:none;position:fixed;inset:0;z-index:520;background:rgba(0,0,0,0.82);backdrop-filter:blur(8px);align-items:center;justify-content:center;padding:16px}
 .profile-modal-overlay.open{display:flex}
-.profile-modal{width:min(420px,100%);max-height:85vh;background:linear-gradient(145deg,rgba(22,8,10,0.98),rgba(11,4,5,0.99));border:1px solid rgba(220,38,38,0.5);border-radius:18px;box-shadow:0 24px 60px rgba(0,0,0,0.9),0 0 40px rgba(220,38,38,0.12);display:flex;flex-direction:column;overflow:hidden;animation:authBoxIn 0.45s cubic-bezier(0.16,1,0.3,1) both}
-.profile-modal-header{display:flex;align-items:center;justify-content:space-between;padding:14px 16px;border-bottom:1px solid rgba(220,38,38,0.28)}
-.profile-modal-header h3{margin:0;font-size:15px;color:#fff;font-weight:700}
-.profile-close{background:rgba(220,38,38,0.2);border:1px solid rgba(220,38,38,0.4);color:#fca5a5;border-radius:8px;padding:6px 10px;cursor:pointer;font-weight:700;font-size:12px}
-.profile-close:hover{background:#dc2626;color:#fff}
-.profile-body{overflow:auto;padding:18px 16px 16px;display:flex;flex-direction:column;gap:16px}
-.profile-hero{display:flex;align-items:center;gap:14px}
+.profile-modal{width:min(440px,100%);max-height:88vh;background:linear-gradient(165deg,rgba(26,10,12,0.98) 0%,rgba(12,5,6,0.99) 100%);border:1px solid rgba(220,38,38,0.42);border-radius:22px;box-shadow:0 28px 70px rgba(0,0,0,0.92),0 0 0 1px rgba(255,80,80,0.05),0 0 60px rgba(220,38,38,0.1);display:flex;flex-direction:column;overflow:hidden;animation:authBoxIn 0.5s cubic-bezier(0.16,1,0.3,1) both;position:relative}
+.profile-modal::before{content:'';position:absolute;top:0;left:0;right:0;height:110px;background:linear-gradient(180deg,rgba(220,38,38,0.14) 0%,transparent 100%);pointer-events:none;z-index:0}
+.profile-modal-header{position:relative;z-index:1;display:flex;align-items:center;justify-content:space-between;padding:16px 18px 10px;border-bottom:none}
+.profile-modal-header h3{margin:0;font-size:13px;color:#fca5a5;font-weight:700;text-transform:uppercase;letter-spacing:0.1em}
+.profile-close{background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.1);color:#aaa;border-radius:10px;padding:7px 12px;cursor:pointer;font-weight:700;font-size:12px;transition:.2s}
+.profile-close:hover{background:rgba(220,38,38,0.25);border-color:rgba(220,38,38,0.45);color:#fff}
+.profile-body{position:relative;z-index:1;overflow:auto;padding:8px 18px 20px;display:flex;flex-direction:column;gap:18px}
+.profile-hero{display:flex;flex-direction:column;align-items:center;text-align:center;gap:10px;padding-bottom:6px}
 .profile-avatar-wrap{position:relative;flex-shrink:0}
-.profile-avatar{width:72px;height:72px;border-radius:50%;object-fit:cover;border:3px solid rgba(220,38,38,0.55);box-shadow:0 0 20px rgba(220,38,38,0.25)}
-.profile-status-dot{position:absolute;bottom:2px;right:2px;width:14px;height:14px;border-radius:50%;background:#22c55e;border:2px solid #1a080a}
-.profile-hero-info{min-width:0;flex:1}
-.profile-display-name{font-size:18px;font-weight:800;color:#fff;margin-bottom:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.profile-username{font-size:13px;color:#fca5a5;font-weight:600}
+.profile-avatar{width:88px;height:88px;border-radius:50%;object-fit:cover;border:3px solid rgba(220,38,38,0.6);box-shadow:0 0 28px rgba(220,38,38,0.3),0 8px 24px rgba(0,0,0,0.5)}
+.profile-status-dot{position:absolute;bottom:4px;right:4px;width:16px;height:16px;border-radius:50%;background:#22c55e;border:3px solid #140608;box-shadow:0 0 8px rgba(34,197,94,0.5)}
+.profile-hero-info{min-width:0;width:100%}
+.profile-display-name{font-size:20px;font-weight:800;color:#fff;margin-bottom:3px;letter-spacing:-0.02em}
+.profile-username{font-size:13px;color:#f87171;font-weight:600}
+.profile-badge-row{display:flex;flex-wrap:wrap;gap:6px;justify-content:center;margin-top:8px}
+.profile-mini-badge{font-size:10px;padding:4px 10px;border-radius:999px;font-weight:700;letter-spacing:0.02em}
+.pmb-server{background:rgba(34,197,94,0.12);border:1px solid rgba(34,197,94,0.4);color:#4ade80}
+.pmb-noserver{background:rgba(248,113,113,0.12);border:1px solid rgba(248,113,113,0.4);color:#f87171}
 .profile-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
-.profile-field{background:rgba(255,255,255,0.03);border:1px solid rgba(220,38,38,0.22);border-radius:12px;padding:10px 12px}
-.profile-field-label{font-size:10px;text-transform:uppercase;letter-spacing:0.08em;color:#888;margin-bottom:4px;font-weight:700}
-.profile-field-value{font-size:12.5px;color:#eee;font-weight:600;word-break:break-all}
+.profile-field{background:rgba(255,255,255,0.025);border:1px solid rgba(220,38,38,0.18);border-radius:14px;padding:12px 14px;transition:border-color .2s}
+.profile-field:hover{border-color:rgba(220,38,38,0.35)}
+.profile-field-label{font-size:10px;text-transform:uppercase;letter-spacing:0.1em;color:#777;margin-bottom:5px;font-weight:700}
+.profile-field-value{font-size:13px;color:#f0f0f0;font-weight:600;word-break:break-all;line-height:1.35}
 .profile-field.full{grid-column:1 / -1}
-.profile-badge-row{display:flex;flex-wrap:wrap;gap:6px;margin-top:2px}
-.profile-mini-badge{font-size:10px;padding:3px 8px;border-radius:999px;font-weight:700}
-.pmb-server{background:rgba(34,197,94,0.15);border:1px solid rgba(34,197,94,0.4);color:#4ade80}
-.pmb-noserver{background:rgba(248,113,113,0.15);border:1px solid rgba(248,113,113,0.4);color:#f87171}
-.profile-scripts-section{border:1px solid rgba(220,38,38,0.28);border-radius:14px;overflow:hidden}
-.profile-scripts-toggle{width:100%;display:flex;align-items:center;justify-content:space-between;gap:10px;padding:12px 14px;background:rgba(220,38,38,0.08);border:none;color:#eee;font-size:13px;font-weight:700;cursor:pointer;text-align:left}
-.profile-scripts-toggle:hover{background:rgba(220,38,38,0.14)}
-.profile-scripts-toggle .chevron{transition:transform .25s;color:#fca5a5;font-size:14px}
+.profile-scripts-section{border:1px solid rgba(220,38,38,0.22);border-radius:16px;overflow:hidden;background:rgba(0,0,0,0.2)}
+.profile-scripts-toggle{width:100%;display:flex;align-items:center;justify-content:space-between;gap:10px;padding:13px 16px;background:transparent;border:none;color:#eee;font-size:13px;font-weight:700;cursor:pointer;text-align:left;transition:background .2s}
+.profile-scripts-toggle:hover{background:rgba(220,38,38,0.1)}
+.profile-scripts-toggle .chevron{transition:transform .28s cubic-bezier(0.16,1,0.3,1);color:#fca5a5;font-size:15px;font-weight:800}
 .profile-scripts-toggle.open .chevron{transform:rotate(90deg)}
-.profile-scripts-panel{display:none;max-height:240px;overflow:auto;padding:10px;border-top:1px solid rgba(220,38,38,0.22)}
+.profile-scripts-toggle .scripts-count{font-size:11px;color:#888;font-weight:600;margin-left:6px}
+.profile-scripts-panel{display:none;max-height:260px;overflow:auto;padding:10px;border-top:1px solid rgba(220,38,38,0.18);background:rgba(0,0,0,0.15)}
 .profile-scripts-panel.open{display:flex;flex-direction:column;gap:8px}
-.profile-scripts-panel .history-item{margin:0}
+.profile-scripts-panel .history-item{margin:0;background:rgba(255,255,255,0.025);border-color:rgba(220,38,38,0.2)}
+.profile-scripts-panel .history-item:hover{border-color:rgba(220,38,38,0.4)}
 
 </style>
 </head>
@@ -348,10 +352,6 @@ input:checked+.slider:before{transform:translateX(20px);background:#fff}
   </div>
   <div class="user-menu-item" id="myProfileOption">
     <span data-i18n="myProfile">Mi Perfil</span>
-    <span style="color:#fca5a5;font-size:11px">›</span>
-  </div>
-  <div class="user-menu-item" id="scriptsHistoryOption">
-    <span data-i18n="scriptsHistory">Scripts Generados</span>
     <span style="color:#fca5a5;font-size:11px">›</span>
   </div>
 </div>
@@ -404,7 +404,7 @@ input:checked+.slider:before{transform:translateX(20px);background:#fff}
       </div>
       <div class="profile-scripts-section">
         <button type="button" class="profile-scripts-toggle" id="profileScriptsToggle">
-          <span data-i18n="scriptsHistory">Scripts Generados</span>
+          <span><span data-i18n="scriptsHistory">Scripts Generados</span><span class="scripts-count" id="profileScriptsCount"></span></span>
           <span class="chevron">›</span>
         </button>
         <div class="profile-scripts-panel" id="profileScriptsPanel"></div>
@@ -1215,6 +1215,8 @@ function renderProfileScripts() {
   const panel = document.getElementById("profileScriptsPanel");
   if (!panel) return;
   const list = loadScriptHistory();
+  const countEl = document.getElementById("profileScriptsCount");
+  if (countEl) countEl.textContent = list.length ? `(${list.length})` : "";
   if (!list.length) {
     panel.innerHTML = `<div class="history-empty">${t("historyEmpty")}</div>`;
     return;
@@ -1315,10 +1317,13 @@ document.getElementById("profileScriptsPanel").onclick = e => {
   }
 };
 
-document.getElementById("scriptsHistoryOption").onclick = e => {
-  e.stopPropagation();
-  openScriptHistory();
-};
+const _scriptsHistoryOption = document.getElementById("scriptsHistoryOption");
+if (_scriptsHistoryOption) {
+  _scriptsHistoryOption.onclick = e => {
+    e.stopPropagation();
+    openScriptHistory();
+  };
+}
 document.getElementById("historyCloseBtn").onclick = closeScriptHistory;
 document.getElementById("historyModal").onclick = e => {
   if(e.target.id === "historyModal") closeScriptHistory();
